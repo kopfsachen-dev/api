@@ -172,6 +172,14 @@ components:
           enum:
             - admin
             - user
+        lang:
+          type: string
+          default: de
+          enum:
+            - de
+            - en
+          minLength: 2
+          maxLength: 2
         created:
           type: string
           minLength: 1
@@ -185,6 +193,7 @@ components:
         - email
         - password
         - role
+        - lang
         - created
         - changed
     user-with-id:
