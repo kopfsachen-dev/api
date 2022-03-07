@@ -7,7 +7,33 @@ info:
     name: Kopfsachen e. V.
     email: mail@kopfsachen.org
     url: 'https://www.kopfsachen.org'
-paths: {}
+paths:
+  '/user/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags:
+        - user-service
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      operationId: get-user-id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+            examples: {}
+        description: Get a user by id.
 components:
   securitySchemes:
     JWTAuth:
@@ -18,10 +44,70 @@ components:
         Example: 
         > Authorization: Bearer <token>
       x-last-modified: 1646648515924
-  schemas: {}
+  schemas:
+    user:
+      description: 'A user object'
+      type: object
+      x-examples:
+        example-1:
+          username: maja
+          email: maja@majassen.de
+          password: ahcezie2aiKoon0yaequ3eive7uphie9
+          role: user
+          created: '2022-03-07T14:15:44+00:00'
+          changed: '2022-03-07T14:15:44+00:00'
+        example-2:
+          id: 0
+          username: string
+          email: user@example.com
+          password: pa$$word
+          role: admin
+          created: '2019-08-24T14:15:22Z'
+          changed: '2019-08-24T14:15:22Z'
+      x-tira: true
+      properties:
+        id:
+          type: integer
+          description: Generated id.
+        username:
+          type: string
+          minLength: 2
+          maxLength: 25
+        email:
+          type: string
+          minLength: 1
+          format: email
+          description: 'Passwords are never stored in plain text, but as hash(pwd) + salt from an widely used library.'
+        password:
+          type: string
+          format: password
+        role:
+          type: string
+          minLength: 1
+          description: Refers to privileges.
+          enum:
+            - admin
+            - user
+        created:
+          type: string
+          minLength: 1
+          format: date-time
+        changed:
+          type: string
+          minLength: 1
+          format: date-time
+      required:
+        - id
+        - username
+        - email
+        - password
+        - role
+        - created
+        - changed
   headers: {}
   responses: {}
   parameters: {}
+  requestBodies: {}
 tags: []
 servers:
   - url: 'https://api.implementation.online'
