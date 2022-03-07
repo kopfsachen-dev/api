@@ -28,7 +28,7 @@ paths:
               $ref: '#/components/schemas/user'
       tags:
         - user-service
-      description: Create user.
+      description: Create a user.
     get:
       summary: Get all users.
       operationId: get-user
