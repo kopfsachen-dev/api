@@ -1,0 +1,31 @@
+openapi: 3.0.3
+info:
+  title: Kopfsachen
+  version: '0.1'
+  description: Kopfsachen e. V. is an association for the promotion of young people's mental health. The goal is to teach the basics of mental health literacy in various educational formats.
+  contact:
+    name: Kopfsachen e. V.
+    email: mail@kopfsachen.org
+    url: 'https://www.kopfsachen.org'
+paths: {}
+components:
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |-
+        Example: 
+        > Authorization: Bearer <token>
+      x-last-modified: 1646648515924
+  schemas: {}
+  headers: {}
+  responses: {}
+  parameters: {}
+tags: []
+servers:
+  - url: 'https://api.implementation.online'
+    description: ''
+    variables: {}
+security:
+  - JWTAuth: []
