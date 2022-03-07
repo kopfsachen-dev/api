@@ -48,13 +48,9 @@ paths:
       tags:
         - user-service
       description: Get all users.
-  '/user/{id}':
+  '/user/{userId}':
     parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
+      - $ref: '#/components/parameters/userId'
     get:
       summary: Read user by id.
       tags:
@@ -103,10 +99,438 @@ paths:
       tags:
         - user-service
       description: Delete user by id.
+  '/user/{userId}/settings':
+    parameters:
+      - $ref: '#/components/parameters/userId'
+    get:
+      summary: Get user's settings.
+      tags:
+        - user-service
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/setting'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      operationId: get-user-id
+      description: Get user's settings.
+    put:
+      summary: Update user by id.
+      operationId: put-user-id
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      tags:
+        - user-service
+      description: Update user by id.
+    delete:
+      summary: Delete user by id.
+      operationId: delete-user-id
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Internal Server Error
+      tags:
+        - user-service
+      description: Delete user by id.
+    post:
+      summary: Set user's settings.
+      operationId: post-user-userId-settings
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      description: Set user's settings.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/setting'
+      tags:
+        - user-service
+  'diary/{userId}':
+    get:
+      summary: Get mood diary by userId.
+      tags: []
+      operationId: get-diary
+      description: Get mood diary by userId.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/mood'
+              examples: {}
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      x-tira: true
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Add mood to diary
+      operationId: post-diary-userId
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      description: Add mood to user's diary.
+      tags:
+        - mood-diary-service
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/mood'
+      x-tira: true
+    delete:
+      summary: Delete mood from user's diary.
+      operationId: deleteuser-userId-diary
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      description: Delete mood from user's diary.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/timestamp'
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+        description: ''
+  /safetyNet:
+    get:
+      summary: Get safety nets of all users.
+      tags:
+        - motivator-service
+      responses: {}
+      operationId: get-safetyNet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/safetyNetItem'
+      description: Get safety nets of all users - without identifying the users individually.
+  'safetyNet/{userId}':
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get safety net by userId.
+      tags:
+        - motivator-service
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/safetyNetItem'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      operationId: get-user-userId-safetyNet
+      description: Get safety net by userId.
+    post:
+      summary: Add safety net item to user's safety net.
+      operationId: post-user-userId-safetyNet
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      description: Add safety net item to user's safety net.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/safetyNetItem'
+    delete:
+      summary: Delete safetyNet item by timestamp.
+      operationId: delete-user-userId-safetyNet
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      description: Delete safetyNet item by timestamp.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              format: date-time
+  /motivator:
+    parameters: []
+    get:
+      summary: Get all motivators.
+      tags:
+        - motivator-service
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/motivator'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      operationId: get-motivators-userId
+      description: Gett all motivators.
+    post:
+      summary: Add motivator
+      operationId: post-motivator
+      responses:
+        '200':
+          description: OK
+      description: Add a new motivator.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/motivator'
+    delete:
+      summary: Delete a motivator.
+      operationId: delete-motivator
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      description: Delete a motivator by id.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/motivatorId'
+  '/motivator/{userId}':
+    parameters:
+      - $ref: '#/components/parameters/userId'
+    get:
+      summary: Get current motivators by userId.
+      tags:
+        - motivator-service
+      responses: {}
+      operationId: get-motivator-userId
+      description: Get current motivators by userId.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: '#/components/schemas/motivator'
+                  - $ref: '#/components/schemas/motivatorResult'
+    post:
+      summary: Add motivator to user's motivators.
+      operationId: post-motivator-userId
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      description: Add motivator to user's motivators.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/motivator'
+      tags:
+        - motivator-service
+    delete:
+      summary: Delete a motivator from user's motivators.
+      operationId: delete-motivator-userId
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/motivatorId'
+      description: Delete a motivator from user's motivators.
+      tags:
+        - motivator-service
+  '/motivator/{userId}/result/{motivatorId}':
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: motivatorId
+        in: path
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Add a new result to user's current motivator.
+      operationId: post-motivator-userId-feedback-motivatorId
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      description: Add a new result to user's current motivator.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/motivatorResult'
+      tags:
+        - motivator-service
+    delete:
+      summary: Delete result from user's current motivator by timestamp.
+      operationId: delete-motivator-userId-result-motivatorId
+      responses:
+        '200':
+          description: OK
+      description: Delete result from user's current motivator by timestamp.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/timestamp'
+      tags:
+        - motivator-service
+  '/notification/{userId}':
+    parameters:
+      - $ref: '#/components/parameters/userId'
+    get:
+      summary: Get notifications for user by id.
+      tags:
+        - notification-service
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/notification'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      operationId: get-notification-userId
+      description: Get notifications for user by id.
+    post:
+      summary: Set notification for user by id.
+      operationId: post-notification-userId
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      description: Set notification for user by id.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/notification'
+        description: ''
+      tags:
+        - notification-service
+    delete:
+      summary: Delete notification for user by id.
+      operationId: delete-notification-userId
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/notificationId'
+      description: Delete notification for user by id.
+      tags:
+        - notification-service
   /tilt:
     get:
       summary: Get tilt document.
-      tags: []
+      tags:
+        - tilt-service
       responses:
         '200':
           description: OK
@@ -121,6 +545,24 @@ paths:
       operationId: get-tilt
       description: 'Get tilt document, i.e. a machine-readable privacy policy.'
       x-tira: false
+    post:
+      summary: Set tilt document.
+      operationId: post-tilt
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      description: 'Set tilt document, i.e. a machine-readable privacy policy.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tilt'
 components:
   securitySchemes:
     JWTAuth:
@@ -828,9 +1270,206 @@ components:
               urlOfNewVersion:
                 type: string
                 minLength: 1
+    mood:
+      title: mood
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - positive
+            - negative
+            - neutral
+        description:
+          type: string
+          example: angry
+        timestamp:
+          type: string
+          format: date-time
+    userId:
+      title: userId
+      type: object
+      properties:
+        id:
+          type: number
+      x-examples:
+        example-1:
+          id: 42
+    timestamp:
+      title: timestamp
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+    safetyNetItem:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          name: Theo
+          type: pet
+          strategies:
+            - cuddle
+            - play
+            - go for a walk
+      properties:
+        name:
+          type: string
+          minLength: 1
+        type:
+          type: string
+          minLength: 1
+          enum:
+            - pet
+            - other
+            - situationControl
+            - relaxation
+          description: 'Which kind of item is this (i.a., influences symbol in UI)?'
+        strategies:
+          type: array
+          description: How can this item help the user to feel better?
+          items:
+            type: string
+        feedback:
+          type: array
+          items:
+            $ref: '#/components/schemas/safetyNetItemFeedback'
+      required:
+        - name
+        - type
+        - strategies
+    safetyNetItemFeedback:
+      description: ''
+      type: object
+      x-examples: {}
+      title: safetyNetItemFeedback
+      properties:
+        itHelped:
+          type: boolean
+        comment:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    motivator:
+      title: motivator
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - situationControl
+            - relaxation
+        headline:
+          type: string
+        description:
+          type: string
+        textContents:
+          type: array
+          items:
+            type: string
+        mediaContents:
+          type: array
+          items:
+            type: object
+            properties:
+              format:
+                type: string
+                enum:
+                  - document
+                  - image
+                  - audio
+                  - video
+              url:
+                type: string
+                format: uri
+        userInputForm:
+          type: string
+          description: 'May describe a form for input by the user (format to be defined, e.g., JSON Schema).'
+    motivatorResult:
+      title: motivatorResult
+      type: object
+      properties:
+        motivatorId:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        results:
+          type: array
+          items:
+            type: string
+    motivatorId:
+      title: motivatorId
+      type: object
+      properties:
+        id:
+          type: number
+    notification:
+      title: notification
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        ttl:
+          type: string
+          description: 'time to live (i.e., not relevant anymore at specified time)'
+          format: date-time
+        '':
+          type: string
+    notificationId:
+      title: notificationId
+      type: object
+      properties:
+        id:
+          type: string
+    setting:
+      title: setting
+      type: object
+      properties:
+        key:
+          type:
+            - string
+            - number
+            - integer
+            - boolean
+            - array
+          nullable: true
+          items: {}
+        value:
+          type:
+            - string
+            - number
+            - integer
+            - boolean
+            - array
+          nullable: true
+          items: {}
   headers: {}
   responses: {}
-  parameters: {}
+  parameters:
+    userId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: integer
+    motivatorId:
+      name: motivatorId
+      in: path
+      required: true
+      schema:
+        type: integer
   requestBodies: {}
 tags:
   - name: user-service
@@ -840,6 +1479,7 @@ tags:
   - name: wiki-service
   - name: tilt-service
   - name: hawk-service
+  - name: notification-service
 servers:
   - url: 'https://api.implementation.online'
     description: ''
