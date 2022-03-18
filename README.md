@@ -5,3 +5,7 @@
 
 ## How to use
 Open [the specification](openapi.yaml) in your favorite [Swagger UI](https://editor.swagger.io/) or OpenAPI Editor, e.g. in [Stoplight Studio](https://stoplight.io/studio/).
+
+## Live
+
+See it [here](https://app.swaggerhub.com/apis/kopfsachen/kopfsachen/0.1) in action.
