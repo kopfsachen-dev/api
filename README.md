@@ -6,8 +6,10 @@
 ## How to use
 Open [the specification](openapi.yaml) in your favorite [Swagger UI](https://editor.swagger.io/) or OpenAPI Editor, e.g. in [Stoplight Studio](https://stoplight.io/studio/).
 
-## Try out with mock server
+## Live
+See it [here](https://app.swaggerhub.com/apis/kopfsachen/kopfsachen/0.1) in action.
 
+## Try out with mock server
 ```bash
 # Install prism mock server
 npm install -g @stoplight/prism-cli
