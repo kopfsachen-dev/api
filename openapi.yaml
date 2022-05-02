@@ -1533,5 +1533,8 @@ servers:
   - url: 'https://api.implementation.online'
     description: ''
     variables: {}
-security:
-  - JWTAuth: []
+  - url: 'http://localhost'
+    description: ''
+    variables: {}
+#security:
+#  - JWTAuth: []
