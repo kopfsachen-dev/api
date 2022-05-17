@@ -32,3 +32,12 @@ fetch('http://localhost:4010/user')
         .then(response => response.json())
         .then(data => ...) ...
 ```
+
+## Workflow
+
+1. Create new feature branch in github.com/kopfsachen-dev/api repository
+2. Make changes to current OpenAPI specification
+3. Push changes
+4. Create new pull request & set reviewers from other [teams](https://github.com/orgs/kopfsachen-dev/teams) (backend <-> frontend)
+5. Optional: Modify changes upon reviewer’s request
+6. Implement your changes
