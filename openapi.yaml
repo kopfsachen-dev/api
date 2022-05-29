@@ -19,6 +19,8 @@ paths:
           description: Created
         '401':
           description: Unauthorized
+        '422':
+          description: Unprocessable Entity
         '500':
           description: Internal Server Error
       requestBody:
@@ -64,6 +66,8 @@ paths:
                 $ref: '#/components/schemas/user-with-id'
         '401':
           description: Unauthorized
+        '404':
+          description: User not found
         '500':
           description: Internal Server Error
       operationId: get-user-id
@@ -78,6 +82,10 @@ paths:
           description: Created
         '401':
           description: Unauthorized
+        '404':
+          description: User not found
+        '422':
+          description: Unprocessable Entity
         '500':
           description: Internal Server Error
       requestBody:
@@ -94,6 +102,8 @@ paths:
       responses:
         '200':
           description: OK
+        '404':
+          description: User not found
         '500':
           description: Internal Server Error
       tags:
@@ -117,6 +127,8 @@ paths:
                   $ref: '#/components/schemas/setting'
         '401':
           description: Unauthorized
+        '404':
+          description: User settings not found
         '500':
           description: Internal Server Error
       operationId: get-user-settings
@@ -127,6 +139,8 @@ paths:
       responses:
         '200':
           description: OK
+        '404':
+          description: User settings not found
         '500':
           description: Internal Server Error
       tags:
@@ -140,6 +154,10 @@ paths:
           description: OK
         '401':
           description: Unauthorized
+        '404':
+          description: User not found
+        '409':
+          description: User settings already exist
         '500':
           description: Internal Server Error
       description: Set user's settings.
@@ -627,15 +645,13 @@ components:
         example-1:
           username: maja
           email: maja@majassen.de
-          password: ahcezie2aiKoon0yaequ3eive7uphie9
           role: user
           created: '2022-03-07T14:15:44+00:00'
           changed: '2022-03-07T14:15:44+00:00'
         example-2:
           id: 0
           username: string
-          email: user@example.com
-          password: pa$$word
+          email: user@example.comd
           role: admin
           created: '2019-08-24T14:15:22Z'
           changed: '2019-08-24T14:15:22Z'
@@ -649,10 +665,6 @@ components:
           type: string
           minLength: 1
           format: email
-          description: 'Passwords are never stored in plain text, but as hash(pwd) + salt from an widely used library.'
-        password:
-          type: string
-          format: password
         role:
           type: string
           minLength: 1
@@ -660,14 +672,6 @@ components:
           enum:
             - admin
             - user
-        lang:
-          type: string
-          default: de
-          enum:
-            - de
-            - en
-          minLength: 2
-          maxLength: 2
         created:
           type: string
           minLength: 1
@@ -679,9 +683,7 @@ components:
       required:
         - username
         - email
-        - password
         - role
-        - lang
         - created
         - changed
     user-with-id:
@@ -697,7 +699,6 @@ components:
           id: 42
           username: string
           email: user@example.com
-          password: pa$$word
           role: admin
           created: '2019-08-24T14:15:22Z'
           changed: '2019-08-24T14:15:22Z'
@@ -1474,10 +1475,14 @@ components:
       title: setting
       type: object
       properties:
-        key:
+        lang:
           type: string
-        value:
-          type: string
+          default: de
+          enum:
+            - de
+            - en
+          minLength: 2
+          maxLength: 2
       description: Key-value pairs of settings in the app.
     wikiEntry:
       title: wikiEntry
