@@ -643,28 +643,25 @@ components:
       type: object
       x-examples:
         example-1:
+          account_key: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
           username: maja
-          email: maja@majassen.de
           role: user
-          created: '2022-03-07T14:15:44+00:00'
-          changed: '2022-03-07T14:15:44+00:00'
         example-2:
           id: 0
+          account_key: "123e4567-e89b-12d3-a456-426655440000"
           username: string
-          email: user@example.comd
           role: admin
-          created: '2019-08-24T14:15:22Z'
-          changed: '2019-08-24T14:15:22Z'
       x-tira: true
       properties:
+        account_key:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
         username:
           type: string
           minLength: 2
           maxLength: 25
-        email:
-          type: string
-          minLength: 1
-          format: email
         role:
           type: string
           minLength: 1
@@ -672,20 +669,8 @@ components:
           enum:
             - admin
             - user
-        created:
-          type: string
-          minLength: 1
-          format: date-time
-        changed:
-          type: string
-          minLength: 1
-          format: date-time
       required:
-        - username
-        - email
-        - role
-        - created
-        - changed
+        - account_key
     user-with-id:
       title: user-with-id
       allOf:
@@ -697,11 +682,9 @@ components:
       x-examples:
         example-1:
           id: 42
+          account_key: "705e4dcb-3ecd-24f3-3a35-3e926e4bded5"
           username: string
-          email: user@example.com
           role: admin
-          created: '2019-08-24T14:15:22Z'
-          changed: '2019-08-24T14:15:22Z'
     tilt:
       description: 'A valid tilt document validates against the tilt schema: https://github.com/Transparency-Information-Language/schema/blob/master/tilt-schema.json'
       type: object
