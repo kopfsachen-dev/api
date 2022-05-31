@@ -30,6 +30,7 @@ paths:
               $ref: '#/components/schemas/user'
       tags:
         - user-service
+        - admin
       description: Create a user.
     get:
       summary: Get all users.
@@ -49,6 +50,7 @@ paths:
           description: Internal Server Error
       tags:
         - user-service
+        - admin
       description: Get all users.
   '/user/{userId}':
     parameters:
