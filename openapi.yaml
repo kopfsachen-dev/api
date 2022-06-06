@@ -645,17 +645,17 @@ components:
       type: object
       x-examples:
         example-1:
-          account_key: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+          user_id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
           username: maja
           role: user
         example-2:
           id: 0
-          account_key: "123e4567-e89b-12d3-a456-426655440000"
+          user_id: "123e4567-e89b-12d3-a456-426655440000"
           username: string
           role: admin
       x-tira: true
       properties:
-        account_key:
+        user_id:
           type: string
           format: uuid
           minLength: 36
@@ -672,7 +672,7 @@ components:
             - admin
             - user
       required:
-        - account_key
+        - user_id
     user-with-id:
       title: user-with-id
       allOf:
@@ -684,7 +684,7 @@ components:
       x-examples:
         example-1:
           id: 42
-          account_key: "705e4dcb-3ecd-24f3-3a35-3e926e4bded5"
+          user_id: "705e4dcb-3ecd-24f3-3a35-3e926e4bded5"
           username: string
           role: admin
     tilt:
