@@ -19,6 +19,8 @@ paths:
           description: Created
         '401':
           description: Unauthorized
+        '422':
+          description: Unprocessable Entity
         '500':
           description: Internal Server Error
       requestBody:
@@ -28,6 +30,7 @@ paths:
               $ref: '#/components/schemas/user'
       tags:
         - user-service
+        - admin
       description: Create a user.
     get:
       summary: Get all users.
@@ -47,6 +50,7 @@ paths:
           description: Internal Server Error
       tags:
         - user-service
+        - admin
       description: Get all users.
   '/user/{userId}':
     parameters:
@@ -64,6 +68,8 @@ paths:
                 $ref: '#/components/schemas/user-with-id'
         '401':
           description: Unauthorized
+        '404':
+          description: User not found
         '500':
           description: Internal Server Error
       operationId: get-user-id
@@ -78,6 +84,10 @@ paths:
           description: Created
         '401':
           description: Unauthorized
+        '404':
+          description: User not found
+        '422':
+          description: Unprocessable Entity
         '500':
           description: Internal Server Error
       requestBody:
@@ -94,6 +104,8 @@ paths:
       responses:
         '200':
           description: OK
+        '404':
+          description: User not found
         '500':
           description: Internal Server Error
       tags:
@@ -117,6 +129,8 @@ paths:
                   $ref: '#/components/schemas/setting'
         '401':
           description: Unauthorized
+        '404':
+          description: User settings not found
         '500':
           description: Internal Server Error
       operationId: get-user-settings
@@ -127,6 +141,8 @@ paths:
       responses:
         '200':
           description: OK
+        '404':
+          description: User settings not found
         '500':
           description: Internal Server Error
       tags:
@@ -140,6 +156,10 @@ paths:
           description: OK
         '401':
           description: Unauthorized
+        '404':
+          description: User not found
+        '409':
+          description: User settings already exist
         '500':
           description: Internal Server Error
       description: Set user's settings.
@@ -625,34 +645,25 @@ components:
       type: object
       x-examples:
         example-1:
+          user_id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
           username: maja
-          email: maja@majassen.de
-          password: ahcezie2aiKoon0yaequ3eive7uphie9
           role: user
-          created: '2022-03-07T14:15:44+00:00'
-          changed: '2022-03-07T14:15:44+00:00'
         example-2:
           id: 0
+          user_id: "123e4567-e89b-12d3-a456-426655440000"
           username: string
-          email: user@example.com
-          password: pa$$word
           role: admin
-          created: '2019-08-24T14:15:22Z'
-          changed: '2019-08-24T14:15:22Z'
       x-tira: true
       properties:
+        user_id:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
         username:
           type: string
           minLength: 2
           maxLength: 25
-        email:
-          type: string
-          minLength: 1
-          format: email
-          description: 'Passwords are never stored in plain text, but as hash(pwd) + salt from an widely used library.'
-        password:
-          type: string
-          format: password
         role:
           type: string
           minLength: 1
@@ -660,30 +671,8 @@ components:
           enum:
             - admin
             - user
-        lang:
-          type: string
-          default: de
-          enum:
-            - de
-            - en
-          minLength: 2
-          maxLength: 2
-        created:
-          type: string
-          minLength: 1
-          format: date-time
-        changed:
-          type: string
-          minLength: 1
-          format: date-time
       required:
-        - username
-        - email
-        - password
-        - role
-        - lang
-        - created
-        - changed
+        - user_id
     user-with-id:
       title: user-with-id
       allOf:
@@ -695,12 +684,9 @@ components:
       x-examples:
         example-1:
           id: 42
+          user_id: "705e4dcb-3ecd-24f3-3a35-3e926e4bded5"
           username: string
-          email: user@example.com
-          password: pa$$word
           role: admin
-          created: '2019-08-24T14:15:22Z'
-          changed: '2019-08-24T14:15:22Z'
     tilt:
       description: 'A valid tilt document validates against the tilt schema: https://github.com/Transparency-Information-Language/schema/blob/master/tilt-schema.json'
       type: object
@@ -1474,10 +1460,14 @@ components:
       title: setting
       type: object
       properties:
-        key:
+        lang:
           type: string
-        value:
-          type: string
+          default: de
+          enum:
+            - de
+            - en
+          minLength: 2
+          maxLength: 2
       description: Key-value pairs of settings in the app.
     wikiEntry:
       title: wikiEntry
