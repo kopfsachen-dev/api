@@ -8,6 +8,79 @@ info:
     email: mail@kopfsachen.org
     url: 'https://www.kopfsachen.org'
 paths:
+  '/self-service/registration/api':
+    get:
+      summary: Initate registration flow
+      tags:
+        - authentication
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/registration'
+        '500':
+          description: Internal Server Error
+  '/self-service/registration/flow={id}':
+    post:
+      parameters:
+        - $ref: '#/components/parameters/flow'
+      summary: Receive accountKey during registration
+      tags:
+        - authentication
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/registration-with-flow-id-response'
+        '500':
+          description: Internal Service Error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/registration-with-flow-id-request'
+  '/self-service/login/api':
+    get:
+      tags:
+        - authentication
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/registration'
+        '500':
+          description: Internal Service Error
+  '/self-service/login/flow={id}':
+    post:
+      parameters:
+        - $ref: '#/components/parameters/flow'
+      tags:
+        - authentication
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Internal Service Error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/registration-with-flow-id-request'
+  '/self-service/logout':
+    delete:
+      tags:
+        - authentication
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Internal Service Error
   /user:
     post:
       summary: Create user.
@@ -601,6 +674,8 @@ paths:
           description: OK
         '201':
           description: Created
+        '400':
+          description: Bad Request
         '401':
           description: Unauthorized
         '500':
@@ -642,6 +717,34 @@ components:
         > Authorization: Bearer <token>
       x-last-modified: 1646648515924
   schemas:
+    registration:
+      description: Registration initialization
+      type: object
+      x-examples:
+        example-1:
+          flowID: "231125d7-11d5-4e0f-80e9-5081003ae8ca"
+      properties:
+        id:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+    registration-with-flow-id-request:
+      description: Registration with FlowID
+      type: object
+      properties:
+        method:
+          type: string
+          pattern: "password"
+    registration-with-flow-id-response:
+      description: Registration with FlowID
+      type: object
+      properties:
+        accountKey:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
     user:
       description: A user object
       type: object
@@ -651,7 +754,6 @@ components:
           username: maja
           role: user
         example-2:
-          id: 0
           user_id: "123e4567-e89b-12d3-a456-426655440000"
           username: string
           role: admin
@@ -1482,6 +1584,12 @@ components:
   headers: {}
   responses: {}
   parameters:
+    flow:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
     userId:
       name: userId
       in: path
@@ -1509,6 +1617,7 @@ tags:
   - name: wiki-service
   - name: administration-service
   - name: tilt-service
+  - name: authentication
 servers:
   - url: 'https://api.implementation.online'
     description: ''
