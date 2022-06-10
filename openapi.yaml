@@ -614,6 +614,7 @@ paths:
       x-tira: false
       tags:
         - wiki-service
+        - admin
     delete:
       summary: Delete wiki entry by id.
       operationId: delete-wiki
@@ -627,6 +628,7 @@ paths:
       description: Delete wiki entry by id.
       tags:
         - wiki-service
+        - admin
     parameters:
       - $ref: '#/components/parameters/wikiEntryId'
 components:
@@ -1473,22 +1475,10 @@ components:
       title: wikiEntry
       type: object
       properties:
-        id:
-          type: string
         title:
           type: string
-        contents:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                enum:
-                  - text
-                  - url
-              content:
-                type: string
+        content:
+          type: string
   headers: {}
   responses: {}
   parameters:
