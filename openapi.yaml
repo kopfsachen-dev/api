@@ -647,6 +647,24 @@ paths:
       tags:
         - tilt-service
   '/wiki/{wikiEntryId}':
+    parameters:
+      - $ref: '#/components/parameters/wikiEntryId'
+    get:
+      summary: Get wiki entry
+      tags:
+        - wiki-service
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wikiEntry'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /wiki:
     get:
       summary: Get all wiki entries
       tags:
@@ -667,7 +685,7 @@ paths:
       operationId: get-wiki
       description: Get all wiki entries.
     post:
-      summary: Add wiki entry
+      summary: Add new wiki entries
       operationId: post-wiki
       responses:
         '200':
@@ -685,7 +703,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/wikiEntry'
+              type: array
+              items:
+                $ref: '#/components/schemas/wikiEntry'
       x-tira: false
       tags:
         - wiki-service
@@ -1580,7 +1600,9 @@ components:
         title:
           type: string
         content:
-          type: string
+          type: array
+          items:
+            type: string
   headers: {}
   responses: {}
   parameters:
