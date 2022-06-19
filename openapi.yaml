@@ -1633,7 +1633,9 @@ components:
         content:
           type: array
           items:
-            type: string
+            oneOf:
+              - type: string
+              - type: object
   headers: {}
   responses: {}
   parameters:
