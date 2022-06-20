@@ -1502,7 +1502,8 @@ components:
             - pet
             - other
             - friends
-            - hobbies
+            - sport
+            - music
             - personality
           description: 'Which kind of item is this (i.a., influences symbol in UI)?'
         strategies:
