@@ -753,8 +753,6 @@ paths:
       tags:
         - wiki-service
         - admin
-    parameters:
-      - $ref: '#/components/parameters/wikiEntryId'
 components:
   securitySchemes:
     JWTAuth:
