@@ -255,13 +255,20 @@ paths:
                 $ref: '#/components/schemas/setting'
       tags:
         - user-service
-  '/diary/{userId}':
+  '/diary':
     get:
       summary: Get mood diary by userId.
       tags:
         - mood-diary-service
       operationId: get-diary
-      description: Get mood diary by userId.
+      description: Get mood diary by userId. UserId is injected by oathkeeper
+      parameters:
+        - in: header
+          name: X-userId
+          schema:
+            type: string
+            format: uuid
+          required: true
       responses:
         '200':
           description: OK
@@ -276,11 +283,16 @@ paths:
         '500':
           description: Internal Server Error
       x-tira: true
-    parameters:
-      - $ref: '#/components/parameters/userId'
     post:
       summary: Add mood to diary
       operationId: post-diary-userId
+      parameters:
+        - in: header
+          name: X-userId
+          schema:
+            type: string
+            format: uuid
+          required: true
       responses:
         '200':
           description: OK
@@ -300,6 +312,13 @@ paths:
     delete:
       summary: Delete mood from user's diary.
       operationId: deleteuser-userId-diary
+      parameters:
+        - in: header
+          name: X-userId
+          schema:
+            type: string
+            format: uuid
+          required: true
       responses:
         '200':
           description: OK
