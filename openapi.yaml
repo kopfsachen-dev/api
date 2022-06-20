@@ -91,7 +91,7 @@ paths:
           description: OK
         '500':
           description: Internal Service Error
-  /user:
+  /users:
     post:
       summary: Create user.
       operationId: post-user
@@ -135,7 +135,7 @@ paths:
         - user-service
         - admin
       description: Get all users.
-  '/user/{userId}':
+  '/users/{userId}':
     parameters:
       - $ref: '#/components/parameters/userId'
     get:
@@ -194,7 +194,7 @@ paths:
       tags:
         - user-service
       description: Delete user by id.
-  '/user/{userId}/settings':
+  '/users/{userId}/settings':
     parameters:
       - $ref: '#/components/parameters/userId'
     get:
@@ -219,7 +219,7 @@ paths:
       operationId: get-user-settings
       description: Get user's settings.
     delete:
-      summary: Delete user by id.
+      summary: Delete user setting by id.
       operationId: delete-user-settings
       responses:
         '200':
