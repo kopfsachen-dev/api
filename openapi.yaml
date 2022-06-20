@@ -8,6 +8,89 @@ info:
     email: mail@kopfsachen.org
     url: 'https://www.kopfsachen.org'
 paths:
+  '/self-service/registration/api':
+    get:
+      summary: Initate registration flow
+      tags:
+        - authentication
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/registration'
+        '500':
+          description: Internal Server Error
+  '/self-service/registration':
+    post:
+      parameters:
+        - $ref: '#/components/parameters/flow'
+      summary: Receive accountKey during registration
+      tags:
+        - authentication
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/registration-with-flow-id-response'
+        '500':
+          description: Internal Service Error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/registration-with-flow-id-request'
+  '/self-service/login/api':
+    get:
+      tags:
+        - authentication
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/registration'
+        '500':
+          description: Internal Service Error
+  '/self-service/login':
+    post:
+      parameters:
+        - $ref: '#/components/parameters/flow'
+      tags:
+        - authentication
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/session'
+              example:
+                session_token: "2wBPKcSG0KxSxDBrgJA8ackTwBIea9y5"
+        '500':
+          description: Internal Service Error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/login-with-flow-id-request'
+            exmaple:
+              identifier: "<accountKey>"
+              csrf_token: "<token>"
+              password: "md5(<accountKey>)"
+  '/self-service/logout':
+    delete:
+      tags:
+        - authentication
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Internal Service Error
   /user:
     post:
       summary: Create user.
@@ -574,6 +657,24 @@ paths:
       tags:
         - tilt-service
   '/wiki/{wikiEntryId}':
+    parameters:
+      - $ref: '#/components/parameters/wikiEntryId'
+    get:
+      summary: Get wiki entry
+      tags:
+        - wiki-service
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wikiEntry'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /wiki:
     get:
       summary: Get all wiki entries
       tags:
@@ -594,13 +695,15 @@ paths:
       operationId: get-wiki
       description: Get all wiki entries.
     post:
-      summary: Add wiki entry
+      summary: Add new wiki entries
       operationId: post-wiki
       responses:
         '200':
           description: OK
         '201':
           description: Created
+        '400':
+          description: Bad Request
         '401':
           description: Unauthorized
         '500':
@@ -610,10 +713,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/wikiEntry'
+              type: array
+              items:
+                $ref: '#/components/schemas/wikiEntry'
       x-tira: false
       tags:
         - wiki-service
+        - admin
     delete:
       summary: Delete wiki entry by id.
       operationId: delete-wiki
@@ -627,6 +733,7 @@ paths:
       description: Delete wiki entry by id.
       tags:
         - wiki-service
+        - admin
     parameters:
       - $ref: '#/components/parameters/wikiEntryId'
 components:
@@ -640,6 +747,47 @@ components:
         > Authorization: Bearer <token>
       x-last-modified: 1646648515924
   schemas:
+    registration:
+      description: Registration initialization
+      type: object
+      x-examples:
+        example-1:
+          flow: "231125d7-11d5-4e0f-80e9-5081003ae8ca"
+      properties:
+        id:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+    registration-with-flow-id-request:
+      description: Registration with FlowID
+      type: object
+      properties:
+        method:
+          type: string
+          pattern: "password"
+    registration-with-flow-id-response:
+      description: Registration with FlowID
+      type: object
+      properties:
+        accountKey:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+    login-with-flow-id-request:
+      description: Login with FlowID
+      type: object
+      properties:
+        method:
+          type: string
+          pattern: "password"
+        identifier:
+          type: string
+        csrf_token:
+          type: string
+        password:
+          type: string
     user:
       description: A user object
       type: object
@@ -649,7 +797,6 @@ components:
           username: maja
           role: user
         example-2:
-          id: 0
           user_id: "123e4567-e89b-12d3-a456-426655440000"
           username: string
           role: admin
@@ -687,6 +834,14 @@ components:
           user_id: "705e4dcb-3ecd-24f3-3a35-3e926e4bded5"
           username: string
           role: admin
+    session:
+      title: session-object
+      type: object
+      properties:
+        session_token:
+          type: string
+        session:
+          type: object
     tilt:
       description: 'A valid tilt document validates against the tilt schema: https://github.com/Transparency-Information-Language/schema/blob/master/tilt-schema.json'
       type: object
@@ -1473,25 +1628,23 @@ components:
       title: wikiEntry
       type: object
       properties:
-        id:
-          type: string
         title:
           type: string
-        contents:
+        content:
           type: array
           items:
-            type: object
-            properties:
-              type:
-                type: string
-                enum:
-                  - text
-                  - url
-              content:
-                type: string
+            oneOf:
+              - type: string
+              - type: object
   headers: {}
   responses: {}
   parameters:
+    flow:
+      name: flow
+      in: query
+      required: true
+      schema:
+        type: string
     userId:
       name: userId
       in: path
@@ -1519,6 +1672,7 @@ tags:
   - name: wiki-service
   - name: administration-service
   - name: tilt-service
+  - name: authentication
 servers:
   - url: 'https://api.implementation.online'
     description: ''
