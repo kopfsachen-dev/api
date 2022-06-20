@@ -78,7 +78,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/login-with-flow-id-request'
-            exmaple:
+            example:
               identifier: "<accountKey>"
               csrf_token: "<token>"
               password: "md5(<accountKey>)"
