@@ -1,0 +1,35 @@
+registration:
+  description: Registration initialization
+  type: object
+  x-examples:
+    example-1:
+      flow: 231125d7-11d5-4e0f-80e9-5081003ae8ca
+      properties:
+        id:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+
+registration-with-flow-id-request:
+  description: Registration with FlowID
+  type: object
+  required:
+    - method
+  method:
+    type: string
+    pattern: password
+
+registration-with-flow-id-response:
+  description: Registration with FlowID
+  type: object
+  required:
+    - accountKey
+  properties:
+    accountKey:
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
+  example:
+    accountKey: 550e8400-e29b-11d4-a716-446655440000

@@ -1,0 +1,119 @@
+loginApiInit:
+  get:
+    description: This endpoint initiates a login flow for API clients that do not use a browser.
+    parameters:
+      - name: refresh
+        in: query
+        required: false
+        explode: true
+        schema:
+          type: boolean
+        style: form
+        description: |-
+          Refresh a login.
+
+          If set to true, this will refresh an existing login session by
+          asking the user to sign in again. This will reset the
+          authenticated_at time of the session.
+      - name: X-Session-Token
+        in: header
+        required: false
+        explode: false
+        schema: 
+          type: string
+        style: simple
+        description: The Session token of the Session performing the flow. Required when using the refresh parameter
+    responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '/schemas/kratos_t.yaml#/selfServiceLoginFlow'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '/schemas/kratos_t.yaml#/jsonError'
+        "500":
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                $ref: '/schemas/kratos_t.yaml#/jsonError'
+    x-accepts: application/json
+    tags:
+      - authentication
+### TPL RENDER {{ template "servers.tpl" "auth" }}
+    servers:
+      - url: https://auth.api.{environment}.mindtastic.lol
+        variables:
+          environment:
+            enum:
+              - live
+              - stage
+              - dev
+            default: live
+### END RENDER {{ template "servers.tpl" "auth" }}
+
+loginSubmit:
+  post:
+    parameters: 
+      - $ref: '/schemas/authentication.yaml#/flow'
+    responses:
+      "200":
+        description: "OK."
+        content:
+          application/json:
+            schema:
+              $ref: '/schemas/authentication.yaml#/session'
+      "303":
+        description: Returns the after login redirection url when a browser flow got submitted.
+      "400":
+        content:
+          application/json:
+            schema:
+              $ref: '/schemas/kratos_t.yaml#/selfServiceLoginFlow'
+      "410":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '/schemas/kratos_t.yaml#/jsonError'
+      "422":
+        content:
+          application/json:
+            schema:
+              $ref: '/schemas/kratos_t.yaml#/selfServiceBrowserLocationChangeRequiredError'
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '/schemas/kratos_t.yaml#/jsonError'
+    x-contentType: application/json
+    x-accepts: application/json
+    tags:
+      - authentication
+### TPL RENDER {{ template "servers.tpl" "auth" }}
+    servers:
+      - url: https://auth.api.{environment}.mindtastic.lol
+        variables:
+          environment:
+            enum:
+              - live
+              - stage
+              - dev
+            default: live
+### END RENDER {{ template "servers.tpl" "auth" }}
+
+  # /self-service/logout:
+  #   delete:
+  #     tags:
+  #       - authentication
+  #     responses:
+  #       '200':
+  #         description: OK
+  #       '500':
+  #         description: Internal Service Error              
