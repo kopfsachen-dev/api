@@ -583,87 +583,14 @@ paths:
               $ref: '#/components/schemas/tilt'
       tags:
         - tilt-service
-  '/wiki/{wikiEntryId}':
-    parameters:
-      - $ref: '#/components/parameters/wikiEntryId'
-    get:
-      summary: Get wiki entry
-      tags:
-        - wiki-service
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/wikiEntry'
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal Server Error
   /wiki:
-    get:
-      summary: Get all wiki entries
-      tags:
-        - wiki-service
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/wikiEntry'
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal Server Error
-      operationId: get-wiki
-      description: Get all wiki entries.     
+    $ref: '/specs/wiki.yaml#/getAll'
+  /wiki/{wikiEntryId}:
+    $ref: '/specs/wiki.yaml#/getOne'
   /wiki/admin:
-    post:
-      summary: Add new wiki entries
-      operationId: post-wiki
-      responses:
-        '200':
-          description: OK
-        '201':
-          description: Created
-        '400':
-          description: Bad Request
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal Server Error
-      description: Add wiki entry.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/wikiEntry'
-      x-tira: false
-      tags:
-        - wiki-service
-        - admin
-    delete:
-      summary: Delete wiki entry by id.
-      operationId: delete-wiki
-      responses:
-        '200':
-          description: OK
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal Server Error
-      description: Delete wiki entry by id.
-      tags:
-        - wiki-service
-        - admin
-    parameters:
-      - $ref: '#/components/parameters/wikiEntryId'
+    $ref: '/specs/wiki.yaml#/adminCreate'
+  /wiki/{wikiEntryId}/admin:
+    $ref: '/specs/wiki.yaml#/adminDelete'
 components:
   securitySchemes:
     JWTAuth:
@@ -1503,18 +1430,6 @@ components:
           minLength: 2
           maxLength: 2
       description: Key-value pairs of settings in the app.
-    wikiEntry:
-      title: wikiEntry
-      type: object
-      properties:
-        title:
-          type: string
-        content:
-          type: array
-          items:
-            oneOf:
-              - type: string
-              - type: object
   headers: {}
   responses: {}
   parameters:
@@ -1524,12 +1439,6 @@ components:
       required: true
       schema:
         type: integer
-    wikiEntryId:
-      name: wikiEntryId
-      in: path
-      required: true
-      schema:
-        type: string
   requestBodies: {}
 tags:
   - name: user-service
