@@ -292,13 +292,6 @@ paths:
     delete:
       summary: Delete mood from user's diary.
       operationId: deleteuser-userId-diary
-      parameters:
-        - in: header
-          name: X-userId
-          schema:
-            type: string
-            format: uuid
-          required: true
       responses:
         '200':
           description: OK
