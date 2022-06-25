@@ -45,3 +45,22 @@ user-with-id:
       user_id: 705e4dcb-3ecd-24f3-3a35-3e926e4bded5
       username: string
       role: admin
+
+settings:
+  type: array
+  items:
+    $ref: '#/setting'
+
+setting:
+  title: setting
+  type: object
+  properties:
+    lang:
+      type: string
+      default: de
+      enum:
+        - de
+        - en
+      minLength: 2
+      maxLength: 2
+  description: Key-value pairs of settings in the app.
