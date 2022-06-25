@@ -273,13 +273,6 @@ paths:
     post:
       summary: Add mood to diary
       operationId: post-diary-userId
-      parameters:
-        - in: header
-          name: X-userId
-          schema:
-            type: string
-            format: uuid
-          required: true
       responses:
         '200':
           description: OK
