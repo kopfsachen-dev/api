@@ -327,16 +327,6 @@ paths:
         '500':
           description: Internal Server Error
       description: Delete mood from user's diary.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/timestamp'
-          application/xml:
-            schema:
-              type: object
-              properties: {}
-        description: ''
       tags:
         - mood-diary-service
   /safetyNet:
@@ -416,12 +406,6 @@ paths:
         '500':
           description: Internal Server Error
       description: Delete safetyNet item by timestamp.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: string
-              format: date-time
       tags:
         - motivator-service
   /motivator:
@@ -470,11 +454,6 @@ paths:
         '500':
           description: Internal Server Error
       description: Delete a motivator by id.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/motivatorId'
       tags:
         - motivator-service
   '/motivator/{userId}':
@@ -531,11 +510,6 @@ paths:
           description: Unauthorized
         '500':
           description: Internal Server Error
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/motivatorId'
       description: Delete a motivator from user's motivators.
       tags:
         - motivator-service
@@ -568,11 +542,6 @@ paths:
         '200':
           description: OK
       description: Delete result from user's current motivator by timestamp.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/timestamp'
       tags:
         - motivator-service
   '/notification/{userId}':
@@ -628,11 +597,6 @@ paths:
           description: Unauthorized
         '500':
           description: Internal Server Error
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/notificationId'
       description: Delete notification for user by id.
       tags:
         - notification-service
