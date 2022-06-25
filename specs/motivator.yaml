@@ -53,8 +53,6 @@ safetyNetEndpoints:
             - stage
             - dev
           default: live
-
-
 ### END RENDER {{ template "servers.tpl" "motivator" }}
 
   #
