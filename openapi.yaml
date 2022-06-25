@@ -91,7 +91,7 @@ paths:
           description: OK
         '500':
           description: Internal Service Error
-  /users:
+  /users/admin:
     post:
       summary: Create user.
       operationId: post-user
@@ -113,7 +113,6 @@ paths:
               $ref: '#/components/schemas/user'
       tags:
         - user-service
-        - admin
       description: Create a user.
     get:
       summary: Get all users.
@@ -133,11 +132,8 @@ paths:
           description: Internal Server Error
       tags:
         - user-service
-        - admin
       description: Get all users.
-  '/users/{userId}':
-    parameters:
-      - $ref: '#/components/parameters/userId'
+  /user:
     get:
       summary: Read user by id.
       tags:
@@ -194,9 +190,14 @@ paths:
       tags:
         - user-service
       description: Delete user by id.
-  '/users/{userId}/settings':
+  '/user/settings':
     parameters:
-      - $ref: '#/components/parameters/userId'
+      - in: header
+        name: X-userId
+        schema:
+          type: string
+          format: uuid
+        required: true
     get:
       summary: Get user's settings.
       tags:
@@ -262,13 +263,6 @@ paths:
         - mood-diary-service
       operationId: get-diary
       description: Get mood diary by userId. UserId is injected by oathkeeper
-      parameters:
-        - in: header
-          name: X-userId
-          schema:
-            type: string
-            format: uuid
-          required: true
       responses:
         '200':
           description: OK
@@ -329,7 +323,7 @@ paths:
       description: Delete mood from user's diary.
       tags:
         - mood-diary-service
-  /safetyNet:
+  /safetyNet/admin:
     get:
       summary: Get safety nets of all users.
       tags:
@@ -349,13 +343,7 @@ paths:
           description: Internal Server Error
       operationId: get-safetyNet
       description: Get safety nets of all users - without identifying the users individually.
-  '/safetyNet/{userId}':
-    parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: integer
+  /safetyNet:
     get:
       summary: Get safety net by userId.
       tags:
@@ -408,7 +396,7 @@ paths:
       description: Delete safetyNet item by timestamp.
       tags:
         - motivator-service
-  /motivator:
+  /motivator/admin:
     parameters: []
     get:
       summary: Get all motivators.
@@ -456,9 +444,7 @@ paths:
       description: Delete a motivator by id.
       tags:
         - motivator-service
-  '/motivator/{userId}':
-    parameters:
-      - $ref: '#/components/parameters/userId'
+  '/motivator':
     get:
       summary: Get current motivators by userId.
       tags:
@@ -513,9 +499,8 @@ paths:
       description: Delete a motivator from user's motivators.
       tags:
         - motivator-service
-  '/motivator/{userId}/result/{motivatorId}':
+  '/motivator/result/{motivatorId}':
     parameters:
-      - $ref: '#/components/parameters/userId'
       - $ref: '#/components/parameters/motivatorId'
     post:
       summary: Add a new result to user's current motivator.
@@ -677,6 +662,7 @@ paths:
           description: Internal Server Error
       operationId: get-wiki
       description: Get all wiki entries.
+  /wiki/admin:
     post:
       summary: Add new wiki entries
       operationId: post-wiki
@@ -702,7 +688,6 @@ paths:
       x-tira: false
       tags:
         - wiki-service
-        - admin
     delete:
       summary: Delete wiki entry by id.
       operationId: delete-wiki
@@ -716,7 +701,6 @@ paths:
       description: Delete wiki entry by id.
       tags:
         - wiki-service
-        - admin
 components:
   securitySchemes:
     JWTAuth:
@@ -1626,12 +1610,6 @@ components:
       required: true
       schema:
         type: string
-    userId:
-      name: userId
-      in: path
-      required: true
-      schema:
-        type: integer
     motivatorId:
       name: motivatorId
       in: path
