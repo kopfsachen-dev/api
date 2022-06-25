@@ -134,6 +134,8 @@ paths:
         - user-service
       description: Get all users.
   /user:
+    security:
+      - JWTAuth
     get:
       summary: Read user by id.
       tags:
@@ -522,9 +524,7 @@ paths:
       description: Delete result from user's current motivator by timestamp.
       tags:
         - motivator-service
-  '/notification/{userId}':
-    parameters:
-      - $ref: '#/components/parameters/userId'
+  '/notification':
     get:
       summary: Get notifications for user by id.
       tags:
@@ -636,6 +636,8 @@ paths:
         '500':
           description: Internal Server Error
   /wiki:
+    servers:
+      - url: "https://wiki.api.dev.mindtastic.lol"
     get:
       summary: Get all wiki entries
       tags:
@@ -654,7 +656,7 @@ paths:
         '500':
           description: Internal Server Error
       operationId: get-wiki
-      description: Get all wiki entries.
+      description: Get all wiki entries
   /wiki/admin:
     post:
       summary: Add new wiki entries
@@ -1626,6 +1628,12 @@ tags:
   - name: tilt-service
   - name: authentication
 servers:
+  - url: 'https://{service}.api.dev.mindtastic.lol'
+    description: 'Development API for testing purposes'
+    variables:
+      service:
+        default: echo
+        description: The requests gets routed to the individual microservice by pattern matching the requests Host header
   - url: 'https://api.implementation.online'
     description: ''
     variables: {}
