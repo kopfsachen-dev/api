@@ -16,40 +16,8 @@ paths:
     $ref: '/specs/authentication.yaml#/loginApiInit'
   /self-service/login:
     $ref: '/specs/authentication.yaml#/loginSubmit'
-  #   post:
-  #     parameters:
-  #       - $ref: '#/components/parameters/flow'
-  #     tags:
-  #       - authentication
-  #     responses:
-  #       '200':
-  #         description: OK
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/session'
-  #             example:
-  #               session_token: 2wBPKcSG0KxSxDBrgJA8ackTwBIea9y5
-  #       '500':
-  #         description: Internal Service Error
-  #     requestBody:
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/login-with-flow-id-request'
-  #           example:
-  #             identifier: <accountKey>
-  #             csrf_token: <token>
-  #             password: md5(<accountKey>)
   /self-service/logout:
-    delete:
-      tags:
-        - authentication
-      responses:
-        '200':
-          description: OK
-        '500':
-          description: Internal Service Error
+    $ref: '/specs/authentication.yaml#/logout'
   /user:
     post:
       summary: Create user.

@@ -108,12 +108,23 @@ loginSubmit:
             default: live
 ### END RENDER {{ template "servers.tpl" "auth" }}
 
-  # /self-service/logout:
-  #   delete:
-  #     tags:
-  #       - authentication
-  #     responses:
-  #       '200':
-  #         description: OK
-  #       '500':
-  #         description: Internal Service Error              
+logout: 
+  delete:
+    responses:
+      '200':
+        description: OK
+      '500':
+        description: Internal Service Error
+    tags:
+      - authentication
+### TPL RENDER {{ template "servers.tpl" "auth" }}
+    servers:
+      - url: https://auth.api.{environment}.mindtastic.lol
+        variables:
+          environment:
+            enum:
+              - live
+              - stage
+              - dev
+            default: live
+### END RENDER {{ template "servers.tpl" "auth" }} 
