@@ -24,59 +24,9 @@ paths:
     $ref: '/specs/userService.yaml#/userSettingsEndpoint'
   /users/admin:
     $ref: '/specs/userService.yaml#/adminEndpoints'
-  '/diary':
-    get:
-      summary: Get mood diary by userId.
-      tags:
-        - mood-diary-service
-      operationId: get-diary
-      description: Get mood diary by userId. UserId is injected by oathkeeper
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/mood'
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal Server Error
-      x-tira: true
-    post:
-      summary: Add mood to diary
-      operationId: post-diary-userId
-      responses:
-        '200':
-          description: OK
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal Server Error
-      description: Add mood to user's diary.
-      tags:
-        - mood-diary-service
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/mood'
-      x-tira: true
-    delete:
-      summary: Delete mood from user's diary.
-      operationId: deleteuser-userId-diary
-      responses:
-        '200':
-          description: OK
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal Server Error
-      description: Delete mood from user's diary.
-      tags:
-        - mood-diary-service
+  /diary:
+    $ref: '/specs/moodDiary.yaml#/endpoints'
+    
   /safetyNet/admin:
     get:
       summary: Get safety nets of all users.
@@ -1006,22 +956,6 @@ components:
               urlOfNewVersion:
                 type: string
                 minLength: 1
-    mood:
-      title: mood
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - positive
-            - negative
-            - neutral
-        description:
-          type: string
-          example: angry
-        timestamp:
-          type: string
-          format: date-time
     timestamp:
       title: timestamp
       type: object

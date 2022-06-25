@@ -1,0 +1,72 @@
+endpoints:
+  get:
+    summary: Get mood diary by userId.
+    description: Get the mood diary for the currently authenticated user.
+    operationId: get-mood-diary
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '/schemas/diary.yaml#/mood'
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal Server Error
+    x-accepts: application/json
+    x-tira: true
+    tags:
+      - mood-diary-service
+    security:
+      - jwt: []
+  post:
+    summary: Add mood to diary
+    description: Add mood to user's diary.
+    operationId: add-mood
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '/schemas/diary.yaml#/mood'
+    responses:
+      '201':
+        description: Created
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal Server Error
+    x-contentType: application/json
+    x-tira: true 
+    tags:
+      - mood-diary-service
+    security:
+      - jwt: []
+  delete:
+    summary: Delete current user's mood diary.
+    description: Delete current user's mood diary.
+    operationId: delete-mood-diary
+    responses:
+      '200':
+        description: OK
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal Server Error
+    tags:
+      - mood-diary-service
+    security:
+      - jwt: []    
+### TPL RENDER {{ template "servers.tpl" "diary" }}
+  servers:
+    - url: https://diary.api.{environment}.mindtastic.lol
+      variables:
+        environment:
+          enum:
+            - live
+            - stage
+            - dev
+          default: live
+### END RENDER {{ template "servers.tpl" "diary" }}
