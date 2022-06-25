@@ -6,28 +6,42 @@ user:
       user_id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
       username: maja
       role: user
-      example-2:
-        user_id: 123e4567-e89b-12d3-a456-426655440000
-        username: string
-        role: admin
-        x-tira: true
-        properties:
-          user_id:
-            type: string
-            format: uuid
-            minLength: 36
-            maxLength: 36
-            username:
-              type: string
-              minLength: 2
-              maxLength: 25
-              role:
-                type: string
-                minLength: 1
-                description: Refers to privileges.
-                enum:
-                  - admin
-                  - user
-                required:
-                  - user_id
-              
+    example-2:
+      user_id: 123e4567-e89b-12d3-a456-426655440000
+      username: string
+      role: admin
+  x-tira: true
+  properties:
+    user_id:
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
+    username:
+      type: string
+      minLength: 2
+      maxLength: 25
+      role:
+        type: string
+        minLength: 1
+        description: Refers to privileges.
+        enum:
+          - admin
+          - user
+        required:
+          - user_id
+
+user-with-id:
+  title: user-with-id
+  allOf:
+    - type: object
+      properties:
+        id:
+          type: number
+    - $ref: '#/user'
+  x-examples:
+    example-1:
+      id: 42
+      user_id: 705e4dcb-3ecd-24f3-3a35-3e926e4bded5
+      username: string
+      role: admin
