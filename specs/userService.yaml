@@ -163,6 +163,7 @@ adminEndpoints:
         description: Internal Server Error
     tags:
       - user-service
+      - admin
     x-accepts: application/json
   post:
     summary: Create user.
@@ -187,6 +188,7 @@ adminEndpoints:
     x-contentType: application/json
     tags:
       - user-service
+      - admin
 ### TPL RENDER {{ template "servers.tpl" "users" }}
   servers:
     - url: https://users.api.{environment}.mindtastic.lol
