@@ -24,7 +24,7 @@ getAll:
               - stage
               - dev
             default: live
-### END RENDER {{ template "servers.tpl" "auth" }}
+### END RENDER {{ template "servers.tpl" "wiki" }}
 
 getOne:
   get:
@@ -55,7 +55,7 @@ getOne:
               - stage
               - dev
             default: live
-### END RENDER {{ template "servers.tpl" "auth" }}
+### END RENDER {{ template "servers.tpl" "wiki" }}
 
 adminCreate: 
   post:
@@ -100,7 +100,7 @@ adminCreate:
               - stage
               - dev
             default: live
-### END RENDER {{ template "servers.tpl" "auth" }}
+### END RENDER {{ template "servers.tpl" "wiki" }}
 
 adminDelete:
   delete:
@@ -132,4 +132,4 @@ adminDelete:
               - stage
               - dev
             default: live
-### END RENDER {{ template "servers.tpl" "auth" }}
+### END RENDER {{ template "servers.tpl" "wiki" }}
