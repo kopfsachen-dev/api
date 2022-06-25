@@ -1,0 +1,52 @@
+endpoints:
+  get:
+    summary: Get tilt document.
+    description: 'Get tilt document, i.e. a machine-readable privacy policy.'
+    operationId: get-tilt
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '/schemas/tilt.yaml#schema'
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal Server Error
+    x-accepts: application/json
+    x-tira: false
+    tags:
+      - tilt-service
+  post:
+    summary: Set tilt document.
+    description: 'Set tilt document, i.e. a machine-readable privacy policy.'
+    operationId: post-tilt
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '/schemas/tilt.yaml#schema'
+    responses:
+      '200':
+        description: OK
+      '201':
+        description: Created
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal Server Error
+    x-contentType: application/json
+    tags:
+      - tilt-service
+### TPL RENDER {{ template "servers.tpl" "tilt" }}
+  servers:
+    - url: https://tilt.api.{environment}.mindtastic.lol
+      variables:
+        environment:
+          enum:
+            - live
+            - stage
+            - dev
+          default: live
+### END RENDER {{ template "servers.tpl" "tilt" }}
