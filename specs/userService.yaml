@@ -13,7 +13,7 @@ userEndpoints:
         description: Unauthorized
       "500":
         description: Internal Server Error
-    x-contentType: application/json
+    x-accepts: application/json
     security:
       - jwt: []
     tags:
@@ -89,7 +89,7 @@ userSettingsEndpoint:
         description: Unauthorized
       "500":
         description: Internal Server error
-    x-contentType: application/json
+    x-accepts: application/json
     security:
       - jwt: []
     tags:
@@ -163,7 +163,7 @@ adminEndpoints:
         description: Internal Server Error
     tags:
       - user-service
-    x-contentType: application/json
+    x-accepts: application/json
   post:
     summary: Create user.
     description: Create a user.
@@ -184,7 +184,7 @@ adminEndpoints:
         description: Unprocessable Entity
       '500':
         description: Internal Server Error
-    x-accepts: application/json
+    x-contentType: application/json
     tags:
       - user-service
 ### TPL RENDER {{ template "servers.tpl" "users" }}

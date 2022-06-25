@@ -92,8 +92,8 @@ loginSubmit:
           application/json:
             schema:
               $ref: '/schemas/kratos_t.yaml#/jsonError'
-    x-contentType: application/json
     x-accepts: application/json
+    x-contentType: application/json
     tags:
       - authentication
 ### TPL RENDER {{ template "servers.tpl" "auth" }}
