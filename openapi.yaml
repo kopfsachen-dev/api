@@ -67,6 +67,7 @@ paths:
   '/user/{userId}/settings':
     parameters:
       - $ref: '#/components/parameters/userId'
+  '/user/settings':
     get:
       summary: Get user's settings.
       tags:
@@ -89,7 +90,7 @@ paths:
       operationId: get-user-settings
       description: Get user's settings.
     delete:
-      summary: Delete user by id.
+      summary: Delete user setting by id.
       operationId: delete-user-settings
       responses:
         '200':
@@ -125,13 +126,13 @@ paths:
                 $ref: '#/components/schemas/setting'
       tags:
         - user-service
-  '/diary/{userId}':
+  '/diary':
     get:
       summary: Get mood diary by userId.
       tags:
         - mood-diary-service
       operationId: get-diary
-      description: Get mood diary by userId.
+      description: Get mood diary by userId. UserId is injected by oathkeeper
       responses:
         '200':
           description: OK
@@ -146,8 +147,6 @@ paths:
         '500':
           description: Internal Server Error
       x-tira: true
-    parameters:
-      - $ref: '#/components/parameters/userId'
     post:
       summary: Add mood to diary
       operationId: post-diary-userId
@@ -178,19 +177,9 @@ paths:
         '500':
           description: Internal Server Error
       description: Delete mood from user's diary.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/timestamp'
-          application/xml:
-            schema:
-              type: object
-              properties: {}
-        description: ''
       tags:
         - mood-diary-service
-  /safetyNet:
+  /safetyNet/admin:
     get:
       summary: Get safety nets of all users.
       tags:
@@ -210,13 +199,7 @@ paths:
           description: Internal Server Error
       operationId: get-safetyNet
       description: Get safety nets of all users - without identifying the users individually.
-  '/safetyNet/{userId}':
-    parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: integer
+  /safetyNet:
     get:
       summary: Get safety net by userId.
       tags:
@@ -267,15 +250,9 @@ paths:
         '500':
           description: Internal Server Error
       description: Delete safetyNet item by timestamp.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: string
-              format: date-time
       tags:
         - motivator-service
-  /motivator:
+  /motivator/admin:
     parameters: []
     get:
       summary: Get all motivators.
@@ -321,16 +298,9 @@ paths:
         '500':
           description: Internal Server Error
       description: Delete a motivator by id.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/motivatorId'
       tags:
         - motivator-service
-  '/motivator/{userId}':
-    parameters:
-      - $ref: '#/components/parameters/userId'
+  '/motivator':
     get:
       summary: Get current motivators by userId.
       tags:
@@ -382,17 +352,11 @@ paths:
           description: Unauthorized
         '500':
           description: Internal Server Error
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/motivatorId'
       description: Delete a motivator from user's motivators.
       tags:
         - motivator-service
-  '/motivator/{userId}/result/{motivatorId}':
+  '/motivator/result/{motivatorId}':
     parameters:
-      - $ref: '#/components/parameters/userId'
       - $ref: '#/components/parameters/motivatorId'
     post:
       summary: Add a new result to user's current motivator.
@@ -419,11 +383,6 @@ paths:
         '200':
           description: OK
       description: Delete result from user's current motivator by timestamp.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/timestamp'
       tags:
         - motivator-service
   '/notification/{userId}':
@@ -479,11 +438,6 @@ paths:
           description: Unauthorized
         '500':
           description: Internal Server Error
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/notificationId'
       description: Delete notification for user by id.
       tags:
         - notification-service
