@@ -38,7 +38,7 @@ userEndpoints:
       "401":
         description: Unauthorized
       "422":
-        description: Unprocessable entity. The requestBody was no valid user obdate object
+        description: Unprocessable entity. The requestBody was no valid user update object
       "500":
         description: "Internal server error"
     x-accepts: application/json
