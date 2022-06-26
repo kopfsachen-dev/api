@@ -32,8 +32,6 @@ userEndpoints:
                 type: string
             required:
               - email
-          example:
-            email: "maja@example.com"
     responses:
       "201":
         description: User update successfull

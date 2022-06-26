@@ -41,7 +41,6 @@ user-with-id:
     - $ref: '#/user'
   x-examples:
     example-1:
-      id: 42
       user_id: 705e4dcb-3ecd-24f3-3a35-3e926e4bded5
       username: string
       role: admin
