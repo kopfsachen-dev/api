@@ -3,11 +3,16 @@
 > The OpenAPI Specification (OAS) defines a standard, language-agnostic interface to RESTful APIs which allows both humans and computers to discover and understand the capabilities of the service without access to source code, documentation, or through network traffic inspection.
 (https://swagger.io/specification/)
 
+## Quick Access
+Access the [latest API Specification in SwaggerUI](https://kopfsachen-dev.github.io/api/).
+
 ## How to use
 Open [the specification](openapi.yaml) in your favorite [Swagger UI](https://editor.swagger.io/) or OpenAPI Editor, e.g. in [Stoplight Studio](https://stoplight.io/studio/).
 
+Pleae note that the specification is splitted over multiple files, so the editor has to support multiple files. Alternatively, some editors allow the explicit specification of a resolvement path. In that case you can stick with just the `openapi.yaml` file and set the resolvement path to `https://github.com/kopfsachen-dev/api/blob/main`.
+
 ## Live
-See it [here](https://app.swaggerhub.com/apis/kopfsachen/kopfsachen/0.1) in action.
+See it [here](https://kopfsachen-dev.github.io/api/) in action.
 
 ## Try out with mock server
 ```bash
