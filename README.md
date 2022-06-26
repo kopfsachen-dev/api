@@ -9,7 +9,8 @@ Access the [latest API Specification in SwaggerUI](https://kopfsachen-dev.github
 ## How to use
 Open [the specification](openapi.yaml) in your favorite [Swagger UI](https://editor.swagger.io/) or OpenAPI Editor, e.g. in [Stoplight Studio](https://stoplight.io/studio/).
 
-Pleae note that the specification is splitted over multiple files, so the editor has to support multiple files. Alternatively, some editors allow the explicit specification of a resolvement path. In that case you can stick with just the `openapi.yaml` file and set the resolvement path to `https://github.com/kopfsachen-dev/api/blob/main`.
+Please note that the specification is split over multiple files, so the editor has to support multiple files. To see local edits, you can start the server.
+Alternatively, some editors allow the explicit specification of a resolvement path. In that case, you can stick with just the `openapi.yaml` file and set the resolvement path to `https://github.com/kopfsachen-dev/api/blob/main`.
 
 ## Live
 See it [here](https://kopfsachen-dev.github.io/api/) in action.
