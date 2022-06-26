@@ -36,7 +36,7 @@ safetyNetItem:
     feedback:
       type: array
       items:
-        $ref: '#/components/schemas/safetyNetItemFeedback'
+        $ref: '#/safetyNetItemFeedback'
   required:
     - name
     - type
