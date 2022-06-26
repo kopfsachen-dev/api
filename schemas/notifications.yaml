@@ -1,0 +1,25 @@
+notification:
+  title: notification
+  type: object
+  properties:
+    id:
+      type: string
+    title:
+      type: string
+    content:
+      type: string
+    timestamp:
+      type: string
+      format: date-time
+    ttl:
+      type: string
+      description: 'time to live (i.e., not relevant anymore at specified time)'
+      format: date-time
+    '':
+      type: string
+notificationId:
+  title: notificationId
+  type: object
+  properties:
+    id:
+      type: string

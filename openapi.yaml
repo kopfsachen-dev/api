@@ -32,62 +32,8 @@ paths:
     $ref: '/specs/motivator.yaml#/motivatorEndpoints'
   /motivator/result/{motivatorId}:
     $ref: '/specs/motivator.yaml#/motivatorResultEndpoints'
-  '/notification/{userId}':
-    parameters:
-      - $ref: '#/components/parameters/userId'
-    get:
-      summary: Get notifications for user by id.
-      tags:
-        - notification-service
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/notification'
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal Server Error
-      operationId: get-notification-userId
-      description: Get notifications for user by id.
-    post:
-      summary: Set notification for user by id.
-      operationId: post-notification-userId
-      responses:
-        '200':
-          description: OK
-        '201':
-          description: Created
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal Server Error
-      description: Set notification for user by id.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/notification'
-        description: ''
-      tags:
-        - notification-service
-    delete:
-      summary: Delete notification for user by id.
-      operationId: delete-notification-userId
-      responses:
-        '200':
-          description: OK
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal Server Error
-      description: Delete notification for user by id.
-      tags:
-        - notification-service
+  /notification:
+    $ref: '/specs/notifications.yaml#/usersNotificationsEndpoint'
   /tilt:
     $ref: '/specs/tilt.yaml#/endpoints'
   /wiki:
@@ -110,31 +56,6 @@ components:
         timestamp:
           type: string
           format: date-time
-    notification:
-      title: notification
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-        content:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        ttl:
-          type: string
-          description: 'time to live (i.e., not relevant anymore at specified time)'
-          format: date-time
-        '':
-          type: string
-    notificationId:
-      title: notificationId
-      type: object
-      properties:
-        id:
-          type: string
   headers: {}
   responses: {}
   parameters:
