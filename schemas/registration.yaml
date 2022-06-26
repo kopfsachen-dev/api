@@ -4,12 +4,12 @@ registration:
   x-examples:
     example-1:
       flow: 231125d7-11d5-4e0f-80e9-5081003ae8ca
-      properties:
-        id:
-          type: string
-          format: uuid
-          minLength: 36
-          maxLength: 36
+  properties:
+    flow:
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
 
 registration-with-flow-id-request:
   description: Registration with FlowID

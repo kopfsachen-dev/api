@@ -21,15 +21,15 @@ user:
       type: string
       minLength: 2
       maxLength: 25
-      role:
-        type: string
-        minLength: 1
-        description: Refers to privileges.
-        enum:
-          - admin
-          - user
-        required:
-          - user_id
+    role:
+      type: string
+      minLength: 1
+      description: Refers to privileges.
+      enum:
+        - admin
+        - user
+    required:
+      - user_id
 
 user-with-id:
   title: user-with-id
