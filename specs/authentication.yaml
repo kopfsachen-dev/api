@@ -1,6 +1,7 @@
 loginApiInit:
   get:
     description: This endpoint initiates a login flow for API clients that do not use a browser.
+    operationId: init-user-login
     parameters:
       - name: refresh
         in: query
@@ -96,6 +97,7 @@ loginSubmit:
     x-contentType: application/json
     tags:
       - authentication
+    operationId: submit-user-login
 ### TPL RENDER {{ template "servers.tpl" "auth" }}
     servers:
       - url: https://auth.api.{environment}.mindtastic.lol
@@ -110,6 +112,7 @@ loginSubmit:
 
 logout: 
   delete:
+    operationId: user-logout
     responses:
       '200':
         description: OK

@@ -1,6 +1,7 @@
 registrationApiInit:
   get:
     summary: Initate registration flow
+    operationId: init-user-registration
     responses:
       "200":
         description: OK
@@ -36,6 +37,7 @@ registrationApiInit:
 registrationSubmit:
   post:
     summary: Complete registration flow
+    operationId: submit-user-registration
     parameters:
       - name: flow
         in: query
