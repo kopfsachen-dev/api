@@ -157,7 +157,7 @@ motivatorResultEndpoints:
     responses:
       '200':
         description: OK
-      '500'
+      '500':
         description: Internal Service Error
     description: Delete result from user's current motivator by timestamp.
     tags:
