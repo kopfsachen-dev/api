@@ -129,8 +129,6 @@ motivatorEndpoints:
 ### END RENDER {{ template "servers.tpl" "motivator" }}
 
 motivatorResultEndpoints:
-  parameters:
-    - $ref: '/schemas/motivator.yaml#/motivatorId'
   post:
     summary: Add a new result to user's current motivator.
     operationId: post-motivator-userId-feedback-motivatorId
@@ -164,6 +162,13 @@ motivatorResultEndpoints:
       - motivator-service
     security:
       - jwt: []
+  parameters:
+    - name: motivatorId
+      in: path
+      schema:
+        type: integer
+      required: true
+      description: The ID of the motivator to fetch users results
 ### TPL RENDER {{ template "servers.tpl" "motivator" }}
   servers:
     - url: https://motivator.api.{environment}.mindtastic.lol

@@ -109,10 +109,3 @@ motivatorResult:
       type: array
       items:
         type: string
-
-motivatorId:
-  title: motivatorId
-  type: object
-  properties:
-    id:
-      type: number
