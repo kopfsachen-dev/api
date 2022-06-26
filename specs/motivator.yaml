@@ -149,6 +149,13 @@ motivatorResultEndpoints:
       - motivator-service
     security:
       - jwt: []
+    parameters:
+      - name: motivatorId
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The ID of the motivator to fetch users results
   delete:
     summary: Delete result from user's current motivator by timestamp.
     operationId: delete-motivator-userId-result-motivatorId
@@ -162,13 +169,13 @@ motivatorResultEndpoints:
       - motivator-service
     security:
       - jwt: []
-  parameters:
-    - name: motivatorId
-      in: path
-      schema:
-        type: integer
-      required: true
-      description: The ID of the motivator to fetch users results
+    parameters:
+      - name: motivatorId
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The ID of the motivator to fetch users results
 ### TPL RENDER {{ template "servers.tpl" "motivator" }}
   servers:
     - url: https://motivator.api.{environment}.mindtastic.lol
