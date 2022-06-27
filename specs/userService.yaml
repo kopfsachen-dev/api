@@ -1,0 +1,200 @@
+userEndpoints:
+  get:
+    summary: Fetch currently logged in users data
+    operationId: get-user-data
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/user.yaml#/user-with-id'
+      "401":
+        description: Unauthorized
+      "500":
+        description: Internal Server Error
+    x-accepts: application/json
+    security:
+      - jwt: []
+    tags:
+      - user-service
+  put:
+    summary: Update currently logged in user
+    operationId: put-user-data
+    requestBody:
+      content:
+        application/json:
+          schema:
+            title: User update object
+            type: object
+            properties:
+              email:
+                type: string
+            required:
+              - email
+    responses:
+      "201":
+        description: User update successfull
+      "401":
+        description: Unauthorized
+      "422":
+        description: Unprocessable entity. The requestBody was no valid user update object
+      "500":
+        description: "Internal server error"
+    x-accepts: application/json
+    x-contentType: application/json
+    security:
+      - jwt: []
+    tags:
+      - user-service
+  delete:
+    summary: Delete the currently logged in user
+    operationId: delete-user-data
+    responses:
+      "200":
+        description: OK
+      "500":
+        description: Internal Server Error
+    security:
+      - jwt: []
+    tags:
+      - user-service
+### TPL RENDER {{ template "servers.tpl" "users" }}
+  servers:
+    - url: https://users.api.{environment}.mindtastic.lol
+      variables:
+        environment:
+          enum:
+            - live
+            - stage
+            - dev
+          default: live
+### END RENDER {{ template "servers.tpl" "users" }}
+
+userSettingsEndpoint:
+  get:
+    summary: Get settings of the currently logged in user
+    description: Get user's settings.
+    operationId: get-user-settings
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/user.yaml#/settings'
+      "401":
+        description: Unauthorized
+      "500":
+        description: Internal Server error
+    x-accepts: application/json
+    security:
+      - jwt: []
+    tags:
+      - user-service
+  post:
+    summary: Set current user's settings.
+    description: Set current user's settings.
+    operationId: set-user-settings
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/user.yaml#/settings'
+    responses:
+      "200":
+        description: OK
+      "401":
+        description: Unauthorized
+      "409":
+        description: User settings already exist
+      "500":
+        description: Internal Server Error
+    x-accepts: application/json
+    x-contentType: application/json
+    security:
+      - jwt: []
+    tags:
+      - user-service
+  delete:
+    summary: Delete all settings of the currently authorized user
+    description: Delete all settings of the currently authorized user
+    operationId: delete-user-settings
+    responses:
+      "200":
+        description: OK
+      "500":
+        description: Internal Server Error
+    security:
+      - jwt: []
+    tags:
+      - user-service
+### TPL RENDER {{ template "servers.tpl" "users" }}
+  servers:
+    - url: https://users.api.{environment}.mindtastic.lol
+      variables:
+        environment:
+          enum:
+            - live
+            - stage
+            - dev
+          default: live
+### END RENDER {{ template "servers.tpl" "users" }}
+
+adminEndpoints:
+  get:
+    summary: Get all users.
+    description: Get all users.
+    operationId: admin-get-user
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/user.yaml#/user-with-id'
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal Server Error
+    tags:
+      - user-service
+      - admin
+    x-accepts: application/json
+  post:
+    summary: Create user.
+    description: Create a user.
+    operationId: admin-create-user
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/user.yaml#/user'
+    responses:
+      '200':
+        description: OK
+      '201':
+        description: Created
+      '401':
+        description: Unauthorized
+      '422':
+        description: Unprocessable Entity
+      '500':
+        description: Internal Server Error
+    x-contentType: application/json
+    tags:
+      - user-service
+      - admin
+### TPL RENDER {{ template "servers.tpl" "users" }}
+  servers:
+    - url: https://users.api.{environment}.mindtastic.lol
+      variables:
+        environment:
+          enum:
+            - live
+            - stage
+            - dev
+          default: live
+### END RENDER {{ template "servers.tpl" "users" }}

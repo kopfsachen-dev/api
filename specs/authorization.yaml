@@ -1,0 +1,9 @@
+securitySchemes:
+  JWTAuth:
+    type: http
+    scheme: bearer
+    bearerFormat: JWT
+    description: |-
+      Example: 
+      > Authorization: Bearer <token>
+    x-last-modified: 1646648515924
