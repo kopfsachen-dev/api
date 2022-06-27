@@ -11,7 +11,7 @@ endpoints:
             schema:
               type: array
               items:
-                $ref: '/schemas/diary.yaml#/mood'
+                $ref: '../schemas/diary.yaml#/mood'
       '401':
         description: Unauthorized
       '500':
@@ -30,7 +30,7 @@ endpoints:
       content:
         application/json:
           schema:
-            $ref: '/schemas/diary.yaml#/mood'
+            $ref: '../schemas/diary.yaml#/mood'
     responses:
       '201':
         description: Created

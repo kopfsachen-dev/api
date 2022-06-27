@@ -9,45 +9,45 @@ info:
     url: 'https://www.kopfsachen.org'
 paths:
   /self-service/registration/api:
-    $ref: '/specs/registration.yaml#/registrationApiInit'
+    $ref: 'specs/registration.yaml#/registrationApiInit'
   /self-service/registration:
-    $ref: '/specs/registration.yaml#/registrationSubmit'
+    $ref: 'specs/registration.yaml#/registrationSubmit'
   /self-service/login/api:
-    $ref: '/specs/authentication.yaml#/loginApiInit'
+    $ref: 'specs/authentication.yaml#/loginApiInit'
   /self-service/login:
-    $ref: '/specs/authentication.yaml#/loginSubmit'
+    $ref: 'specs/authentication.yaml#/loginSubmit'
   /self-service/logout:
-    $ref: '/specs/authentication.yaml#/logout'
+    $ref: 'specs/authentication.yaml#/logout'
   /user:
-    $ref: '/specs/userService.yaml#/userEndpoints'
+    $ref: 'specs/userService.yaml#/userEndpoints'
   /user/settings:
-    $ref: '/specs/userService.yaml#/userSettingsEndpoint'
+    $ref: 'specs/userService.yaml#/userSettingsEndpoint'
   /users/admin:
-    $ref: '/specs/userService.yaml#/adminEndpoints'
+    $ref: 'specs/userService.yaml#/adminEndpoints'
   /diary:
-    $ref: '/specs/moodDiary.yaml#/endpoints'
+    $ref: 'specs/moodDiary.yaml#/endpoints'
   /safetyNet:
-    $ref: '/specs/motivator.yaml#/safetyNetEndpoints'
+    $ref: 'specs/motivator.yaml#/safetyNetEndpoints'
   /motivator:
-    $ref: '/specs/motivator.yaml#/motivatorEndpoints'
+    $ref: 'specs/motivator.yaml#/motivatorEndpoints'
   /motivator/result/{motivatorId}:
-    $ref: '/specs/motivator.yaml#/motivatorResultEndpoints'
+    $ref: 'specs/motivator.yaml#/motivatorResultEndpoints'
   /notification:
-    $ref: '/specs/notifications.yaml#/usersNotificationsEndpoint'
+    $ref: 'specs/notifications.yaml#/usersNotificationsEndpoint'
   /tilt:
-    $ref: '/specs/tilt.yaml#/endpoints'
+    $ref: 'specs/tilt.yaml#/endpoints'
   /wiki:
-    $ref: '/specs/wiki.yaml#/getAll'
+    $ref: 'specs/wiki.yaml#/getAll'
   /wiki/{wikiEntryId}:
-    $ref: '/specs/wiki.yaml#/getOne'
+    $ref: 'specs/wiki.yaml#/getOne'
   /wiki/admin:
-    $ref: '/specs/wiki.yaml#/adminCreate'
+    $ref: 'specs/wiki.yaml#/adminCreate'
   /wiki/{wikiEntryId}/admin:
-    $ref: '/specs/wiki.yaml#/adminDelete'
+    $ref: 'specs/wiki.yaml#/adminDelete'
 components:
   securitySchemes:
     jwt:
-      $ref: '/specs/authorization.yaml#/securitySchemes/JWTAuth'
+      $ref: 'specs/authorization.yaml#/securitySchemes/JWTAuth'
   schemas:
     timestamp:
       title: timestamp

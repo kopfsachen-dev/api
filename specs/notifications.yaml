@@ -11,7 +11,7 @@ usersNotificationsEndpoint:
             schema:
               type: array
               items:
-                $ref: '/schemas/notifications.yaml#/notification'
+                $ref: '../schemas/notifications.yaml#/notification'
       '401':
         description: Unauthorized
       '500':
@@ -37,7 +37,7 @@ usersNotificationsEndpoint:
       content:
         application/json:
           schema:
-            $ref: '/schemas/notifications.yaml#/notification'
+            $ref: '../schemas/notifications.yaml#/notification'
       description: ''
     tags:
       - notification-service

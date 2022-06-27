@@ -9,7 +9,7 @@ endpoints:
         content:
           application/json:
             schema:
-              $ref: '/schemas/tilt.yaml#schema'
+              $ref: '../schemas/tilt.yaml#schema'
       '401':
         description: Unauthorized
       '500':
@@ -26,7 +26,7 @@ endpoints:
       content:
         application/json:
           schema:
-            $ref: '/schemas/tilt.yaml#schema'
+            $ref: '../schemas/tilt.yaml#schema'
     responses:
       '200':
         description: OK

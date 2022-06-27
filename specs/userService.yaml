@@ -8,7 +8,7 @@ userEndpoints:
         content:
           application/json:
             schema:
-              $ref: '/schemas/user.yaml#/user-with-id'
+              $ref: '../schemas/user.yaml#/user-with-id'
       "401":
         description: Unauthorized
       "500":
@@ -82,7 +82,7 @@ userSettingsEndpoint:
         content:
           application/json:
             schema:
-              $ref: '/schemas/user.yaml#/settings'
+              $ref: '../schemas/user.yaml#/settings'
       "401":
         description: Unauthorized
       "500":
@@ -100,7 +100,7 @@ userSettingsEndpoint:
       content:
         application/json:
           schema:
-            $ref: '/schemas/user.yaml#/settings'
+            $ref: '../schemas/user.yaml#/settings'
     responses:
       "200":
         description: OK
@@ -154,7 +154,7 @@ adminEndpoints:
             schema:
               type: array
               items:
-                $ref: '/schemas/user.yaml#/user-with-id'
+                $ref: '../schemas/user.yaml#/user-with-id'
       '401':
         description: Unauthorized
       '500':
@@ -171,7 +171,7 @@ adminEndpoints:
       content:
         application/json:
           schema:
-            $ref: '/schemas/user.yaml#/user'
+            $ref: '../schemas/user.yaml#/user'
     responses:
       '200':
         description: OK

@@ -7,7 +7,7 @@ getAll:
         content:
           application/json:
             schema:
-                $ref: '/schemas/wiki.yaml#/entryList'
+                $ref: '../schemas/wiki.yaml#/entryList'
       "500":
         description: Internal Server Error
     operationId: get-wiki
@@ -30,14 +30,14 @@ getOne:
   get:
     summary: Fetch single wiki entry
     parameters:
-      - $ref: '/schemas/wiki.yaml#/entryId'
+      - $ref: '../schemas/wiki.yaml#/entryId'
     responses:
       "200":
         description: OK
         content:
           application/json:
             schema:
-              $ref: '/schemas/wiki.yaml#/entry'
+              $ref: '../schemas/wiki.yaml#/entry'
       "404":
         description: Not found
       "500":
@@ -65,14 +65,14 @@ adminCreate:
       content:
         application/json:
           schema:
-            $ref: '/schemas/wiki.yaml#/entryList'
+            $ref: '../schemas/wiki.yaml#/entryList'
     responses:
       "201":
         description: Created
         content:
           application/json:
             schema:
-              $ref: '/schemas/wiki.yaml#/insertionResponse'
+              $ref: '../schemas/wiki.yaml#/insertionResponse'
       "400":
         description: Bad Request
       "401":
@@ -82,7 +82,7 @@ adminCreate:
         content:
           application/json:
             schema:
-              $ref: '/schemas/wiki.yaml#/genericError'
+              $ref: '../schemas/wiki.yaml#/genericError'
     operationId: post-wiki
     x-tira: false
     x-accepts: application/json
@@ -107,7 +107,7 @@ adminDelete:
     summary: Delete wiki entry by id.
     operationId: delete-wiki
     parameters:
-      - $ref: '/schemas/wiki.yaml#/entryId'
+      - $ref: '../schemas/wiki.yaml#/entryId'
     responses:
       "200":
         description: OK
@@ -118,7 +118,7 @@ adminDelete:
         content:
           application/json:
             schema:
-              $ref: '/schemas/wiki.yaml#/genericError'
+              $ref: '../schemas/wiki.yaml#/genericError'
     tags:
       - wiki-service
       - admin

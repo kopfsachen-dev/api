@@ -8,19 +8,19 @@ registrationApiInit:
         content:
           application/json:
             schema:
-              $ref: '/schemas/kratos_t.yaml#/selfServiceRegistrationFlow'
+              $ref: '../schemas/kratos_t.yaml#/selfServiceRegistrationFlow'
       "400":
         description: Bad request
         content:
           application/json:
             schema:
-              $ref: '/schemas/kratos_t.yaml#/jsonError'
+              $ref: '../schemas/kratos_t.yaml#/jsonError'
       "500":
         description: Internal server error
         content:
           application/json:
             schema:
-              $ref: '/schemas/kratos_t.yaml#/jsonError'
+              $ref: '../schemas/kratos_t.yaml#/jsonError'
     tags:
       - authentication
 ### TPL RENDER {{ template "servers.tpl" "auth" }}
@@ -61,7 +61,7 @@ registrationSubmit:
         content:
           application/json:
             schema:
-              $ref: '/schemas/registration.yaml#/registration-with-flow-id-response'
+              $ref: '../schemas/registration.yaml#/registration-with-flow-id-response'
       "303":
         description: Returns the after auto-login redirection url when a browser flow got submitted.
       "400":
@@ -69,25 +69,25 @@ registrationSubmit:
         content:
           application/json:
             schema:
-              $ref: '/schemas/kratos_t.yaml#/selfServiceRegistrationFlow'
+              $ref: '../schemas/kratos_t.yaml#/selfServiceRegistrationFlow'
       "410":
         description: Gone. The appropriate auth flow expired before submitting.
         content:
           application/json:
             schema:
-              $ref: '/schemas/kratos_t.yaml#/jsonError'
+              $ref: '../schemas/kratos_t.yaml#/jsonError'
       "422":
         description: The webbrowser is in a browser flow and needs to change its location before submitting.
         content:
           application/json:
             schema:
-              $ref: '/schemas/kratos_t.yaml#/selfServiceBrowserLocationChangeRequiredError'
+              $ref: '../schemas/kratos_t.yaml#/selfServiceBrowserLocationChangeRequiredError'
       "500":
         description: Internal server error
         content:
           application/json:
             schema:
-              $ref: '/schemas/kratos_t.yaml#/jsonError'
+              $ref: '../schemas/kratos_t.yaml#/jsonError'
     x-accepts: application/json
     x-contentType: application/json
     tags:
