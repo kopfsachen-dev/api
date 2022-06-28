@@ -1,0 +1,71 @@
+usersNotificationsEndpoint:
+  get:
+    summary: Get notifications for user by id.
+    tags:
+      - notification-service
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/notifications.yaml#/notification'
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal Server Error
+    operationId: get-notification-userId
+    description: Get notifications for user by id.
+    security:
+      - jwt: []
+  post:
+    summary: Set notification for user by id.
+    operationId: post-notification-userId
+    responses:
+      '200':
+        description: OK
+      '201':
+        description: Created
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal Server Error
+    description: Set notification for user by id.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/notifications.yaml#/notification'
+      description: ''
+    tags:
+      - notification-service
+    security:
+      - jwt: []
+  delete:
+    summary: Delete notification for user by id.
+    operationId: delete-notification-userId
+    responses:
+      '200':
+        description: OK
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal Server Error
+    description: Delete notification for user by id.
+    tags:
+      - notification-service
+    security:
+      - jwt: []
+### TPL RENDER {{ template "servers.tpl" "internetwache" }}
+    servers:
+      - url: https://internetwache.api.{environment}.mindtastic.lol
+        variables:
+          environment:
+            enum:
+              - live
+              - stage
+              - dev
+            default: live
+### END RENDER {{ template "servers.tpl" "internetwache" }} 

@@ -1,0 +1,135 @@
+getAll:
+  get:
+    summary: Get all available wiki entries
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+                $ref: '../schemas/wiki.yaml#/entryList'
+      "500":
+        description: Internal Server Error
+    operationId: get-wiki
+    x-accepts: application/json
+    tags:
+      - wiki-service
+### TPL RENDER {{ template "servers.tpl" "wiki" }}
+    servers:
+      - url: https://wiki.api.{environment}.mindtastic.lol
+        variables:
+          environment:
+            enum:
+              - live
+              - stage
+              - dev
+            default: live
+### END RENDER {{ template "servers.tpl" "wiki" }}
+
+getOne:
+  get:
+    summary: Fetch single wiki entry
+    parameters:
+      - $ref: '../schemas/wiki.yaml#/entryId'
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/wiki.yaml#/entry'
+      "404":
+        description: Not found
+      "500":
+        description: Internal Server Error
+    x-accepts: application/json
+    tags:
+      - wiki-service
+### TPL RENDER {{ template "servers.tpl" "wiki" }}
+    servers:
+      - url: https://wiki.api.{environment}.mindtastic.lol
+        variables:
+          environment:
+            enum:
+              - live
+              - stage
+              - dev
+            default: live
+### END RENDER {{ template "servers.tpl" "wiki" }}
+
+adminCreate: 
+  post:
+    summary: Add new wiki entries
+    description: Add wiki entries
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/wiki.yaml#/entryList'
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/wiki.yaml#/insertionResponse'
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/wiki.yaml#/genericError'
+    operationId: post-wiki
+    x-tira: false
+    x-accepts: application/json
+    x-contentType: application/json
+    tags:
+      - wiki-service
+      - admin
+### TPL RENDER {{ template "servers.tpl" "wiki" }}
+    servers:
+      - url: 'https://wiki.api.{environment}.mindtastic.lol'
+        variables:
+          environment:
+            enum:
+              - live
+              - stage
+              - dev
+            default: live
+### END RENDER {{ template "servers.tpl" "wiki" }}
+
+adminDelete:
+  delete:
+    summary: Delete wiki entry by id.
+    operationId: delete-wiki
+    parameters:
+      - $ref: '../schemas/wiki.yaml#/entryId'
+    responses:
+      "200":
+        description: OK
+      "401":
+        description: unauthorized
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/wiki.yaml#/genericError'
+    tags:
+      - wiki-service
+      - admin
+### TPL RENDER {{ template "servers.tpl" "wiki" }}
+    servers:
+      - url: 'https://wiki.api.{environment}.mindtastic.lol'
+        variables:
+          environment:
+            enum:
+              - live
+              - stage
+              - dev
+            default: live
+### END RENDER {{ template "servers.tpl" "wiki" }}

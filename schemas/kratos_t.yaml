@@ -1,0 +1,717 @@
+UUID:
+  format: uuid4
+  type: string
+
+selfServiceRegistrationFlow:
+  example:
+    expires_at: 2000-01-23T04:56:07.000Z
+    ui:
+      nodes:
+        - meta:
+            label:
+              context: '{}'
+              id: 0
+              text: text
+              type: type
+          messages:
+            - context: '{}'
+              id: 0
+              text: text
+              type: type
+            - context: '{}'
+              id: 0
+              text: text
+              type: type
+          type: text
+          group: default
+        - meta:
+            label:
+              context: '{}'
+              id: 0
+              text: text
+              type: type
+          messages:
+            - context: '{}'
+              id: 0
+              text: text
+              type: type
+            - context: '{}'
+              id: 0
+              text: text
+              type: type
+          type: text
+          group: default
+      method: method
+      action: action
+      messages:
+        - context: '{}'
+          id: 0
+          text: text
+          type: type
+        - context: '{}'
+          id: 0
+          text: text
+          type: type
+    return_to: return_to
+    type: type
+    issued_at: 2000-01-23T04:56:07.000Z
+    request_url: request_url
+  properties:
+    active:
+      $ref: '#/identityCredentialsType'
+    expires_at:
+      description: >-
+        ExpiresAt is the time (UTC) when the flow expires. If the user still
+        wishes to log in,
+
+        a new flow has to be initiated.
+      format: date-time
+      type: string
+    id:
+      $ref: '#/UUID'
+    issued_at:
+      description: IssuedAt is the time (UTC) when the flow occurred.
+      format: date-time
+      type: string
+    request_url:
+      description: >-
+        RequestURL is the initial URL that was requested from Ory Kratos. It can
+        be used
+
+        to forward information contained in the URL's path or query for example.
+      type: string
+    return_to:
+      description: ReturnTo contains the requested return_to URL.
+      type: string
+    type:
+      description: The flow type can either be `api` or `browser`.
+      title: Type is the flow type.
+      type: string
+    ui:
+      $ref: '#/uiContainer'
+  required:
+    - expires_at
+    - id
+    - issued_at
+    - request_url
+    - type
+    - ui
+  type: object
+
+selfServiceLoginFlow:
+  description: >-
+    This object represents a login flow. A login flow is initiated at the
+    "Initiate Login API / Browser Flow"
+  example:
+    expires_at: 2000-01-23T04:56:07.000Z
+    ui:
+      nodes:
+        - meta:
+            label:
+              context: '{}'
+              id: 0
+              text: text
+              type: type
+          messages:
+            - context: '{}'
+              id: 0
+              text: text
+              type: type
+            - context: '{}'
+              id: 0
+              text: text
+              type: type
+          type: text
+          group: default
+        - meta:
+            label:
+              context: '{}'
+              id: 0
+              text: text
+              type: type
+          messages:
+            - context: '{}'
+              id: 0
+              text: text
+              type: type
+            - context: '{}'
+              id: 0
+              text: text
+              type: type
+          type: text
+          group: default
+      method: method
+      action: action
+      messages:
+        - context: '{}'
+          id: 0
+          text: text
+          type: type
+        - context: '{}'
+          id: 0
+          text: text
+          type: type
+    updated_at: 2000-01-23T04:56:07.000Z
+    created_at: 2000-01-23T04:56:07.000Z
+    refresh: true
+    return_to: return_to
+    type: type
+    issued_at: 2000-01-23T04:56:07.000Z
+    request_url: request_url
+  properties:
+    active:
+      $ref: '#/identityCredentialsType'
+    created_at:
+      description: CreatedAt is a helper struct field for gobuffalo.pop.
+      format: date-time
+      type: string
+    expires_at:
+      description: >-
+        ExpiresAt is the time (UTC) when the flow expires. If the user still
+        wishes to log in,
+
+        a new flow has to be initiated.
+      format: date-time
+      type: string
+    id:
+      $ref: '#/UUID'
+    issued_at:
+      description: IssuedAt is the time (UTC) when the flow started.
+      format: date-time
+      type: string
+    refresh:
+      description: Refresh stores whether this login flow should enforce re-authentication.
+      type: boolean
+    request_url:
+      description: >-
+        RequestURL is the initial URL that was requested from Ory Kratos. It can
+        be used
+
+        to forward information contained in the URL's path or query for example.
+      type: string
+    return_to:
+      description: ReturnTo contains the requested return_to URL.
+      type: string
+    type:
+      description: The flow type can either be `api` or `browser`.
+      title: Type is the flow type.
+      type: string
+    ui:
+      $ref: '#/uiContainer'
+    updated_at:
+      description: UpdatedAt is a helper struct field for gobuffalo.pop.
+      format: date-time
+      type: string
+  required:
+    - expires_at
+    - id
+    - issued_at
+    - request_url
+    - type
+    - ui
+  title: Login Flow
+  type: object
+
+# KRATOS DEPENDENCIES
+
+uiContainer:
+  description: >-
+    Container represents a HTML Form. The container can work with both HTTP Form
+    and JSON requests
+  example:
+    nodes:
+      - meta:
+          label:
+            context: '{}'
+            id: 0
+            text: text
+            type: type
+        messages:
+          - context: '{}'
+            id: 0
+            text: text
+            type: type
+          - context: '{}'
+            id: 0
+            text: text
+            type: type
+        type: text
+        group: default
+      - meta:
+          label:
+            context: '{}'
+            id: 0
+            text: text
+            type: type
+        messages:
+          - context: '{}'
+            id: 0
+            text: text
+            type: type
+          - context: '{}'
+            id: 0
+            text: text
+            type: type
+        type: text
+        group: default
+    method: method
+    action: action
+    messages:
+      - context: '{}'
+        id: 0
+        text: text
+        type: type
+      - context: '{}'
+        id: 0
+        text: text
+        type: type
+  properties:
+    action:
+      description: >-
+        Action should be used as the form action URL `<form action="{{ .Action
+        }}" method="post">`.
+      type: string
+    messages:
+      items:
+        $ref: '#/uiText'
+      type: array
+    method:
+      description: Method is the form method (e.g. POST)
+      type: string
+    nodes:
+      items:
+        $ref: '#/uiNode'
+      type: array
+  required:
+    - action
+    - method
+    - nodes
+  type: object
+
+identityCredentialsType:
+  description: and so on.
+  enum:
+    - password
+    - totp
+    - oidc
+    - webauthn
+    - lookup_secret
+  title: >-
+    CredentialsType  represents several different credential types, like
+    password credentials, passwordless credentials,
+  type: string
+
+uiText:
+  example:
+    context: '{}'
+    id: 0
+    text: text
+    type: type
+  properties:
+    context:
+      description: The message's context. Useful when customizing messages.
+      type: object
+    id:
+      format: int64
+      type: integer
+    text:
+      description: The message text. Written in american english.
+      type: string
+    type:
+      type: string
+  required:
+    - id
+    - text
+    - type
+  type: object
+
+uiNode:
+  description: >-
+    Nodes are represented as HTML elements or their native UI equivalents. For
+    example,
+
+    a node can be an `<img>` tag, or an `<input element>` but also `some plain
+    text`.
+  example:
+    meta:
+      label:
+        context: '{}'
+        id: 0
+        text: text
+        type: type
+    messages:
+      - context: '{}'
+        id: 0
+        text: text
+        type: type
+      - context: '{}'
+        id: 0
+        text: text
+        type: type
+    type: text
+    group: default
+  properties:
+    attributes:
+      $ref: '#/uiNodeAttributes'
+    group:
+      description: >-
+        Group specifies which group (e.g. password authenticator) this node
+        belongs to.
+      enum:
+        - default
+        - password
+        - oidc
+        - profile
+        - link
+        - totp
+        - lookup_secret
+        - webauthn
+      type: string
+    messages:
+      items:
+        $ref: '#/uiText'
+      type: array
+    meta:
+      $ref: '#/uiNodeMeta'
+    type:
+      description: The node's type
+      enum:
+        - text
+        - input
+        - img
+        - a
+        - script
+      type: string
+  required:
+    - attributes
+    - group
+    - messages
+    - meta
+    - type
+  title: Node represents a flow's nodes
+  type: object
+
+uiNodeMeta:
+  description: |-
+    This might include a label and other information that can optionally
+    be used to render UIs.
+  example:
+    label:
+      context: '{}'
+      id: 0
+      text: text
+      type: type
+  properties:
+    label:
+      $ref: '#/uiText'
+  title: A Node's Meta Information
+  type: object
+
+uiNodeAttributes:
+  discriminator:
+    mapping:
+      a: '#/uiNodeAnchorAttributes'
+      img: '#/uiNodeImageAttributes'
+      input: '#/uiNodeInputAttributes'
+      script: '#/uiNodeScriptAttributes'
+      text: '#/uiNodeTextAttributes'
+    propertyName: node_type
+  oneOf:
+    - $ref: '#/uiNodeInputAttributes'
+    - $ref: '#/uiNodeTextAttributes'
+    - $ref: '#/uiNodeImageAttributes'
+    - $ref: '#/uiNodeAnchorAttributes'
+    - $ref: '#/uiNodeScriptAttributes'
+  title: Attributes represents a list of attributes (e.g. `href="foo"` for links).
+
+uiNodeInputAttributes:
+  description: InputAttributes represents the attributes of an input node
+  properties:
+    disabled:
+      description: Sets the input's disabled field to true or false.
+      type: boolean
+    label:
+      $ref: '#/uiText'
+    name:
+      description: The input's element name.
+      type: string
+    node_type:
+      description: >-
+        NodeType represents this node's types. It is a mirror of `node.type` and
+
+        is primarily used to allow compatibility with OpenAPI 3.0.  In this
+        struct it technically always is "input".
+      type: string
+    onclick:
+      description: >-
+        OnClick may contain javascript which should be executed on click. This
+        is primarily
+
+        used for WebAuthn.
+      type: string
+    pattern:
+      description: The input's pattern.
+      type: string
+    required:
+      description: Mark this input field as required.
+      type: boolean
+    type:
+      type: string
+    value:
+      description: The input's value.
+      nullable: true
+  required:
+    - disabled
+    - name
+    - node_type
+    - type
+  type: object
+
+uiNodeTextAttributes:
+  properties:
+    id:
+      description: A unique identifier
+      type: string
+    node_type:
+      description: >-
+        NodeType represents this node's types. It is a mirror of `node.type` and
+
+        is primarily used to allow compatibility with OpenAPI 3.0.  In this
+        struct it technically always is "text".
+      type: string
+    text:
+      $ref: '#/uiText'
+  required:
+    - id
+    - node_type
+    - text
+  title: TextAttributes represents the attributes of a text node.
+  type: object
+
+uiNodeImageAttributes:
+  properties:
+    height:
+      description: Height of the image
+      format: int64
+      type: integer
+    id:
+      description: A unique identifier
+      type: string
+    node_type:
+      description: >-
+        NodeType represents this node's types. It is a mirror of `node.type` and
+
+        is primarily used to allow compatibility with OpenAPI 3.0.  In this
+        struct it technically always is "img".
+      type: string
+    src:
+      description: |-
+        The image's source URL.
+        format: uri
+      type: string
+    width:
+      description: Width of the image
+      format: int64
+      type: integer
+  required:
+    - height
+    - id
+    - node_type
+    - src
+    - width
+  title: ImageAttributes represents the attributes of an image node.
+  type: object
+
+uiNodeAnchorAttributes:
+  properties:
+    href:
+      description: |-
+        The link's href (destination) URL.
+        format: uri
+      type: string
+    id:
+      description: A unique identifier
+      type: string
+    node_type:
+      description: >-
+        NodeType represents this node's types. It is a mirror of `node.type` and
+
+        is primarily used to allow compatibility with OpenAPI 3.0.  In this
+        struct it technically always is "a".
+      type: string
+    title:
+      $ref: '#/uiText'
+  required:
+    - href
+    - id
+    - node_type
+    - title
+  title: AnchorAttributes represents the attributes of an anchor node.
+  type: object
+
+uiNodeScriptAttributes:
+  properties:
+    async:
+      description: The script async type
+      type: boolean
+    crossorigin:
+      description: The script cross origin policy
+      type: string
+    id:
+      description: A unique identifier
+      type: string
+    integrity:
+      description: The script's integrity hash
+      type: string
+    node_type:
+      description: >-
+        NodeType represents this node's types. It is a mirror of `node.type` and
+
+        is primarily used to allow compatibility with OpenAPI 3.0. In this
+        struct it technically always is "script".
+      type: string
+    nonce:
+      description: >-
+        Nonce for CSP
+
+        A nonce you may want to use to improve your Content Security Policy.
+
+        You do not have to use this value but if you want to improve your CSP
+
+        policies you may use it. You can also choose to use your own nonce
+        value!
+      type: string
+    referrerpolicy:
+      description: The script referrer policy
+      type: string
+    src:
+      description: The script source
+      type: string
+    type:
+      description: The script MIME type
+      type: string
+  required:
+    - async
+    - crossorigin
+    - id
+    - integrity
+    - node_type
+    - nonce
+    - referrerpolicy
+    - src
+    - type
+  title: ScriptAttributes represent script nodes which load javascript.
+  type: object
+
+
+# ERRORS
+genericError:
+  properties:
+    code:
+      description: The status code
+      example: 404
+      format: int64
+      type: integer
+    debug:
+      description: |-
+        Debug information
+        This field is often not exposed to protect against leaking
+        sensitive information.
+      example: SQL field "foo" is not a bool.
+      type: string
+    details:
+      additionalProperties: false
+      description: Further error details
+      type: object
+    id:
+      description: |-
+        The error ID
+        Useful when trying to identify various errors in application logic.
+      type: string
+    message:
+      description: |-
+        Error message
+        The error's message.
+      example: The resource could not be found
+      type: string
+    reason:
+      description: A human-readable reason for the error
+      example: User with ID 1234 does not exist.
+      type: string
+    request:
+      description: |-
+        The request ID
+        The request ID is often exposed internally in order to trace
+        errors across service architectures. This is often a UUID.
+      example: d7ef54b1-ec15-46e6-bccb-524b82c035e6
+      type: string
+    status:
+      description: The status description
+      example: Not Found
+      type: string
+  required:
+    - message
+  type: object
+
+jsonError:
+  description: The standard Ory JSON API error format.
+  properties:
+    error:
+      $ref: '#/genericError'
+  required:
+    - error
+  title: Kratos API JSON Error Response
+  type: object
+
+selfServiceBrowserLocationChangeRequiredError:
+  properties:
+    code:
+      description: The status code
+      example: 404
+      format: int64
+      type: integer
+    debug:
+      description: |-
+        Debug information
+        This field is often not exposed to protect against leaking
+        sensitive information.
+      example: SQL field "foo" is not a bool.
+      type: string
+    details:
+      additionalProperties: true
+      description: Further error details
+      type: object
+    id:
+      description: |-
+        The error ID
+        Useful when trying to identify various errors in application logic.
+      type: string
+    message:
+      description: |-
+        Error message
+        The error's message.
+      example: The resource could not be found
+      type: string
+    reason:
+      description: A human-readable reason for the error
+      example: User with ID 1234 does not exist.
+      type: string
+    redirect_browser_to:
+      description: Since when the flow has expired
+      type: string
+    request:
+      description: |-
+        The request ID
+        The request ID is often exposed internally in order to trace
+        errors across service architectures. This is often a UUID.
+      example: d7ef54b1-ec15-46e6-bccb-524b82c035e6
+      type: string
+    status:
+      description: The status description
+      example: Not Found
+      type: string
+  required:
+    - message
+  title: Is sent when a flow requires a browser to change its location.
+  type: object
+
