@@ -23,10 +23,14 @@ safetyNetItem:
       type: string
       minLength: 1
       enum:
+        - friends
+        - sport
         - pet
-        - other
+        - music
+        - personality
         - situationControl
         - relaxation
+        - other
       description: 'Which kind of item is this (i.a., influences symbol in UI)?'
     strategies:
       type: array
