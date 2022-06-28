@@ -1,0 +1,59 @@
+entryId:
+  name: wikiEntryId
+  description: ID of a wiki entry
+  in: path
+  required: true
+  schema:
+    type: string
+  style: form
+
+entry:
+  title: Wiki Entry
+  type: object
+  properties:
+    title:
+      type: string
+    content:
+      type: array
+      items:
+        oneOf:
+          - type: string
+          - type: object
+
+entryList:
+  title: Wiki Entry List
+  type: array
+  items:
+    $ref: '#/entry'
+
+insertionResponse:
+  title: Wiki Insertion Response
+  type: object
+  properties:
+    status_code:
+      type: integer
+      description: The HTTP status code of the response
+    success:
+      type: boolean
+      description: True if all provided wiki entries have been inserted successfully into the database
+    insertedCount:
+      type: integer
+      description: The number of inserted wiki entries on the operation
+  example:
+    status_code: 201
+    success: true
+    insertCount: 2
+
+genericError:
+  title: Wiki API Generic Error
+  type: object
+  properties:
+    status_code:
+      type: integer
+      description: The HTTP status code of the reponse
+    error:
+      type: string
+      description: Error message
+  example:
+    status_code: 500
+    error: Could not delete existing articles, so insertion could not be done. Please try again

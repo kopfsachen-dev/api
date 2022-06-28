@@ -1,0 +1,111 @@
+safetyNet:
+  title: SafetyNet Object
+  type: array
+  items:
+    $ref: '#/safetyNetItem'
+
+safetyNetItem:
+  description: ''
+  type: object
+  x-examples:
+    example-1:
+      name: Theo
+      type: pet
+      strategies:
+        - cuddle
+        - play
+        - go for a walk
+  properties:
+    name:
+      type: string
+      minLength: 1
+    type:
+      type: string
+      minLength: 1
+      enum:
+        - pet
+        - other
+        - situationControl
+        - relaxation
+      description: 'Which kind of item is this (i.a., influences symbol in UI)?'
+    strategies:
+      type: array
+      description: How can this item help the user to feel better?
+      items:
+        type: string
+    feedback:
+      type: array
+      items:
+        $ref: '#/safetyNetItemFeedback'
+  required:
+    - name
+    - type
+    - strategies
+
+safetyNetItemFeedback:
+  description: ''
+  type: object
+  x-examples: {}
+  title: safetyNetItemFeedback
+  properties:
+    itHelped:
+      type: boolean
+    comment:
+      type: string
+    timestamp:
+      type: string
+      format: date-time
+
+motivator:
+  title: motivator
+  type: object
+  properties:
+    id:
+      type: string
+    type:
+      type: string
+      enum:
+        - situationControl
+        - relaxation
+    headline:
+      type: string
+    description:
+      type: string
+    textContents:
+      type: array
+      items:
+        type: string
+    mediaContents:
+      type: array
+      items:
+        type: object
+        properties:
+          format:
+            type: string
+            enum:
+              - document
+              - image
+              - audio
+              - video
+          url:
+            type: string
+            format: uri
+    userInputForm:
+      type: string
+      description: >-
+        May describe a form for input by the user (format to be defined, e.g.,
+        JSON Schema).
+
+motivatorResult:
+  title: motivatorResult
+  type: object
+  properties:
+    motivatorId:
+      type: string
+    timestamp:
+      type: string
+      format: date-time
+    results:
+      type: array
+      items:
+        type: string

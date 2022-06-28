@@ -1,0 +1,239 @@
+safetyNetEndpoints:
+  get:
+    summary: Get currently authenticated users safety-net
+    description: Get currently authenticated users safety-net
+    operationId: get-safetynet
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/motivator.yaml#/safetyNet'
+      "401":
+        description: Unauthorized
+      "500":
+        description: Internal Server Error
+    x-accepts: application/json
+    tags:
+      - motivator-service
+    security:
+      - jwt: []
+  post:
+    summary: Add safety net item to currently authenticated user safety net.
+    description: Add safety net item to currently authenticated user safety net.
+    operation: add-safetynet-item
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/motivator.yaml#/safetyNetItem'
+    responses:
+      "200":
+        description: OK
+      "201":
+        description: Created
+      "401":
+        description: Unauthorized
+      "500":
+        description: Internal Server Error
+    x-accepts: application/json
+    x-contentType: application/json
+    tags:
+      - motivator-service
+    security:
+      - jwt: []
+### TPL RENDER {{ template "servers.tpl" "motivator" }}
+  servers:
+    - url: https://motivator.api.{environment}.mindtastic.lol
+      variables:
+        environment:
+          enum:
+            - live
+            - stage
+            - dev
+          default: live
+### END RENDER {{ template "servers.tpl" "motivator" }}
+
+motivatorEndpoints:
+  get:
+    summary: Get current motivators by userId.
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: '../schemas/motivator.yaml#/motivator'
+                  - $ref: '../schemas/motivator.yaml#/motivatorResult'
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal Server Error
+    operationId: get-motivator-userId
+    description: Get current motivators by userId.
+    tags:
+      - motivator-service
+    security:
+      - jwt: []
+  post:
+    summary: Add motivator to user's motivators.
+    operationId: post-motivator-userId
+    responses:
+      '200':
+        description: OK
+      '201':
+        description: Created
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal Server Error
+    description: Add motivator to user's motivators.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/motivator.yaml#/motivator'
+    tags:
+      - motivator-service
+    security:
+      - jwt: []
+  delete:
+    summary: Delete a motivator from user's motivators.
+    operationId: delete-motivator-userId
+    responses:
+      '200':
+        description: OK
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal Server Error
+    description: Delete a motivator from user's motivators.
+    tags:
+      - motivator-service
+    security:
+      - jwt: []
+### TPL RENDER {{ template "servers.tpl" "motivator" }}
+  servers:
+    - url: https://motivator.api.{environment}.mindtastic.lol
+      variables:
+        environment:
+          enum:
+            - live
+            - stage
+            - dev
+          default: live
+### END RENDER {{ template "servers.tpl" "motivator" }}
+
+motivatorResultEndpoints:
+  post:
+    summary: Add a new result to user's current motivator.
+    operationId: post-motivator-userId-feedback-motivatorId
+    responses:
+      '200':
+        description: OK
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal Server Error
+    description: Add a new result to user's current motivator.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/motivator.yaml#/motivatorResult'
+    tags:
+      - motivator-service
+    security:
+      - jwt: []
+    parameters:
+      - name: motivatorId
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The ID of the motivator to fetch users results
+  delete:
+    summary: Delete result from user's current motivator by timestamp.
+    operationId: delete-motivator-userId-result-motivatorId
+    responses:
+      '200':
+        description: OK
+      '500':
+        description: Internal Service Error
+    description: Delete result from user's current motivator by timestamp.
+    tags:
+      - motivator-service
+    security:
+      - jwt: []
+    parameters:
+      - name: motivatorId
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The ID of the motivator to fetch users results
+### TPL RENDER {{ template "servers.tpl" "motivator" }}
+  servers:
+    - url: https://motivator.api.{environment}.mindtastic.lol
+      variables:
+        environment:
+          enum:
+            - live
+            - stage
+            - dev
+          default: live
+### END RENDER {{ template "servers.tpl" "motivator" }}
+
+#
+# /motivator/admin:
+#   parameters: []
+#   get:
+#     summary: Get all motivators.
+#     tags:
+#       - motivator-service
+#     responses:
+#       '200':
+#         description: OK
+#         content:
+#           application/json:
+#             schema:
+#               type: array
+#               items:
+#                 $ref: '#/components../schemas/motivator'
+#       '401':
+#         description: Unauthorized
+#       '500':
+#         description: Internal Server Error
+#     operationId: get-motivators-userId
+#     description: Gett all motivators.
+#   post:
+#     summary: Add motivator
+#     operationId: post-motivator
+#     responses:
+#       '200':
+#         description: OK
+#     description: Add a new motivator.
+#     requestBody:
+#       content:
+#         application/json:
+#           schema:
+#             $ref: '#/components../schemas/motivator'
+#     tags:
+#       - motivator-service
+#   delete:
+#     summary: Delete a motivator.
+#     operationId: delete-motivator
+#     responses:
+#       '200':
+#         description: OK
+#       '401':
+#         description: Unauthorized
+#       '500':
+#         description: Internal Server Error
+#     description: Delete a motivator by id.
+#     tags:
+#       - motivator-service

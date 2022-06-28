@@ -1,0 +1,19 @@
+mood:
+  title: Mood Object
+  type: object
+  properties:
+    type:
+      type: string
+      enum:
+        - positive
+        - negative
+        - neutral
+    description:
+      type: string
+    timestamp:
+      type: string
+      format: date-time
+  example:
+    type: postive
+    description: Today I worked 14h straight for the project. Doing fantastic is literally inevitable
+    timestamp: 2022-06-25T20:03:07+00:00

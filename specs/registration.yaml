@@ -1,0 +1,105 @@
+registrationApiInit:
+  get:
+    summary: Initate registration flow
+    operationId: init-user-registration
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/kratos_t.yaml#/selfServiceRegistrationFlow'
+      "400":
+        description: Bad request
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/kratos_t.yaml#/jsonError'
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/kratos_t.yaml#/jsonError'
+    tags:
+      - authentication
+### TPL RENDER {{ template "servers.tpl" "auth" }}
+    servers:
+      - url: https://auth.api.{environment}.mindtastic.lol
+        variables:
+          environment:
+            enum:
+              - live
+              - stage
+              - dev
+            default: live
+### END RENDER {{ template "servers.tpl" "auth" }}
+registrationSubmit:
+  post:
+    summary: Complete registration flow
+    operationId: submit-user-registration
+    parameters:
+      - name: flow
+        in: query
+        required: true
+        explode: true
+        schema:
+          type: string
+        style: form
+        description: The Registration flow ID as an URL Query parameters
+      - name: Cookie
+        in: header
+        required: false
+        explode: false
+        schema:
+          type: string
+        style: simple
+        description: When using the browser flow, the HTTP cookie (encodes session and CSRF token) must be present
+    responses:
+      "200":
+        description: OK. Registration successful.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/registration.yaml#/registration-with-flow-id-response'
+      "303":
+        description: Returns the after auto-login redirection url when a browser flow got submitted.
+      "400":
+        description: Bad requests. API returns a new or already created authflow.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/kratos_t.yaml#/selfServiceRegistrationFlow'
+      "410":
+        description: Gone. The appropriate auth flow expired before submitting.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/kratos_t.yaml#/jsonError'
+      "422":
+        description: The webbrowser is in a browser flow and needs to change its location before submitting.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/kratos_t.yaml#/selfServiceBrowserLocationChangeRequiredError'
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/kratos_t.yaml#/jsonError'
+    x-accepts: application/json
+    x-contentType: application/json
+    tags:
+      - authentication
+### TPL RENDER {{ template "servers.tpl" "auth" }}
+    servers:
+      - url: https://auth.api.{environment}.mindtastic.lol
+        variables:
+          environment:
+            enum:
+              - live
+              - stage
+              - dev
+            default: live
+### END RENDER {{ template "servers.tpl" "auth" }}
