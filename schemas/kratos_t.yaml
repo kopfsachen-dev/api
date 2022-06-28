@@ -715,3 +715,25 @@ selfServiceBrowserLocationChangeRequiredError:
   title: Is sent when a flow requires a browser to change its location.
   type: object
 
+# Compared to the original Kratos API. We're supporting only method: password requests for login
+submitSelfServiceLoginFlowBody:  
+  title: Auth Login Request
+  type: object
+  properties:
+    method:
+      type: string
+      enum:
+        - password
+      description: Method must be set to password 
+    identifier:
+      description: The identifier is the accountKey of the user trying to log in
+      type: string
+    csrf_token:
+      description: Sending the anti-csrf token is only required for browser flow logins
+      type: string
+  required:
+    - identifier
+    - method
+  example:
+    method: password
+    identifier: 518f73a4-2f7a-454a-8648-aebdc4f16206

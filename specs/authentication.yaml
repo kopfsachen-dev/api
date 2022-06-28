@@ -1,6 +1,7 @@
 loginApiInit:
   get:
     description: This endpoint initiates a login flow for API clients that do not use a browser.
+    summary: Initializes Login Flow for APIs, Services, Apps...
     operationId: init-user-login
     parameters:
       - name: refresh
@@ -60,8 +61,21 @@ loginApiInit:
 
 loginSubmit:
   post:
+    description: |-
+      Use this endpoint to submit a login flow with credentials and log a user in.
+
+      If the login is an API flow, it expects 'application/json' to be sent and responds with:
+      HTTP 200 and a response with a session token in the body
+      HTTP 410 if the flow reference in the request parameters expired
+      HTTP 400 on validation errors
+    summary: Submit a Login Flow
     parameters: 
       - $ref: '../schemas/authentication.yaml#/flow'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/kratos_t.yaml#/submitSelfServiceLoginFlowBody'
     responses:
       "200":
         description: "OK."
@@ -72,6 +86,7 @@ loginSubmit:
       "303":
         description: Returns the after login redirection url when a browser flow got submitted.
       "400":
+        description: Invalid request body
         content:
           application/json:
             schema:
@@ -83,6 +98,7 @@ loginSubmit:
             schema:
               $ref: '../schemas/kratos_t.yaml#/jsonError'
       "422":
+        description: Browser login flow requires location change
         content:
           application/json:
             schema:
@@ -110,9 +126,13 @@ loginSubmit:
             default: live
 ### END RENDER {{ template "servers.tpl" "auth" }}
 
-logout: 
+logout:
   delete:
     operationId: user-logout
+    summary: Self-Service Logout
+    description: |-
+      This endpoint logs out an identity in a self-service manner and invalidates a session token.
+      Not completly documented yet.
     responses:
       '200':
         description: OK

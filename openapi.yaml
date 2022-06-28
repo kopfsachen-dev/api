@@ -3,6 +3,9 @@ info:
   title: Kopfsachen
   version: '0.2'
   description: Kopfsachen e. V. is an association for the promotion of young people's mental health. The goal is to teach the basics of mental health literacy in various educational formats.
+  license:
+    name: MIT license
+    url: "https://github.com/kopfsachen-dev/api/blob/main/LICENSE"
   contact:
     name: Kopfsachen e. V.
     email: mail@kopfsachen.org
@@ -48,32 +51,26 @@ components:
   securitySchemes:
     jwt:
       $ref: 'specs/authorization.yaml#/securitySchemes/JWTAuth'
-  schemas:
-    timestamp:
-      title: timestamp
-      type: object
-      properties:
-        timestamp:
-          type: string
-          format: date-time
+  schemas: {}
   headers: {}
   responses: {}
-  parameters:
-    motivatorId:
-      name: motivatorId
-      in: path
-      required: true
-      schema:
-        type: integer
+  parameters: {}
   requestBodies: {}
 tags:
   - name: user-service
+    description: Service for storing user data and settings
   - name: notification-service
+    description: Notifier is used to set up a variety of notifications, e.g. to remind a user of completing an motivator exercise
   - name: mood-diary-service
+    description: Fetch and stores mood diary data
   - name: motivator-service
+    description: Motivator exercises and safetynet
   - name: wiki-service
+    description: Static wiki articles
   - name: administration-service
+    description: Endpoints for building administration services
   - name: tilt-service
+    description: Tilt provides transparency information on data processing using the TILT format
   - name: authentication
     description: 'The authentication API is based on the ORY Kratos HTTP API, but with some additional tweaks. See [Kratos Docs](https://www.ory.sh/docs/kratos/reference/api) and [Mindtastic Docs](github.com/mindtastic/bouncer/wiki) for more information.'
 servers:

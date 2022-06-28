@@ -28,8 +28,8 @@ user:
       enum:
         - admin
         - user
-    required:
-      - user_id
+  required:
+    - user_id
 
 user-with-id:
   title: user-with-id

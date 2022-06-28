@@ -29,6 +29,7 @@ getAll:
 getOne:
   get:
     summary: Fetch single wiki entry
+    operationId: get-single-wiki
     parameters:
       - $ref: '../schemas/wiki.yaml#/entryId'
     responses:
