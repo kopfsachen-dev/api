@@ -23,11 +23,10 @@ safetyNetItem:
       type: string
       minLength: 1
       enum:
-        - friends
-        - sport
-        - pet
-        - music
-        - personality
+        - personalStrengths
+        - people
+        - pets
+        - activities
         - situationControl
         - relaxation
         - other
