@@ -1,48 +1,55 @@
-getAll:
+getMany:
   get:
-    summary: Get all available wiki entries
-    responses:
-      "200":
-        description: OK
-        content:
-          application/json:
-            schema:
-                $ref: '../schemas/wiki.yaml#/entryList'
-      "500":
-        description: Internal Server Error
-    operationId: get-wiki
-    x-accepts: application/json
-    tags:
-      - wiki-service
-### TPL RENDER {{ template "servers.tpl" "wiki" }}
-    servers:
-      - url: https://wiki.api.{environment}.mindtastic.lol
-        variables:
-          environment:
-            enum:
-              - live
-              - stage
-              - dev
-            default: live
-### END RENDER {{ template "servers.tpl" "wiki" }}
+    summary: Fetch wiki entries
+    operationId: wiki:list-entries
+    description: |-
+      This endpoint returns a list of multiple wiki entries. 
 
-getOne:
-  get:
-    summary: Fetch single wiki entry
+      You can use the `query` parameter to perform a fulltext search on `title` and `content`.
+
+      By default max. 20 WikiEntrys will be in the response. To fetch more, it's recommended to perform multiple queries (API Pagination). Use the `limit` and `offset` parameters.
     parameters:
-      - $ref: '../schemas/wiki.yaml#/entryId'
+      - name: query
+        in: query
+        required: false
+        schema:
+          title: Fulltext Search Query
+          type: string
+      - name: limit
+        in: query
+        description: |-
+          The maximum number of articles the response will include (Use together with `offset` for api pagination).
+        required: false
+        schema:
+          title: Article Limit
+          type: integer
+          minimum: 1
+          default: 20
+      - name: offset
+        in: query
+        description: |-
+          The number of articles that will we skipped in response (Use together wuth `limit` for api pagination).
+        required: false
+        schema:
+          title: Article Offset
+          type: integer
+          minimum: 0
+          default: 0
     responses:
       "200":
-        description: OK
+        description: Success
         content:
           application/json:
             schema:
-              $ref: '../schemas/wiki.yaml#/entry'
-      "404":
-        description: Not found
+              $ref: '../schemas/wiki.yaml#/ListOfWikiEntries'
+      "422":
+        description: Invalid request parameters we're provided
+        content:
+          application/json:
+            $ref: '../schemas/wiki.yaml#/ValidationError'
       "500":
         description: Internal Server Error
-    x-accepts: application/json
+    x-contentType: application/json
     tags:
       - wiki-service
 ### TPL RENDER {{ template "servers.tpl" "wiki" }}
@@ -57,33 +64,65 @@ getOne:
             default: live
 ### END RENDER {{ template "servers.tpl" "wiki" }}
 
-adminCreate: 
+# getOne:
+#   get:
+#     summary: Fetch single wiki entry
+#     parameters:
+#       - $ref: '../schemas/wiki.yaml#/entryId'
+#     responses:
+#       "200":
+#         description: OK
+#         content:
+#           application/json:
+#             schema:
+#               $ref: '../schemas/wiki.yaml#/entry'
+#       "404":
+#         description: Not found
+#       "500":
+#         description: Internal Server Error
+#     x-accepts: application/json
+#     tags:
+#       - wiki-service
+# ### TPL RENDER {{ template "servers.tpl" "wiki" }}
+#     servers:
+#       - url: https://wiki.api.{environment}.mindtastic.lol
+#         variables:
+#           environment:
+#             enum:
+#               - live
+#               - stage
+#               - dev
+#             default: live
+# ### END RENDER {{ template "servers.tpl" "wiki" }}
+
+createEntry: 
   post:
+    operationId: wiki:create-entry
     summary: Add new wiki entries
     description: Add wiki entries
     requestBody:
       content:
         application/json:
           schema:
-            $ref: '../schemas/wiki.yaml#/entryList'
+            $ref: '../schemas/wiki.yaml#/CreateEntryBody'
+      required: true
     responses:
       "201":
-        description: Created
+        description: Wiki Article created. It returns the newly inserted WikiEntry with timestamps and id.
         content:
           application/json:
             schema:
-              $ref: '../schemas/wiki.yaml#/insertionResponse'
-      "400":
-        description: Bad Request
+              $ref: '../schemas/wiki.yaml#/WikiEntry'
       "401":
         description: Unauthorized
-      "500":
-        description: Internal server error
+      "422":
+        description: Invalid request body
         content:
           application/json:
             schema:
-              $ref: '../schemas/wiki.yaml#/genericError'
-    operationId: post-wiki
+              $ref: '../schemas/wiki.yaml#/ValidationError'
+      "500":
+        description: Internal Server Error
     x-tira: false
     x-accepts: application/json
     x-contentType: application/json
@@ -102,23 +141,27 @@ adminCreate:
             default: live
 ### END RENDER {{ template "servers.tpl" "wiki" }}
 
-adminDelete:
+deleteSingleEntry:
   delete:
     summary: Delete wiki entry by id.
-    operationId: delete-wiki
+    operationId: wiki:delete-entry
     parameters:
-      - $ref: '../schemas/wiki.yaml#/entryId'
+      - allOf:
+          - $ref: '../schemas/wiki.yaml#/entryId'
+          - required: true
     responses:
-      "200":
-        description: OK
+      "204":
+        description: Deletion successfull.
       "401":
-        description: unauthorized
-      "500":
-        description: Internal server error
+        description: Unauthorized
+      "422":
+        description: Invalid wikiEntryId provided
         content:
           application/json:
             schema:
-              $ref: '../schemas/wiki.yaml#/genericError'
+              $ref: '../schemas/wiki.yaml#/ValidationError'
+      "500":
+        description: Internal server error
     tags:
       - wiki-service
       - admin

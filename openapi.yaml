@@ -37,13 +37,13 @@ paths:
   /tilt:
     $ref: 'specs/tilt.yaml#/endpoints'
   /wiki:
-    $ref: 'specs/wiki.yaml#/getAll'
-  /wiki/{wikiEntryId}:
-    $ref: 'specs/wiki.yaml#/getOne'
+    $ref: 'specs/wiki.yaml#/getMany'
+  # /wiki/{wikiEntryId}:
+  #   $ref: 'specs/wiki.yaml#/getOne'
   /wiki/admin:
-    $ref: 'specs/wiki.yaml#/adminCreate'
+    $ref: 'specs/wiki.yaml#/createEntry'
   /wiki/{wikiEntryId}/admin:
-    $ref: 'specs/wiki.yaml#/adminDelete'
+    $ref: 'specs/wiki.yaml#/deleteSingleEntry'
 components:
   securitySchemes:
     jwt:

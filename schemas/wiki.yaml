@@ -7,53 +7,77 @@ entryId:
     type: string
   style: form
 
-entry:
-  title: Wiki Entry
+CreateEntryBody:
+  title: Create Entry Request Body
   type: object
   properties:
     title:
+      title: Title
       type: string
     content:
+      title: Content
+      type: string
+  example:
+    title: Fassmodell
+    content: \n# Stress ist ein Spannungszustand, der unseren Körper bereit für eine Reaktion macht.\n\n In diesem Zustand...
+    
+WikiEntry:
+  title: Wiki Entry
+  type: object
+  properties:
+    id:
+      title: WikiEntryId
+      type: string
+    title:
+      title: Title
+      type: string
+    content:
+      title: Content
+      type: string
+    created_at:
+      title: Created At
+      type: string
+      format: date-time
+    updated_at:
+      title: Updated At
+      type: string
+      format: date-time
+  required:
+    - title
+    - content
+
+ListOfWikiEntries:
+  title: List of Wiki Entries
+  type: object
+  properties:
+    entry_count:
+      title: Entry count
+      type: integer
+    entries:
+      title: Entries
       type: array
       items:
-        oneOf:
-          - type: string
-          - type: object
+        $ref: '#/WikiEntry'
+  required:
+  - entry_count
+  - entries
 
-entryList:
-  title: Wiki Entry List
-  type: array
-  items:
-    $ref: '#/entry'
-
-insertionResponse:
-  title: Wiki Insertion Response
+ValidationError:
+  title: ValidationError
+  required:
+  - loc
+  - msg
+  - type
   type: object
   properties:
-    status_code:
-      type: integer
-      description: The HTTP status code of the response
-    success:
-      type: boolean
-      description: True if all provided wiki entries have been inserted successfully into the database
-    insertedCount:
-      type: integer
-      description: The number of inserted wiki entries on the operation
-  example:
-    status_code: 201
-    success: true
-    insertCount: 2
-
-genericError:
-  title: Wiki API Generic Error
-  type: object
-  properties:
-    status_code:
-      type: integer
-      description: The HTTP status code of the reponse
-    error:
+    loc:
+      title: Location
+      type: array
+      items:
+        type: string
+    msg:
+      title: Message
       type: string
-      description: Error message
-  example:
-    status_code: 500
-    error: Could not delete existing articles, so insertion could not be done. Please try again
+    type:
+      title: Error Type
+      type: string
