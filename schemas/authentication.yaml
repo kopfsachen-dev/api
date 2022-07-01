@@ -1,13 +1,9 @@
 session:
-  title: Kratos API Session
+  title: Bouncer API Session
   type: object
   properties:
-    session_token:
-      type: string
     session:
-      type: object
-  example:
-    session_token: 2wBPKcSG0KxSxDBrgJA8ackTwBIea9y5
+      $ref: './kratos_t.yaml#/session'
 
 flow:
   name: flow

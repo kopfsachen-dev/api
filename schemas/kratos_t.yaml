@@ -116,6 +116,19 @@ apiRegistraionFlowExample:
       messages: []
       nodes: [ "..." ]
 
+apiLoginFlow:
+  anyOf:
+    - $ref: '#/apiLoginFlowExample'
+    - $ref: '#/selfServiceLoginFlow'
+
+apiLoginFlowExample:
+  example:
+    anyOf:
+      - request_url: http://auth.api.dev.mindtastic.lol/self-service/login/api
+        ui:
+          action: https://auth.api.dev.mindtastic.lol/self-service/login?flow=dae01032-cdd6-4381-82f5-1f7f4d2c42c6
+      - $ref: '#/apiRegistraionFlowExample'
+
 browserRegistrationFlow:
   anyOf:
     - $ref: '#/browserRegistrationFlowExample'
@@ -130,6 +143,35 @@ browserRegistrationFlowExample:
     request_url: http://auth.api.live.mindtastic.lol/self-service/registration/browser
     ui:
       action: https://auth.api.live.mindtastic.lol/self-service/registration?flow=2e1a12cd-6d01-4f5a-b0db-2ea60b99d5ea
+      method: POST
+      nodes:
+        - type: input
+          group: default
+          attributes:
+            name: csrf_token
+            type: hidden
+            value: 2JScJjx9C0OLCB9O3GSVDHCBGHbXdNZ9B59StFXBlSRKt0hnb3bp
+            required: true
+            disable: false
+            node_type: input
+          messages: []
+          meta: {}
+        - "..."
+
+browserLoginFlow:
+  anyOf:
+    - $ref: '#/browserLoginFlowExample'
+    - $ref: '#/selfServiceLoginFlow'
+
+browserLoginFlowExample:
+  example:
+    id: bedd058f-61bb-44de-a6b3-10fccccfd8f8
+    type: browser
+    expires_at: 2022-07-01T09:47:19.498757726Z
+    issued_at: 022-07-01T09:32:19.498757726Z
+    request_url: http://auth.api.live.mindtastic.lol/self-service/login/browser
+    ui:
+      action: https://auth.api.live.mindtastic.lol/self-service/login?flow=bedd058f-61bb-44de-a6b3-10fccccfd8f8
       method: POST
       nodes:
         - type: input
@@ -890,3 +932,22 @@ session:
       2022-07-01T07:48:20.921174998Z
     identity:
       $ref: '#/identity/example'
+
+browserLogoutUrl:
+  title: Bouncer logout URL
+  type: object
+  properties:
+    logout_token:
+      description: LogoutToken can be used to perform logout using AJAX.
+      type: string
+    logout_url:
+      description: |-
+        LogoutURL can be opened in a browser to sign the user out.
+        format: uri
+      type: string
+  required:
+    - logout_token
+    - logout_url
+  example:
+    logout_url: ttps://auth.api.live.mindtastic.lol/self-service/logout?token=iYjs7NWRsQ5AwFETpMqNMrgu82iI8EAX
+    logout_token: iYjs7NWRsQ5AwFETpMqNMrgu82iI8EAX

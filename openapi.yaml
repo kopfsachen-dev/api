@@ -16,10 +16,16 @@ paths:
     $ref: 'specs/registration.yaml#/registrationSubmit'
   /self-service/login/api:
     $ref: 'specs/authentication.yaml#/loginApiInit'
+  /self-service/login/browser:
+    $ref: 'specs/authentication.yaml#/loginBrowserInit'
   /self-service/login:
     $ref: 'specs/authentication.yaml#/loginSubmit'
   /self-service/logout/api:
     $ref: 'specs/authentication.yaml#/logoutApi'
+  /self-service/logout/browser:
+    $ref: 'specs/authentication.yaml#/logoutInitBrowser'
+  /self-service/logout:
+    $ref: 'specs/authentication.yaml#/logoutBrowser'
   /user:
     $ref: 'specs/userService.yaml#/userEndpoints'
   /user/settings:

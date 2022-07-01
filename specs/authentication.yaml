@@ -1,6 +1,10 @@
 loginApiInit:
   get:
-    description: This endpoint initiates a login flow for API clients that do not use a browser.
+    summary: Initiate API login flow
+    description: |- 
+      This endpoint initiates a login flow for API clients that do not use a browser.
+
+      It behaves similar to the registration endpoints.
     operationId: bouncer:initLogin:api
     parameters:
       - name: refresh
@@ -30,13 +34,7 @@ loginApiInit:
           content:
             application/json:
               schema:
-                $ref: '../schemas/kratos_t.yaml#/selfServiceLoginFlow'
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '../schemas/kratos_t.yaml#/jsonError'
+                $ref: '../schemas/kratos_t.yaml#/apiLoginFlow'
         "500":
           description: Internal Service Error
           content:
@@ -58,9 +56,57 @@ loginApiInit:
             default: live
 ### END RENDER {{ template "servers.tpl" "auth" }}
 
+loginBrowserInit:
+  get:
+    operationId: bouncer:initLogin:browser
+    summary: Initiate browser login flow
+    description: |- 
+      This endpoint initiates a login flow for a browser.
+
+      It behaves similar to the registration endpoints.
+    parameters:
+      - name: return_to
+        in: query
+        explode: true
+        required: false
+        schema:
+          type: string
+        style: form
+        description: The URL to return the browser after the flow was completed. For Kopfsachen you might never need that option.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/kratos_t.yaml#/browserRegistrationFlow'
+      '303':
+        description: Redirect to `urls.default_redirect_url` as a valid user session already exists for the HTTP cookie.
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/kratos_t.yaml#/jsonError'
+    x-accepts: application/json
+    tags:
+      - authentication
+### TPL RENDER {{ template "servers.tpl" "auth" }}
+    servers:
+      - url: https://auth.api.{environment}.mindtastic.lol
+        variables:
+          environment:
+            enum:
+              - live
+              - stage
+              - dev
+            default: live
+### END RENDER {{ template "servers.tpl" "auth" }}
+   
+
 loginSubmit:
   post:
     operationId: bouncer:login
+    summary: Submit Login Flow
     parameters: 
       - $ref: '../schemas/authentication.yaml#/flow'
     responses:
@@ -113,7 +159,7 @@ loginSubmit:
 logoutApi: 
   delete:
     operationId: bouncer:logout:api
-    summary: 
+    summary: API user logout 
     description: |-
       This endpoints logs a user out, using the provided session token. If the session token was successfully revoked,
       the server returns a 204 No Content response. A 204 No Content is reponse is also sent when the session token has been already revoked.
@@ -164,4 +210,131 @@ logoutApi:
               - stage
               - dev
             default: live
-### END RENDER {{ template "servers.tpl" "auth" }} 
+### END RENDER {{ template "servers.tpl" "auth" }}
+
+logoutInitBrowser:
+  get:
+    summary: Initiate logout flow for browser
+    operationId: bouncer:initLogout:browser
+    description: |-
+      This endpoint initializes a browser-based user logout flow and a URL which can be used to log out the user.
+
+      This endpoint is NOT INTENDED for API clients and only works with browsers (Chrome, Firefox, ...). For API clients you can call the `/self-service/logout/api` URL directly with the Session Token. The URL is only valid for the currently signed in user. If no user is signed in, this endpoint returns a 401 error.
+
+      When calling this endpoint from a backend, please ensure to properly forward the HTTP cookies.
+    parameters:
+      - description: |-
+          HTTP Cookies
+          If you call this endpoint from a backend, please include the
+          original Cookie header in the request.
+        explode: false
+        in: header
+        name: cookie
+        required: false
+        schema:
+          type: string
+        style: simple
+    responses:
+      '200':
+        summary: Logout Flow initiated
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/kratos_t.yaml#/browserLogoutUrl'
+      '401':
+        summary: Unauthorized request
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/kratos_t.yaml#/jsonError'
+                - example:
+                    error:
+                      id: session_inactive
+                      code: 401
+                      status: Unauthorized
+                      reason: No active session was found in this request.
+                      message: request does not have a valid authentication session
+      '500':
+        summary: Internal Server Error
+        description: Internal Server Error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/kratos_t.yaml#/jsonError'
+    x-accepts: application/json
+    tags:
+      - authentication
+### TPL RENDER {{ template "servers.tpl" "auth" }}
+    servers:
+      - url: https://auth.api.{environment}.mindtastic.lol
+        variables:
+          environment:
+            enum:
+              - live
+              - stage
+              - dev
+            default: live
+### END RENDER {{ template "servers.tpl" "auth" }}
+
+logoutBrowser:
+  get:
+    summary: Submit Browser Logout
+    operationId: bouncer:logout:browser
+    description: |-
+      This endpoint logs out an identity in a self-service manner.
+      
+      If the `Accept` HTTP header is not set to `application/json`, the browser will be redirected (HTTP 303 See Other) to the `return_to` parameter of the initial request or fall back to `urls.default_return_to`.
+
+      If the `Accept` HTTP header is set to `application/json`, a 204 No Content response will be sent on successful logout instead.
+
+      This endpoint is NOT INTENDED for API clients and only works
+      with browsers (Chrome, Firefox, ...). For API clients you can
+      call the `/self-service/logout/api` URL directly with the Ory Session Token.
+    parameters:
+      - name: token
+        in: query
+        required: false
+        explode: true
+        schema:
+          type: string
+        style: form
+        description: |-
+          A Valid Logout Token
+
+          If you do not have a logout token because you only have a session cookie,
+          call `/self-service/logout/browser`
+      - name: return_to
+        in: query
+        required: false
+        schema:
+          type: string
+        style: form
+        description: The URL to return to after the logout was completed.
+    responses:
+      '204':
+        description: Logout succesfull
+      '303':
+        description: Redirection after successfull logout
+      "500":
+        description: Internal Server Error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/kratos_t.yaml#/jsonError'
+    x-accepts: application/json
+    tags:
+      - authentication
+### TPL RENDER {{ template "servers.tpl" "auth" }}
+    servers:
+      - url: https://auth.api.{environment}.mindtastic.lol
+        variables:
+          environment:
+            enum:
+              - live
+              - stage
+              - dev
+            default: live
+### END RENDER {{ template "servers.tpl" "auth" }}        
