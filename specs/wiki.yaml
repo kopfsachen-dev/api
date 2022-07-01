@@ -47,7 +47,7 @@ getMany:
         content:
           application/json:
             schema:
-              $ref: '../schemas/wiki.yaml/#ValidationError'
+              $ref: '../schemas/wiki.yaml#/ValidationError'
       "500":
         description: Internal Server Error
     x-contentType: application/json
