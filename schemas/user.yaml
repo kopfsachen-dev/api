@@ -4,7 +4,7 @@ RoleEnum:
     - admin
     - user
   type: string
-  description: An enumeration.
+  description: An enumeration of roles.
 
 UserDataResponse:
   title: User Data Response
