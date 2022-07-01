@@ -19,7 +19,7 @@ CreateEntryBody:
       type: string
   example:
     title: Fassmodell
-    content: \n# Stress ist ein Spannungszustand, der unseren Körper bereit für eine Reaktion macht.\n\n In diesem Zustand...
+    content: \n# Stress\n\n Stress ist ein Spannungszustand, der unseren Körper bereit für eine Reaktion macht.\n\n In diesem Zustand...
     
 WikiEntry:
   title: Wiki Entry
