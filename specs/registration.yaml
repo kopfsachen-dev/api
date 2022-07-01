@@ -1,20 +1,28 @@
-registrationApiInit:
+registrationInitApi:
   get:
-    summary: Initate registration flow
-    operationId: init-user-registration
+    summary: Initate registration flow for APIs, Services, ...
+    description: |-
+      This endpoint initiates a registration flow for API clients such as microservices, mobile devices, and so on.
+
+      To fetch and interact with an existing registration flow call `/self-service/registration/flows?flow=<flow_id>`.
+
+      You MUST NOT use this endpoint in browser applications, neither client-side (SPAs, React, Angular) nor server-side (JSP, NodeJS). Using this endpoint makes you vulnerable to [CSRF attacks](https://owasp.org/www-community/attacks/csrf).
+      
+      This endpoint MUST ONLY be used in scenarios such as native mobile apps (React Native, Objective C, Swift, Java, ...).
+    operationId: bouncer:initRegistration:api
     responses:
       "200":
-        description: OK
+        summary: API Login Flow created
+        description: |-
+          The login flow got created successfully. While the response returns a lot of information, that can be used to build a UI accordingly, it might be enough to extract the `id` value from the JSON response most of the time.
+
+          `id` is the `flowId` you need to provide to the `POST` registration endpoint.
+
+          You can extract the URL of the endpoint to call also from `ui.action` with the required HTTP method `ui.method`
         content:
           application/json:
             schema:
-              $ref: '../schemas/kratos_t.yaml#/selfServiceRegistrationFlow'
-      "400":
-        description: Bad request
-        content:
-          application/json:
-            schema:
-              $ref: '../schemas/kratos_t.yaml#/jsonError'
+              $ref: '../schemas/kratos_t.yaml#/apiRegistrationFlow'
       "500":
         description: Internal server error
         content:
@@ -34,10 +42,79 @@ registrationApiInit:
               - dev
             default: live
 ### END RENDER {{ template "servers.tpl" "auth" }}
+
+
+registrationInitBrowser:
+  get:
+    operationId: bouncer:initRegistration:browser
+    summary: Initialize Registration Flow for Browsers
+    description: |-
+      This endpoint initializes a browser-based user registration flow. This endpoint will set the appropriate cookies and anti-CSRF measures required for browser-based flows.
+
+      If this endpoint is opened as a link in the browser, it will be redirected to
+      `selfservice.flows.registration.ui_url` with the flow ID set as the query parameter `?flow=`. 
+      
+      If a valid user session exists already, the browser will be redirected to `urls.default_redirect_url`.
+
+      If this endpoint is called via an AJAX request, the response contains the flow without a redirect. In the case of an error, the `error.id` of the JSON response body can be one of:
+
+        - `session_already_available`: The user is already signed in.
+
+        - `security_csrf_violation`: Unable to fetch the flow because a CSRF violation occurred.
+
+        - `security_identity_mismatch`: The backend team fucked something up.
+      
+      If this endpoint is called via an AJAX request, the response contains the registration flow without a redirect.
+
+      This endpoint is NOT INTENDED for clients that do not have a browser (Chrome, Firefox, ...) as cookies are needed.
+    parameters:
+      - name: return_to
+        in: query
+        explode: true
+        required: false
+        schema:
+          type: string
+        style: form
+        description: The URL to return the browser after the flow was completed. For Kopfsachen you might never need that option.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/kratos_t.yaml#/browserRegistrationFlow'
+      '303':
+        description: Redirect to `urls.default_redirect_url` as a valid user session already exists for the HTTP cookie.
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/kratos_t.yaml#/jsonError'
+    x-accepts: application/json
+    tags:
+      - authentication
+### TPL RENDER {{ template "servers.tpl" "auth" }}
+    servers:
+      - url: https://auth.api.{environment}.mindtastic.lol
+        variables:
+          environment:
+            enum:
+              - live
+              - stage
+              - dev
+            default: live
+### END RENDER {{ template "servers.tpl" "auth" }}
+
 registrationSubmit:
   post:
     summary: Complete registration flow
-    operationId: submit-user-registration
+    operationId: bouncer:register
+    description: |-
+      Use this endpoint to complete a registration flow. It will generate the unique account key for the newly created user, that serves as single credential in the authentication system.
+
+      On success, the account key is in the response at `identity.traits.accountKey`. Fetch it and **save it carefully**, as there is no way to recover a lost account.
+
+      The endpoint also performs auto login. The session token that can be used authorize requests, using `Authentication: Bearer <session token>` HTTP header is in `session.id`.
     parameters:
       - name: flow
         in: query
@@ -65,11 +142,17 @@ registrationSubmit:
       "303":
         description: Returns the after auto-login redirection url when a browser flow got submitted.
       "400":
-        description: Bad requests. API returns a new or already created authflow.
+        description: Bad requests. Maybe the flow id missing.
         content:
           application/json:
             schema:
-              $ref: '../schemas/kratos_t.yaml#/selfServiceRegistrationFlow'
+              allOf:
+                - $ref: '../schemas/kratos_t.yaml#/jsonError'
+                - example:
+                    code: 400
+                    status: Bad Request
+                    reason: The flow query parameter is missing or malformed
+                    message: The request was malformed or contained invalid parameters
       "410":
         description: Gone. The appropriate auth flow expired before submitting.
         content:

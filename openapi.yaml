@@ -9,15 +9,17 @@ info:
     url: 'https://www.kopfsachen.org'
 paths:
   /self-service/registration/api:
-    $ref: 'specs/registration.yaml#/registrationApiInit'
+    $ref: 'specs/registration.yaml#/registrationInitApi'
+  /self-service/registration/browser:
+    $ref: 'specs/registration.yaml#/registrationInitBrowser'
   /self-service/registration:
     $ref: 'specs/registration.yaml#/registrationSubmit'
   /self-service/login/api:
     $ref: 'specs/authentication.yaml#/loginApiInit'
   /self-service/login:
     $ref: 'specs/authentication.yaml#/loginSubmit'
-  /self-service/logout:
-    $ref: 'specs/authentication.yaml#/logout'
+  /self-service/logout/api:
+    $ref: 'specs/authentication.yaml#/logoutApi'
   /user:
     $ref: 'specs/userService.yaml#/userEndpoints'
   /user/settings:

@@ -1,7 +1,7 @@
 loginApiInit:
   get:
     description: This endpoint initiates a login flow for API clients that do not use a browser.
-    operationId: init-user-login
+    operationId: bouncer:initLogin:api
     parameters:
       - name: refresh
         in: query
@@ -60,6 +60,7 @@ loginApiInit:
 
 loginSubmit:
   post:
+    operationId: bouncer:login
     parameters: 
       - $ref: '../schemas/authentication.yaml#/flow'
     responses:
@@ -97,7 +98,6 @@ loginSubmit:
     x-contentType: application/json
     tags:
       - authentication
-    operationId: submit-user-login
 ### TPL RENDER {{ template "servers.tpl" "auth" }}
     servers:
       - url: https://auth.api.{environment}.mindtastic.lol
@@ -110,14 +110,48 @@ loginSubmit:
             default: live
 ### END RENDER {{ template "servers.tpl" "auth" }}
 
-logout: 
+logoutApi: 
   delete:
-    operationId: user-logout
+    operationId: bouncer:logout:api
+    summary: 
+    description: |-
+      This endpoints logs a user out, using the provided session token. If the session token was successfully revoked,
+      the server returns a 204 No Content response. A 204 No Content is reponse is also sent when the session token has been already revoked.
+
+      If the session token is malformed or does not exists a 403 Forbidden response is returned.
+
+      This endpoint is only intended for API applications, as it does not remove any HTTP Cookies. Use the Browser logout instead.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/kratos_t.yaml#/submitSelfServiceLogoutFlowWithoutBrowserBody'
+      required: true
+      x-originalParamName: Body
     responses:
-      '200':
-        description: OK
+      '204':
+        description: Logout successfull
+      '403':
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/kratos_t.yaml#/jsonError'
+                - example:
+                    error:
+                      code: 403
+                      status: Forbidden
+                      message: The requested action was forbidden
+                      reason: |-
+                        The provided Ory Session Token could not be found, is invalid, or otherwise malformed.
       '500':
         description: Internal Service Error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/kratos_t.yaml#/jsonError'
+    x-contentType: application/json
+    x-accepts: application/json
     tags:
       - authentication
 ### TPL RENDER {{ template "servers.tpl" "auth" }}
