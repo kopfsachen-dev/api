@@ -61,29 +61,9 @@ loginBrowserInit:
     operationId: bouncer:initLogin:browser
     summary: Initiate browser login flow
     description: |- 
-      Use this endpoint to complete a login flow. This endpoint behaves differently for API and browser flows, similar to the registration endpoint.
+      This endpoint initializes a browser-based user registration flow. This endpoint will set the appropriate cookies and anti-CSRF measures required for browser-based flows.
 
-      API flow:
-        - An API flow expects `application/json` to be sent in the request body, according to the spec.
-
-        - On success it responses with `200 OK` and an application/json body with the session Token.
-
-        - If the request body is invalid, hence the validations fails, a `400 Bad Request` error is returned.
-
-        - If the flow expired, a `410 Gone` response is returned, with the appropriate error message set.
-
-      Browser flow:
-        - Browser flows expects Content-Type and Accepts headers of `application/json`.
-
-        - The request body must contain a valid `csrf_token`
-
-        - On success, a `200 OK` response is returned with a body containing the the session and identitiy information on the logged in user. The response also contains a `Set-Cookie` header.
-
-        - If the flow expired, it responds with `303 See Other`. Call the /self-service/login/browser endpoint again to get a new flow.
-
-        - If the request body is invalid, hence the validations fails, a `400 Bad Request` error is returned.
-
-      Extract `session.id` as it's your session token. You can now authorize requests by setting the `Authorize: Bearer <session token>` header on requests.
+      The request must provide an Accepts headers of `application/json`
     parameters:
       - name: return_to
         in: query
@@ -128,7 +108,29 @@ loginSubmit:
     operationId: bouncer:login
     summary: Submit Login Flow
     description: |-
+      Use this endpoint to complete a login flow. This endpoint behaves differently for API and browser flows, similar to the registration endpoint.
 
+      API flow:
+        - An API flow expects `application/json` to be sent in the request body and the Content-Type header to be set accordingly.
+
+        - On success it responses with `200 OK` and an application/json body with the session Token.
+
+        - If the request body is invalid, hence the validations fails, a `400 Bad Request` error is returned.
+
+        - If the flow expired, a `410 Gone` response is returned, with the appropriate error message set.
+
+      Browser flow:
+        - Browser flows expects Content-Type and Accepts headers of `application/json`.
+
+        - The request body must contain a valid `csrf_token`
+
+        - On success, a `200 OK` response is returned with a body containing the the session and identitiy information on the logged in user. The response also contains a `Set-Cookie` header.
+
+        - If the flow expired, it responds with `303 See Other`. Call the /self-service/login/browser endpoint again to get a new flow.
+
+        - If the request body is invalid, hence the validations fails, a `400 Bad Request` error is returned.
+
+      Extract `session.id` as it's your session token. You can now authorize requests by setting the `Authorize: Bearer <session token>` header on requests.
     parameters:
       - $ref: '../schemas/authentication.yaml#/flow'
     requestBody:
@@ -245,6 +247,8 @@ logoutInitBrowser:
     operationId: bouncer:initLogout:browser
     description: |-
       This endpoint initializes a browser-based user logout flow and a URL which can be used to log out the user.
+
+      The request must provide an Accepts headers of `application/json`
 
       This endpoint is NOT INTENDED for API clients and only works with browsers (Chrome, Firefox, ...). For API clients you can call the `/self-service/logout/api` URL directly with the Session Token. The URL is only valid for the currently signed in user. If no user is signed in, this endpoint returns a 401 error.
 

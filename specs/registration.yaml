@@ -50,6 +50,8 @@ registrationInitBrowser:
     description: |-
       This endpoint initializes a browser-based user registration flow. This endpoint will set the appropriate cookies and anti-CSRF measures required for browser-based flows.
 
+      The request must provide an Accepts headers of `application/json`
+
       If this endpoint is opened as a link in the browser, it will be redirected to
       `selfservice.flows.registration.ui_url` with the flow ID set as the query parameter `?flow=`. 
       
