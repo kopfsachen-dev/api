@@ -3,12 +3,11 @@ moodData:
   title: Mood Data Object
   properties:
     mood_day:
-      type:
-        oneOf:
-          - type: string
-            format: date
-          - type: string
-            format: date-time
+      oneOf: 
+        - type: string
+          format: date
+        - type: string
+          format: date-time
     mood_type:
       type: string
       enum:

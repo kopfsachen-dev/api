@@ -71,6 +71,7 @@ endpoints:
 singleEndpoints:
   get:
     summary: Fetch single mood diary entry
+    operationId: diary:mood:get
     description: |-
       Endpoint returns a single moodd diary entry by it's ID (passed as an URL parameter)
 
@@ -81,14 +82,18 @@ singleEndpoints:
     parameters:
       - $ref: '../schemas/diary.yaml#/moodIdParameter'
     responses:
-      allOf:
-        - '200':
-            description: Success
-            content:
-              application/json:
-                schema:
-                  $ref: '../schemas/diary.yaml#/mood'
-        - $ref: '#/singleEndpointCommonResponses'
+      '200':
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/diary.yaml#/mood'
+      '401':
+        description: Unauthorized
+      '404':
+        description: Mood diary entry with provided id not found
+      '500':
+        description: Internal server error
     x-tira: true 
     tags:
       - mood-diary-service
@@ -96,6 +101,7 @@ singleEndpoints:
       - jwt: []
   put:
     summary: Update a single mood diary entry
+    operationId: diary:mood:update
     description: |-
       Use this endpoint to update a mood diary entry.
 
@@ -110,19 +116,23 @@ singleEndpoints:
           schema:
             $ref: '../schemas/diary.yaml#/moodData'
     responses:
-      allOf:
-        - '204':
-            description: Mood diary entry updated successfully.
-        - '422':
-            description: |-
-              Unprocessable entity.
-        
-              The request data validation failed.
-            content:
-              application/json:
-                schema:
-                  $ref: '../schemas/diary.yaml#/ValidationError'
-        - $ref: '#/singleEndpointCommonResponses'
+      '204':
+        description: Mood diary entry updated successfully.
+      '422':
+        description: |-
+          Unprocessable entity.
+    
+          The request data validation failed.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/diary.yaml#/ValidationError'
+      '401':
+        description: Unauthorized
+      '404':
+        description: Mood diary entry with provided id not found
+      '500':
+        description: Internal server error
     x-tira: true 
     tags:
       - mood-diary-service
@@ -130,6 +140,7 @@ singleEndpoints:
       - jwt: []
   delete:
     summary: Delete single mood diary entry
+    operationId: diary:mood:delete
     description: |-
       Use this endpoint to delete a single entry from a users mood diary by it's userId.
 
@@ -137,10 +148,14 @@ singleEndpoints:
     parameters:
       - $ref: '../schemas/diary.yaml#/moodIdParameter'
     responses:
-      allOf:
-        - '204':
-            description: Mood diary entry deleted successfully.
-        - $ref: '#/singleEndpointCommonResponses'
+      '204':
+        description: Mood diary entry deleted successfully.
+      '401':
+        description: Unauthorized
+      '404':
+        description: Mood diary entry with provided id not found
+      '500':
+        description: Internal server error
     x-tira: true 
     tags:
       - mood-diary-service
@@ -157,11 +172,3 @@ singleEndpoints:
             - dev
           default: live
 ### END RENDER {{ template "servers.tpl" "diary" }}
-
-singleEndpointCommonResponses:
-  '401':
-    description: Unauthorized
-  '404':
-    description: Mood diary entry with provided id not found
-  '500':
-    description: Internal server error
