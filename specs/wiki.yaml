@@ -1,7 +1,7 @@
 getMany:
   get:
     summary: Fetch wiki entries
-    operationId: wiki:list-entries
+    operationId: wiki:list
     description: |-
       This endpoint returns a list of multiple wiki entries. 
 
@@ -40,7 +40,7 @@ getMany:
         required: false
         schema:
           type: boolean
-        default: false
+          default: false
         description: |-
           If the with content attribute is not `true`, the response will not return the content of wiki articles, but only the title and metadata attributes.
 
@@ -83,6 +83,7 @@ getMany:
 getOne:
   get:
     summary: Fetch single wiki entry
+    operationId: wiki:get
     description: |-
       This article can be used to fetch a single wiki entry.
 
