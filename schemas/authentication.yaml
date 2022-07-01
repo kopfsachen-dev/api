@@ -29,7 +29,8 @@ browserFlowSubmitBody:
             format: uuid
           method:
             type: string
-            const: password
+            enum:
+              - password
           password:
             type: string
           csrf_token:
