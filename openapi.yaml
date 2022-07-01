@@ -43,8 +43,8 @@ paths:
     $ref: 'specs/motivator.yaml#/motivatorEndpoints'
   /motivator/result/{motivatorId}:
     $ref: 'specs/motivator.yaml#/motivatorResultEndpoints'
-  /notification:
-    $ref: 'specs/notifications.yaml#/usersNotificationsEndpoint'
+  # /notification:
+  #   $ref: 'specs/notifications.yaml#/usersNotificationsEndpoint'
   /tilt:
     $ref: 'specs/tilt.yaml#/endpoints'
   /wiki:
@@ -67,8 +67,8 @@ components:
 tags:
   - name: user-service
     description: Service for storing user data and settings
-  - name: notification-service
-    description: Notifier is used to set up a variety of notifications, e.g. to remind a user of completing an motivator exercise
+  # - name: notification-service
+  #   description: Notifier is used to set up a variety of notifications, e.g. to remind a user of completing an motivator exercise
   - name: mood-diary-service
     description: Fetch and stores mood diary data
   - name: motivator-service
