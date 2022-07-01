@@ -46,7 +46,8 @@ getMany:
         description: Invalid request parameters we're provided
         content:
           application/json:
-            $ref: '../schemas/wiki.yaml/#ValidationError'
+            schema:
+              $ref: '../schemas/wiki.yaml/#ValidationError'
       "500":
         description: Internal Server Error
     x-contentType: application/json
@@ -146,7 +147,7 @@ deleteSingleEntry:
     summary: Delete wiki entry by id.
     operationId: wiki:delete-entry
     parameters:
-      - $ref: '../schemas/wiki.yaml#/wikiEntryId'
+      - $ref: '../schemas/wiki.yaml#/entryId'
     responses:
       "204":
         description: Deletion successfull.
