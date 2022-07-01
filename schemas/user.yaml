@@ -18,10 +18,28 @@ UserDataResponse:
     email:
       title: EMail Adress of user
       type: string
+    settings:
+      $ref: '#/UserSettingsModel'
   example:
     username: maja
     role: user
     email: maja@example.com
+    settings:
+      language: de
+
+UserSettingsModel:
+  title: User Settings
+  type: object
+  properties:
+    language:
+      title: Users preferred language
+      type: string
+      enum:
+        - de
+        - en
+  descriptions: Stores the users settings
+  example:
+    language: de
 
 UpdateUserModel:
   title: UpdateUserModel
@@ -34,8 +52,12 @@ UpdateUserModel:
       "$ref": "#/RoleEnum"
     email:
       type: string
+    settings:
+      $ref: '#/UserSettingsModel'
   example:
     email: maja.new@example.com
+    settings:
+      lang: de
 
 ValidationError:
   title: ValidationError

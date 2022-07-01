@@ -31,8 +31,6 @@ paths:
     $ref: 'specs/authentication.yaml#/logoutBrowser'
   /users:
     $ref: 'specs/userService.yaml#/userEndpoints'
-  /users/settings:
-    $ref: 'specs/userService.yaml#/userSettingsEndpoint'
   /admin/users:
     $ref: 'specs/userService.yaml#/adminEndpoints'
   /diary:
