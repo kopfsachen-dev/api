@@ -49,11 +49,11 @@ paths:
     $ref: 'specs/tilt.yaml#/endpoints'
   /wiki:
     $ref: 'specs/wiki.yaml#/getMany'
-  # /wiki/{wikiEntryId}:
-  #   $ref: 'specs/wiki.yaml#/getOne'
+  /wiki/{articleId}:
+    $ref: 'specs/wiki.yaml#/getOne'
   /wiki/admin:
     $ref: 'specs/wiki.yaml#/createEntry'
-  /wiki/{wikiEntryId}/admin:
+  /wiki/{articleId}/admin:
     $ref: 'specs/wiki.yaml#/deleteSingleEntry'
 components:
   securitySchemes:

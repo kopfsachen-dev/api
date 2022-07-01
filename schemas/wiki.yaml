@@ -1,28 +1,39 @@
-entryId:
-  name: wikiEntryId
+wikiExample:
+  example:
+    title: Fassmodell
+    content: |
+      # Stress
+      
+      Stress ist ein Spannungszustand, der unseren Körper bereit für eine Reaktion macht.
+      In diesem Zustand...
+
+articleId:
+  name: articleId
   description: ID of a wiki entry
   in: path
   required: true
   schema:
     type: string
+    minLength: 24
+    maxLenth: 24
   style: form
+  example: 62bda938ada05ab5872edea7
 
 CreateEntryBody:
-  title: Create Entry Request Body
-  type: object
-  properties:
-    title:
-      title: Title
-      type: string
-    content:
-      title: Content
-      type: string
-  example:
-    title: Fassmodell
-    content: \n# Stress\n\n Stress ist ein Spannungszustand, der unseren Körper bereit für eine Reaktion macht.\n\n In diesem Zustand...
-    
-WikiEntry:
-  title: Wiki Entry
+  allOf:
+    - title: Create Entry Request Body
+      type: object
+      properties:
+        title:
+          title: Title
+          type: string
+        content:
+          title: Content
+          type: string
+    - $ref: '#/wikiExample'
+
+WikiEntryHeader:
+  title: Wiki Entry Header
   type: object
   properties:
     id:
@@ -30,9 +41,6 @@ WikiEntry:
       type: string
     title:
       title: Title
-      type: string
-    content:
-      title: Content
       type: string
     created_at:
       title: Created At
@@ -44,23 +52,59 @@ WikiEntry:
       format: date-time
   required:
     - title
-    - content
+  example:
+    id: 5349b4ddd2781d08c09890f3
+    created_at: '2022-07-01T18:04:03+0000'
+    updated_at: '2022-07-01T18:04:03+0000'   
 
-ListOfWikiEntries:
-  title: List of Wiki Entries
+WikiEntry:
+  allOf:
+    - $ref: '#/WikiEntryHeader'
+    - title: Wiki Entry
+      properties:
+        content:
+          title: Article content as MD
+          type: string
+      required:
+        - content
+    - example:
+        id: 5349b4ddd2781d08c09890f3
+    - $ref: '#/wikiExample'
+    - example: 
+        created_at: '2022-07-01T18:04:03+0000'
+        updated_at: '2022-07-01T18:04:03+0000'
+
+AbstractList:
   type: object
   properties:
     entry_count:
       title: Entry count
       type: integer
-    entries:
-      title: Entries
-      type: array
-      items:
-        $ref: '#/WikiEntry'
   required:
-  - entry_count
-  - entries
+    - entry_count
+    - entries
+
+ListOfWikiEntries:
+  allOf:
+    - $ref: '#/AbstractList'
+    - title: Wiki Entries
+      properties:
+        entries:
+          title: Entries
+          type: array
+          items:
+            $ref: '#/WikiEntry'
+
+ListOfWikiEntryHeaders:
+  allOf:
+    - $ref: '#/AbstractList'
+    - title: Wiki Headers 
+      properties:
+        entries:
+          title: Entries
+          type: array
+          items:
+            $ref: '#/WikiEntryHeader'
 
 ValidationError:
   title: ValidationError
