@@ -951,3 +951,16 @@ browserLogoutUrl:
   example:
     logout_url: ttps://auth.api.live.mindtastic.lol/self-service/logout?token=iYjs7NWRsQ5AwFETpMqNMrgu82iI8EAX
     logout_token: iYjs7NWRsQ5AwFETpMqNMrgu82iI8EAX
+
+browserFlowSubmitBody:
+  description: |-
+    Providing `csrf_token` is only required for browser flows. For API flows, request body can left empty.
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          csrf_token:
+            type: string
+        example:
+          csrf_token: th93GNHtVYbGg+/l9VUzuljNDlpWWEY7R5or26pwVytdLHpyxD86+ncnUnhaYzJyMU6F1L8d9x1+9PDVgH7B/w==

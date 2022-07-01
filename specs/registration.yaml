@@ -112,6 +112,22 @@ registrationSubmit:
     description: |-
       Use this endpoint to complete a registration flow. It will generate the unique account key for the newly created user, that serves as single credential in the authentication system.
 
+      For API flows:
+        - API flows are responded with `200 OK` on success and a application/json body with the created identity.
+        
+        - It also performs an auto login process and includes `session` and `session_token`.
+
+        - If the flow is expired it returns `410 Gone`.
+
+      For Browser Flows:
+        - Browser flows expects Content-Type and Accepts headers of `application/json`.
+
+        - The request body must contain an application/json body with the `csrf_token` property set accordingly
+
+        - On success they respond with `200 OK` and a application/json body with the signed in identity and a `Set-Cookie` header on success. 
+
+        - If the flow expired, it responds with `303 See Other`. Call the /self-service/registration/browser endpoint again to get a new flow.
+
       On success, the account key is in the response at `identity.traits.accountKey`. Fetch it and **save it carefully**, as there is no way to recover a lost account.
 
       The endpoint also performs auto login. The session token that can be used authorize requests, using `Authentication: Bearer <session token>` HTTP header is in `session.id`.
@@ -132,6 +148,8 @@ registrationSubmit:
           type: string
         style: simple
         description: When using the browser flow, the HTTP cookie (encodes session and CSRF token) must be present
+    requestBody:
+      $ref: '../schemas/kratos_t.yaml#/browserFlowSubmitBody'
     responses:
       "200":
         description: OK. Registration successful.
@@ -140,7 +158,7 @@ registrationSubmit:
             schema:
               $ref: '../schemas/registration.yaml#/registration-with-flow-id-response'
       "303":
-        description: Returns the after auto-login redirection url when a browser flow got submitted.
+        description: Browser flow expired
       "400":
         description: Bad requests. Maybe the flow id missing.
         content:
@@ -159,12 +177,6 @@ registrationSubmit:
           application/json:
             schema:
               $ref: '../schemas/kratos_t.yaml#/jsonError'
-      "422":
-        description: The webbrowser is in a browser flow and needs to change its location before submitting.
-        content:
-          application/json:
-            schema:
-              $ref: '../schemas/kratos_t.yaml#/selfServiceBrowserLocationChangeRequiredError'
       "500":
         description: Internal server error
         content:
