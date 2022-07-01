@@ -37,7 +37,7 @@ UserSettingsModel:
       enum:
         - de
         - en
-  descriptions: Stores the users settings
+  description: Stores the users settings
   example:
     language: de
 

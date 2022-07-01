@@ -129,8 +129,9 @@ adminEndpoints:
       - name: X-User-Id
         in: header
         required: true
-        type: string
-        format: uuid
+        schema:
+          type: string
+          format: uuid
         description: |-
           The service specific user id of the user to create.
 
