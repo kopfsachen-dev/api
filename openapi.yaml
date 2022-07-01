@@ -29,9 +29,9 @@ paths:
     $ref: 'specs/authentication.yaml#/logoutInitBrowser'
   /self-service/logout:
     $ref: 'specs/authentication.yaml#/logoutBrowser'
-  /users:
+  /user:
     $ref: 'specs/userService.yaml#/userEndpoints'
-  /admin/users:
+  /admin/user:
     $ref: 'specs/userService.yaml#/adminEndpoints'
   /diary:
     $ref: 'specs/moodDiary.yaml#/endpoints'
