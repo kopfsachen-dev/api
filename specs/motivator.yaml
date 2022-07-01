@@ -57,61 +57,30 @@ safetyNetEndpoints:
 
 motivatorEndpoints:
   get:
-    summary: Get current motivators by userId.
+    summary: Get motivators for authenticated user
+    operationId: motivator:get
+    description: |-
+      This endpoint returns all motivators that should be available to the user in the frontend.
+
+      A *motivator* is a generic exercise, that displays different type of contexts and eventually offers input elements. 
     responses:
       '200':
-        description: OK
+        description: |-
+          OK. A list of avaiable motivator exercises for the currently authenticated user is returned.
+
+          The content to display is presented in `content` as ordered array. Each element should be displayed in the order of occurence in the array.
+
+          If a content object has the type input, it returns an `id` of an input object presented in `inputs`. Each input object offers one or more so called fields. A field is an individual, configurable input type. You can think of an input as a HTML form, which also consists out of multiple input elements and then submits all user inputs to the server.
+
+          See the `POST /motivator/result` endpoint on how to send user inputs to the server.
         content:
           application/json:
             schema:
-              type: array
-              items:
-                allOf:
-                  - $ref: '../schemas/motivator.yaml#/motivator'
-                  - $ref: '../schemas/motivator.yaml#/motivatorResult'
+              $ref: '../schemas/motivator.yaml#/MotivatorList'
       '401':
         description: Unauthorized
       '500':
         description: Internal Server Error
-    operationId: get-motivator-userId
-    description: Get current motivators by userId.
-    tags:
-      - motivator-service
-    security:
-      - jwt: []
-  post:
-    summary: Add motivator to user's motivators.
-    operationId: post-motivator-userId
-    responses:
-      '200':
-        description: OK
-      '201':
-        description: Created
-      '401':
-        description: Unauthorized
-      '500':
-        description: Internal Server Error
-    description: Add motivator to user's motivators.
-    requestBody:
-      content:
-        application/json:
-          schema:
-            $ref: '../schemas/motivator.yaml#/motivator'
-    tags:
-      - motivator-service
-    security:
-      - jwt: []
-  delete:
-    summary: Delete a motivator from user's motivators.
-    operationId: delete-motivator-userId
-    responses:
-      '200':
-        description: OK
-      '401':
-        description: Unauthorized
-      '500':
-        description: Internal Server Error
-    description: Delete a motivator from user's motivators.
     tags:
       - motivator-service
     security:

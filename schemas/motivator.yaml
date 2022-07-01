@@ -1,3 +1,219 @@
+MotivatorList:
+  title: Motivator List
+  type: array
+  items:
+    $ref: '#/Motivator'
+
+Motivator:
+  allOf:
+    - $ref: '#/MotivatorModel'
+    - title: Motivator
+      properties:
+        content:
+          type: array
+          items: 
+            $ref: '#/MotivatorContent'
+        inputs:
+          type: array
+          items:
+            $ref: '#/MotivatorInput'
+
+MotivatorModel:
+  type: object
+  properties:
+    id:
+      type: integer
+      example: 5
+    name:
+      type: string
+      minLength: 1
+      maxLength: 255
+      example: Mindfulness motivator
+    headline:
+      type: string
+      minLength: 1
+      maxLength: 255
+      example: Calm your Headspace with Ease 
+    description:
+      type: string
+      example: |-
+        Long read. Nobodys got time for that nowadays.
+    created_at:
+      type: string
+      format: date-time
+    modified_at:
+      type: string
+      format: date-time
+    
+MotivatorContent:
+  oneOf:
+    - $ref: '#/imageContent'
+    - $ref: '#/textContent'
+    - $ref: '#/pageBreakContent'
+    - $ref: '#/videoContent'
+    - $ref: '#/inputContent'
+  discriminator:
+    propertyName: type
+    mapping:
+      text: '#/textContent'
+      image: '#/imageContent'
+      video: '#/videoContent'
+      input: '#/inputContent'
+      pagebreak: '#/pageBreakContent'      
+
+MotivatorInput:
+  type: object
+  properties:
+    id:
+      type: integer
+      example: 5
+    fields:
+      type: array
+      items:
+        $ref: '#/MotivatorInputElement'
+
+MotivatorInputElement:
+  oneOf:
+    - $ref: '#/MotivatorTextInputElement'
+    - $ref: '#/MotivatorSliderInputElement'
+  discriminator:
+    propertyName: inputType
+    mapping:
+      text: '#/MotivatorTextInputElement'
+      range: '#/MotivatorSliderInputElement'
+
+MotivatorTextInputElement:
+  type: object
+  properties:
+    inputType:
+      type: string
+    label:
+      type: string
+      description: |-
+        A string the input field shall be captioned with.
+    maxLength:
+      type: integer
+      description: |- 
+        Optional value for the maximum allowed length for the text input
+  required:
+    - inputType
+    - label
+  example:
+    inputType: text
+    label: |- 
+      What's the elephant in the room?
+  description: |-
+    A free text input.
+
+    Tells the frontend to display an free text input field (like `<input type="text">` in HTML).
+
+MotivatorSliderInputElement:
+  type: object
+  properties:
+    inputType:
+      type: string
+    label:
+      type: string
+      description: |-
+        A string the range input shall be captioned with
+    options:
+      type: object
+      properties:
+        minValue:
+          type: integer
+          default: 0
+        maxValue:
+          type: integer
+          default: 100
+        stepSize: 
+          type: integer
+          default: 1
+      description: |- 
+        An object that configures the range input
+  required:
+    - inputType
+    - label
+    - range
+  example:
+    inputType: range
+    label: On a scale from 1-10. How important is privacy engineering to you?
+    options:
+      minValue: 1
+      maxValue: 10
+
+textContent:
+  type: object
+  properties:
+    type:
+      type: string
+    text: 
+      type: string
+      description: |-
+        The text that should be presented to the motivator user in markdown format.
+  required:
+    - type
+    - text
+  example:
+    type: text
+    text: |-
+      # Drill Sergeant
+
+      Most definitly a *Starkmacher*.
+
+imageContent:
+  type: object
+  properties:
+    type:
+      type: string
+    url:
+      type: string
+      format: uri
+  required:
+    - type
+    - url
+  example:
+    type: image
+    url: https://http.cat/420
+
+videoContent:
+  type: object
+  properties:
+    type:
+      type: string
+    url:
+      type: string
+      format: uri
+  required:
+    - type
+    - url
+  example:
+    type: video
+    url: https://rroll.to/riSv29
+
+inputContent:
+  type: object
+  properties:
+    type:
+      type: string
+    inputId:
+      type: integer
+  required:
+    - type
+    - inputId
+  example:
+    type: input
+    inputId: 5
+
+pageBreakContent:
+  type: object
+  properties:
+    type:
+      type: string
+  required:
+    - type
+  example:
+    type: pagebreak
+
 safetyNet:
   title: SafetyNet Object
   type: array

@@ -37,12 +37,12 @@ paths:
     $ref: 'specs/moodDiary.yaml#/endpoints'
   /diary/{id}:
     $ref: 'specs/moodDiary.yaml#/singleEndpoints'
-  /safetyNet:
-    $ref: 'specs/motivator.yaml#/safetyNetEndpoints'
   /motivator:
     $ref: 'specs/motivator.yaml#/motivatorEndpoints'
   /motivator/result/{motivatorId}:
     $ref: 'specs/motivator.yaml#/motivatorResultEndpoints'
+  /safetyNet:
+    $ref: 'specs/motivator.yaml#/safetyNetEndpoints'
   # /notification:
   #   $ref: 'specs/notifications.yaml#/usersNotificationsEndpoint'
   /tilt:
@@ -75,8 +75,6 @@ tags:
     description: Motivator exercises and safetynet
   - name: wiki-service
     description: Static wiki articles
-  - name: administration-service
-    description: Endpoints for building administration services
   - name: tilt-service
     description: Tilt provides transparency information on data processing using the TILT format
   - name: authentication
