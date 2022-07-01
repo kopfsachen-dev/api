@@ -2,16 +2,14 @@ endpoints:
   get:
     summary: Get mood diary by userId.
     description: Get the mood diary for the currently authenticated user.
-    operationId: get-mood-diary
+    operationId: diary:mood:getMany
     responses:
       '200':
         description: OK
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '../schemas/diary.yaml#/mood'
+              $ref: '../schemas/diary.yaml#/moodList'
       '401':
         description: Unauthorized
       '500':
@@ -25,40 +23,39 @@ endpoints:
   post:
     summary: Add mood to diary
     description: Add mood to user's diary.
-    operationId: add-mood
+    operationId: diary:mood:create
     requestBody:
       content:
         application/json:
           schema:
-            $ref: '../schemas/diary.yaml#/mood'
+            $ref: '../schemas/diary.yaml#/moodData'
     responses:
       '201':
         description: Created
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/diary.yaml#/mood'
       '401':
         description: Unauthorized
+      '422':
+        description: |-
+          Unprocessable entity.
+      
+          The request data validation failed.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/diary.yaml#/ValidationError'
       '500':
         description: Internal Server Error
     x-contentType: application/json
+    x-accepts: application/json
     x-tira: true 
     tags:
       - mood-diary-service
     security:
       - jwt: []
-  delete:
-    summary: Delete current user's mood diary.
-    description: Delete current user's mood diary.
-    operationId: delete-mood-diary
-    responses:
-      '200':
-        description: OK
-      '401':
-        description: Unauthorized
-      '500':
-        description: Internal Server Error
-    tags:
-      - mood-diary-service
-    security:
-      - jwt: []    
 ### TPL RENDER {{ template "servers.tpl" "diary" }}
   servers:
     - url: https://diary.api.{environment}.mindtastic.lol
@@ -70,3 +67,101 @@ endpoints:
             - dev
           default: live
 ### END RENDER {{ template "servers.tpl" "diary" }}
+
+singleEndpoints:
+  get:
+    summary: Fetch single mood diary entry
+    description: |-
+      Endpoint returns a single moodd diary entry by it's ID (passed as an URL parameter)
+
+      If the user is not authenticated at all, the endpoint will return `401 Forbidden`.
+
+      If the user is authenticated, tries to access an mood diary entry that does not exists or not belongs to them, a `404 Not Found` is returned.
+      parameters:
+    parameters:
+      - $ref: '../schemas/diary.yaml#/moodIdParameter'
+    responses:
+      allOf:
+        - '200':
+            description: Success
+            content:
+              application/json:
+                schema:
+                  $ref: '../schemas/diary.yaml#/mood'
+        - $ref: '#/singleEndpointCommonResponses'
+    x-tira: true 
+    tags:
+      - mood-diary-service
+    security:
+      - jwt: []
+  put:
+    summary: Update a single mood diary entry
+    description: |-
+      Use this endpoint to update a mood diary entry.
+
+      You have to provide a full Mood Data Object. On success, a `204 No Content` response with body is returned.
+
+      If the provided request body is invalid, a `422 Unprocessable Entity` error is returned.
+    parameters:
+      - $ref: '../schemas/diary.yaml#/moodIdParameter'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/diary.yaml#/moodData'
+    responses:
+      allOf:
+        - '204':
+            description: Mood diary entry updated successfully.
+        - '422':
+            description: |-
+              Unprocessable entity.
+        
+              The request data validation failed.
+            content:
+              application/json:
+                schema:
+                  $ref: '../schemas/diary.yaml#/ValidationError'
+        - $ref: '#/singleEndpointCommonResponses'
+    x-tira: true 
+    tags:
+      - mood-diary-service
+    security:
+      - jwt: []
+  delete:
+    summary: Delete single mood diary entry
+    description: |-
+      Use this endpoint to delete a single entry from a users mood diary by it's userId.
+
+      On success a `204 No Content` response with body is returned.
+    parameters:
+      - $ref: '../schemas/diary.yaml#/moodIdParameter'
+    responses:
+      allOf:
+        - '204':
+            description: Mood diary entry deleted successfully.
+        - $ref: '#/singleEndpointCommonResponses'
+    x-tira: true 
+    tags:
+      - mood-diary-service
+    security:
+      - jwt: []   
+### TPL RENDER {{ template "servers.tpl" "diary" }}
+  servers:
+    - url: https://diary.api.{environment}.mindtastic.lol
+      variables:
+        environment:
+          enum:
+            - live
+            - stage
+            - dev
+          default: live
+### END RENDER {{ template "servers.tpl" "diary" }}
+
+singleEndpointCommonResponses:
+  '401':
+    description: Unauthorized
+  '404':
+    description: Mood diary entry with provided id not found
+  '500':
+    description: Internal server error

@@ -37,6 +37,8 @@ paths:
     $ref: 'specs/userService.yaml#/adminEndpoints'
   /diary:
     $ref: 'specs/moodDiary.yaml#/endpoints'
+  /diary/{id}:
+    $ref: 'specs/moodDiary.yaml#/singleEndpoints'
   /safetyNet:
     $ref: 'specs/motivator.yaml#/safetyNetEndpoints'
   /motivator:
