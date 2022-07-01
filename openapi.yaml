@@ -66,12 +66,19 @@ components:
   requestBodies: {}
 tags:
   - name: user-service
+    description: Service for storing user data and settings
   - name: notification-service
+    description: Notifier is used to set up a variety of notifications, e.g. to remind a user of completing an motivator exercise
   - name: mood-diary-service
+    description: Fetch and stores mood diary data
   - name: motivator-service
+    description: Motivator exercises and safetynet
   - name: wiki-service
+    description: Static wiki articles
   - name: administration-service
+    description: Endpoints for building administration services
   - name: tilt-service
+    description: Tilt provides transparency information on data processing using the TILT format
   - name: authentication
     description: 'The authentication API is based on the ORY Kratos HTTP API, but with some additional tweaks. See [Kratos Docs](https://www.ory.sh/docs/kratos/reference/api) and [Mindtastic Docs](github.com/mindtastic/bouncer/wiki) for more information.'
 servers:

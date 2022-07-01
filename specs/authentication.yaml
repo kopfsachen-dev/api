@@ -132,6 +132,7 @@ loginSubmit:
             schema:
               $ref: '../schemas/kratos_t.yaml#/jsonError'
       "422":
+        description: Browser redirection required
         content:
           application/json:
             schema:
@@ -239,7 +240,6 @@ logoutInitBrowser:
         style: simple
     responses:
       '200':
-        summary: Logout Flow initiated
         description: Return successfully created browser logout Flow
         content:
           application/json:
