@@ -75,6 +75,7 @@ loginBrowserInit:
         description: The URL to return the browser after the flow was completed. For Kopfsachen you might never need that option.
     responses:
       '200':
+        description: Returns the successfully created browser login flow
         content:
           application/json:
             schema:
@@ -119,12 +120,13 @@ loginSubmit:
       "303":
         description: Returns the after login redirection url when a browser flow got submitted.
       "400":
+        description: Form validation error
         content:
           application/json:
             schema:
               $ref: '../schemas/kratos_t.yaml#/selfServiceLoginFlow'
       "410":
-        description: Internal server error
+        description: Flow invalid for the operation
         content:
           application/json:
             schema:
@@ -178,6 +180,7 @@ logoutApi:
       '204':
         description: Logout successfull
       '403':
+        description: Invalid Session Token for Logout
         content:
           application/json:
             schema:
@@ -237,13 +240,12 @@ logoutInitBrowser:
     responses:
       '200':
         summary: Logout Flow initiated
-        description: OK
+        description: Return successfully created browser logout Flow
         content:
           application/json:
             schema:
               $ref: '../schemas/kratos_t.yaml#/browserLogoutUrl'
       '401':
-        summary: Unauthorized request
         description: Unauthorized
         content:
           application/json:
@@ -258,7 +260,6 @@ logoutInitBrowser:
                       reason: No active session was found in this request.
                       message: request does not have a valid authentication session
       '500':
-        summary: Internal Server Error
         description: Internal Server Error
         content:
           application/json:

@@ -12,7 +12,6 @@ registrationInitApi:
     operationId: bouncer:initRegistration:api
     responses:
       "200":
-        summary: API Login Flow created
         description: |-
           The login flow got created successfully. While the response returns a lot of information, that can be used to build a UI accordingly, it might be enough to extract the `id` value from the JSON response most of the time.
 
@@ -78,6 +77,7 @@ registrationInitBrowser:
         description: The URL to return the browser after the flow was completed. For Kopfsachen you might never need that option.
     responses:
       '200':
+        description: Returns the successfully created browser registration flow
         content:
           application/json:
             schema:

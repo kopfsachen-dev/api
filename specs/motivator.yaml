@@ -2,7 +2,7 @@ safetyNetEndpoints:
   get:
     summary: Get currently authenticated users safety-net
     description: Get currently authenticated users safety-net
-    operationId: get-safetynet
+    operationId: motivator:safetyNet:get
     responses:
       "200":
         description: OK
@@ -22,7 +22,7 @@ safetyNetEndpoints:
   post:
     summary: Add safety net item to currently authenticated user safety net.
     description: Add safety net item to currently authenticated user safety net.
-    operation: add-safetynet-item
+    operationId: motivator:safetyNet:add
     requestBody:
       content:
         application/json:

@@ -146,9 +146,7 @@ deleteSingleEntry:
     summary: Delete wiki entry by id.
     operationId: wiki:delete-entry
     parameters:
-      - allOf:
-          - $ref: '../schemas/wiki.yaml#/entryId'
-          - required: true
+      - $ref: '../schemas/wiki.yaml#/wikiEntryId'
     responses:
       "204":
         description: Deletion successfull.
