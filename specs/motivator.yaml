@@ -108,7 +108,7 @@ motivatorResultEndpoints:
 
       The user can also submit optional feedback on a motivator with a result response. As collection of free-text comments as part of an evaluation is very sensitive in terms of privacy, this version of the API does not include such an option.
 
-      On success, the endpoint returns a `201 Created` response, with the body containing a new `state` for the motivator exercises, as a motivator could consist out of multiple parts. If the return value indicates that a motivator is not fully completed, you should call the `GET` endpoint again, as the content the motivator could have changed.
+      On success, the endpoint returns a `201 Created` response, with the body containing the `id` of the motivator result and a new `state` for the motivator exercises, as a motivator could consist out of multiple parts. If the return value indicates that a motivator is not fully completed, you should call the `GET` endpoint again, as the content the motivator could have changed.
 
       If the motivator does not exists or is not available for the current user, a `404 Not Found` response is returned.
 
@@ -140,7 +140,7 @@ motivatorResultEndpoints:
         content:
           application/json:
             schema:
-              $ref: '../schemas/motivator.yaml#/MotivatorStatus'
+              $ref: '../schemas/motivator.yaml#/MotivatorResultCreatedResponse'
       '401':
         description: Unauthorized
       '404':
@@ -158,7 +158,7 @@ motivatorResultEndpoints:
                 - error
               example:
                 error: |- 
-                  Expected value type integer on input type range (inputId: 5, fieldRef: range-rating).
+                  Expected value type integer on input type range [inputId: 5, fieldRef: range-rating].
       '500':
         description: Internal Server Error
     tags:
@@ -167,14 +167,21 @@ motivatorResultEndpoints:
       - jwt: []
 
   delete:
-    summary: Delete result from user's current motivator by timestamp.
-    operationId: delete-motivator-userId-result-motivatorId
+    summary: Deletes all results on a motivator for the user
+    operationId: motivator:result:deleteAll
+    description: |-
+      This endpoint deletes **all** results on the motivator with the ID specified for a given motivator for the currently authenticated user.
+
+      - On success it returns a `204 No content` response without a body.
+
+      - If the motivator with the ID does not exists a `404 Not Found` response is returned.
     responses:
-      '200':
-        description: OK
+      '204':
+        description: Results for motivator with `motivatorId` deletes successfully.
+      '404':
+        description: The motivator with the given `motivatorId` does not exists.
       '500':
         description: Internal Service Error
-    description: Delete result from user's current motivator by timestamp.
     tags:
       - motivator-service
     security:

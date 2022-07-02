@@ -175,6 +175,17 @@ textContent:
 
       Most definitly a *Starkmacher*.
 
+MotivatorResultCreatedResponse:
+  allOf:
+    - properties:
+        resultId:
+          type: integer
+      required:
+        - resultId
+      example:
+        resultId: 2531
+    - $ref: '#/MotivatorStatus'
+
 MotivatorResult:
   type: object
   properties:
