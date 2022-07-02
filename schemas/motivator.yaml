@@ -1,3 +1,7 @@
+MotivatorId:
+  type: integer
+  example: 5
+
 MotivatorList:
   title: Motivator List
   type: array
@@ -21,9 +25,8 @@ Motivator:
 MotivatorModel:
   type: object
   properties:
-    id:
-      type: integer
-      example: 5
+    allOf:
+      $ref: '#/MotivatorId'
     name:
       type: string
       minLength: 1
@@ -68,9 +71,21 @@ MotivatorInput:
       type: integer
       example: 5
     fields:
-      type: array
-      items:
+      type: object
+      additionalProperties:
         $ref: '#/MotivatorInputElement'
+      example:
+        text-question:
+          inputType: text
+          label: |-
+            What's the elephant in the room?
+        range-rating:
+          inputType: range
+          label: |-
+            On a scale from 1-10. How important is privacy engineering to you?
+          options:
+            minValue: 1
+            maxValue: 10
 
 MotivatorInputElement:
   oneOf:
@@ -159,6 +174,81 @@ textContent:
       # Drill Sergeant
 
       Most definitly a *Starkmacher*.
+
+MotivatorResult:
+  type: object
+  properties:
+    timestamp:
+      type: string
+      format: date-time
+    values:
+      type: object
+      additionalProperties:
+        $ref: '#/MotivatorResultEntry'
+    feedback:
+      $ref: '#/MotivatorFeedback'
+  required:
+    - timestamp
+    - values
+  example:
+    timestamp: '2022-07-02T20:43:28+0000'
+    values:
+      5:
+        entries:
+          text-question:
+            value: Cage the Elephant
+          range-rating:
+            value: 9
+    feedback:
+      rating: positive
+
+MotivatorResultEntry:
+  type: object
+  properties:
+    entries:
+      type: object
+      additionalProperties:
+        type: object
+        properties:
+          value: 
+            anyOf:
+              - type: string
+              - type: number
+              - type: integer
+              - type: boolean
+              - type: array
+              - type: object
+            description: |-
+              The actual value of the input to store. The data format depends on the input.
+        required:
+          - value
+
+MotivatorStatus:
+  type: object
+  properties:
+    status:
+      type: string
+      enum:
+        - success
+        - postponed
+        - failed
+  required:
+    - status
+  example:
+    status: success   
+
+
+MotivatorFeedback:
+  type: object
+  properties:
+    rating:
+      type: string
+      enum:
+        - positive
+        - neutral
+        - negative
+  required:
+    - rating
 
 imageContent:
   type: object
@@ -316,16 +406,3 @@ motivator:
         May describe a form for input by the user (format to be defined, e.g.,
         JSON Schema).
 
-motivatorResult:
-  title: motivatorResult
-  type: object
-  properties:
-    motivatorId:
-      type: string
-    timestamp:
-      type: string
-      format: date-time
-    results:
-      type: array
-      items:
-        type: string

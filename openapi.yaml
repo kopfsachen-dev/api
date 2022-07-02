@@ -39,7 +39,7 @@ paths:
     $ref: 'specs/moodDiary.yaml#/singleEndpoints'
   /motivator:
     $ref: 'specs/motivator.yaml#/motivatorEndpoints'
-  /motivator/result/{motivatorId}:
+  /motivator/{motivatorId}/result:
     $ref: 'specs/motivator.yaml#/motivatorResultEndpoints'
   /safetyNet:
     $ref: 'specs/motivator.yaml#/safetyNetEndpoints'
