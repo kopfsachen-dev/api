@@ -43,6 +43,8 @@ paths:
     $ref: 'specs/motivator.yaml#/motivatorResultEndpoints'
   /safetyNet:
     $ref: 'specs/motivator.yaml#/safetyNetEndpoints'
+  /safetyNet/{safetyNetItemId}:
+    $ref: 'specs/motivator.yaml#/safetyNetItemEndpoints'
   # /notification:
   #   $ref: 'specs/notifications.yaml#/usersNotificationsEndpoint'
   /tilt:

@@ -7,15 +7,15 @@ safetyNetEndpoints:
 
       This endpoint is associated with the motivator service, as it's implemented as a motivator exercise internally. However, the safety net motivator is shown in the `GET /motivator` endpoint.
     responses:
-      "200":
+      '200':
         description: OK
         content:
           application/json:
             schema:
               $ref: '../schemas/motivator.yaml#/SafetyNet'
-      "401":
+      '401':
         description: Unauthorized
-      "500":
+      '500':
         description: Internal Server Error
     x-accepts: application/json
     tags:
@@ -59,6 +59,95 @@ safetyNetEndpoints:
       - motivator-service
     security:
       - jwt: []
+### TPL RENDER {{ template "servers.tpl" "motivator" }}
+  servers:
+    - url: https://motivator.api.{environment}.mindtastic.lol
+      variables:
+        environment:
+          enum:
+            - live
+            - stage
+            - dev
+          default: live
+### END RENDER {{ template "servers.tpl" "motivator" }}
+
+safetyNetItemEndpoints:
+  put:
+    summary: Replaces a safety net item with a new one
+    operationId: motivator:safetyNet:replace
+    description: |-
+      This endpoint replaces the item with the provided `safetyNetItemId` with the data provided in the request body.
+
+      On successful replacement, a `200 OK` reponse is returned, with the new record provided in the reponse body.
+
+      If the deletion was successful, a `204 No Content` response without body is returned.
+
+      If the validation if the requests body fails, a `422 Unprocessable Entity` error is returned, with an error message in the body.
+    parameters:
+      - name: safetyNetItemId
+        in: path
+        schema:
+          type: integer
+          example: 5421
+        required: true
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/motivator.yaml#/SafetyNetItemContent'
+    responses:
+      '200':
+        description: Safety net item successfully updated
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/motivator.yaml#/SafetyNetItem'
+      '401':
+        description: Unauthorized
+      '404':
+        description: Item with provided `safetyNetItemId` does not exists for current user.
+      '422':
+        description: Request entity validation failed.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/motivator.yaml#/MotivatorValidationError'
+      '500':
+        description: Internal Server Error   
+    tags:
+      - motivator-service
+    security:
+      - jwt: []
+  delete:
+    summary: Deletes an item from users safety net
+    operationId: motivator:safetyNet:delete
+    description: |-
+      This endpoint deletes an item with the specified `id` from the currently authenticated users safety net.
+
+      - If the deletion was successful, a `204 No Content` response without body is returned.
+
+      - If there is no safety net item with the given `id` for the current user, it returns a `404 Not Found` response
+    parameters:
+      - name: safetyNetItemId
+        in: path
+        schema:
+          type: integer
+          example: 5421
+        required: true
+    responses:
+      '204':
+        description: Item deleted succesfully
+      '401':
+        description: Unauthorized
+      '404':
+        description: Item with provided `safetyNetItemId` does not exists for current user.
+      '500':
+        description: Internal Server Error
+    tags:
+      - motivator-service
+    security:
+      - jwt: []
+
 ### TPL RENDER {{ template "servers.tpl" "motivator" }}
   servers:
     - url: https://motivator.api.{environment}.mindtastic.lol
