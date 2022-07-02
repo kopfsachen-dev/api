@@ -315,23 +315,25 @@ pageBreakContent:
   example:
     type: pagebreak
 
-safetyNet:
+SafetyNet:
   title: SafetyNet Object
   type: array
   items:
-    $ref: '#/safetyNetItem'
+    $ref: '#/SafetyNetItem'
 
-safetyNetItem:
-  description: ''
+SafetyNetItem:
+  allOf:
+    - properties:
+        id:
+          type: integer
+      required:
+        - id
+      example:
+        id: 2
+    - $ref: '#/SafetyNetItemContent'
+      
+SafetyNetItemContent:
   type: object
-  x-examples:
-    example-1:
-      name: Theo
-      type: pet
-      strategies:
-        - cuddle
-        - play
-        - go for a walk
   properties:
     name:
       type: string
@@ -351,22 +353,31 @@ safetyNetItem:
       description: 'Which kind of item is this (i.a., influences symbol in UI)?'
     strategies:
       type: array
-      description: How can this item help the user to feel better?
+      description: How can this item help the user to feel better? An array of strings describing the strategies.
       items:
         type: string
     feedback:
       type: array
       items:
-        $ref: '#/safetyNetItemFeedback'
+        $ref: '#/SafetyNetItemFeedback'
   required:
     - name
     - type
     - strategies
-
-safetyNetItemFeedback:
-  description: ''
+  example:
+    name: Theo
+    type: pet
+    strategies:
+      - cuddle
+      - play
+      - go for a walk
+    feedback:
+      itHelped: false
+      comment: |-
+        Not helpful at all! Theo ate my homework. Now I'm going to get a bad grade in Latin in 6th grade. The beginning of the end. I won't be able to get a good degree, I won't be able to write a master's thesis at ISE, and I'll have take a terrible job after school. Me becoming a beauty influencer is all Theos fault.
+      timestamp: '2021-03-03T03:03:03.3Z'
+SafetyNetItemFeedback:
   type: object
-  x-examples: {}
   title: safetyNetItemFeedback
   properties:
     itHelped:
@@ -377,43 +388,14 @@ safetyNetItemFeedback:
       type: string
       format: date-time
 
-motivator:
-  title: motivator
-  type: object
-  properties:
-    id:
-      type: string
-    type:
-      type: string
-      enum:
-        - situationControl
-        - relaxation
-    headline:
-      type: string
-    description:
-      type: string
-    textContents:
-      type: array
-      items:
-        type: string
-    mediaContents:
-      type: array
-      items:
-        type: object
-        properties:
-          format:
-            type: string
-            enum:
-              - document
-              - image
-              - audio
-              - video
-          url:
-            type: string
-            format: uri
-    userInputForm:
-      type: string
-      description: >-
-        May describe a form for input by the user (format to be defined, e.g.,
-        JSON Schema).
 
+MotivatorValidationError:
+  type: object
+  properties: 
+    error:
+      type: string
+  required:
+    - error
+  example:
+    error: |- 
+      Expected value type integer on input type range [inputId: 5, fieldRef: range-rating].

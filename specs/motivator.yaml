@@ -1,15 +1,18 @@
 safetyNetEndpoints:
   get:
-    summary: Get currently authenticated users safety-net
-    description: Get currently authenticated users safety-net
+    summary: Get safety net for the current user
     operationId: motivator:safetyNet:get
+    description: |-
+      This endpoint returns the current users safety net. A safetyNet is an an array of items. How the safety net items are displayed in the UI is left to the user. 
+
+      This endpoint is associated with the motivator service, as it's implemented as a motivator exercise internally. However, the safety net motivator is shown in the `GET /motivator` endpoint.
     responses:
       "200":
         description: OK
         content:
           application/json:
             schema:
-              $ref: '../schemas/motivator.yaml#/safetyNet'
+              $ref: '../schemas/motivator.yaml#/SafetyNet'
       "401":
         description: Unauthorized
       "500":
@@ -21,21 +24,34 @@ safetyNetEndpoints:
       - jwt: []
   post:
     summary: Add safety net item to currently authenticated user safety net.
-    description: Add safety net item to currently authenticated user safety net.
+    description: |-
+      Add safety net item to currently authenticated user safety net.
+
+      If the item was added to the users safety net, a `201 Created` response, with the created Item in the body (this contains an `id`).
+
+      If the validation if the requests body fails, a `422 Unprocessable Entity` error is returned, with an error message in the body.
     operationId: motivator:safetyNet:add
     requestBody:
       content:
         application/json:
           schema:
-            $ref: '../schemas/motivator.yaml#/safetyNetItem'
+            $ref: '../schemas/motivator.yaml#/SafetyNetItemContent'
     responses:
-      "200":
-        description: OK
-      "201":
-        description: Created
-      "401":
+      '201':
+        description: Item succesfully added to users safety net.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/motivator.yaml#/SafetyNetItem'
+      '401':
         description: Unauthorized
-      "500":
+      '422':
+        description: Request entity validation failed.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/motivator.yaml#/MotivatorValidationError'
+      '500':
         description: Internal Server Error
     x-accepts: application/json
     x-contentType: application/json
@@ -150,15 +166,7 @@ motivatorResultEndpoints:
         content:
           application/json:
             schema:
-              type: object
-              properties: 
-                error:
-                  type: string
-              required:
-                - error
-              example:
-                error: |- 
-                  Expected value type integer on input type range [inputId: 5, fieldRef: range-rating].
+              $ref: '../schemas/motivator.yaml#/MotivatorValidationError'
       '500':
         description: Internal Server Error
     tags:
