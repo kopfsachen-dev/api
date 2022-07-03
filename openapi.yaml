@@ -55,7 +55,7 @@ paths:
     $ref: 'specs/wiki.yaml#/getOne'
   /wiki/admin:
     $ref: 'specs/wiki.yaml#/createEntry'
-  /wiki/{articleId}/admin:
+  /admin/wiki/{articleId}:
     $ref: 'specs/wiki.yaml#/deleteSingleEntry'
 components:
   securitySchemes:
