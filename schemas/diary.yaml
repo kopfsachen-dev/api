@@ -69,4 +69,4 @@ ValidationError:
   required:
     - error
   example:
-    error: mood_day must be a valid ISO 8601 timestamp
+    error: mood_day must be a valid ISO 8601 or RFC 2822 timestamp

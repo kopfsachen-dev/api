@@ -53,7 +53,7 @@ paths:
     $ref: 'specs/wiki.yaml#/getMany'
   /wiki/{articleId}:
     $ref: 'specs/wiki.yaml#/getOne'
-  /wiki/admin:
+  /admin/wiki:
     $ref: 'specs/wiki.yaml#/createEntry'
   /admin/wiki/{articleId}:
     $ref: 'specs/wiki.yaml#/deleteSingleEntry'
@@ -69,8 +69,6 @@ components:
 tags:
   - name: user-service
     description: Service for storing user data and settings
-  # - name: notification-service
-  #   description: Notifier is used to set up a variety of notifications, e.g. to remind a user of completing an motivator exercise
   - name: mood-diary-service
     description: Fetch and stores mood diary data
   - name: motivator-service
