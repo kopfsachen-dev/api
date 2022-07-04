@@ -1,79 +1,82 @@
 openapi: 3.0.3
 info:
   title: Kopfsachen
-  version: '0.2'
+  version: '1.0'
   description: Kopfsachen e. V. is an association for the promotion of young people's mental health. The goal is to teach the basics of mental health literacy in various educational formats.
+  license:
+    name: MIT license
+    url: "https://github.com/kopfsachen-dev/api/blob/main/LICENSE"
   contact:
     name: Kopfsachen e. V.
     email: mail@kopfsachen.org
     url: 'https://www.kopfsachen.org'
 paths:
   /self-service/registration/api:
-    $ref: 'specs/registration.yaml#/registrationApiInit'
+    $ref: 'specs/registration.yaml#/registrationInitApi'
+  /self-service/registration/browser:
+    $ref: 'specs/registration.yaml#/registrationInitBrowser'
   /self-service/registration:
     $ref: 'specs/registration.yaml#/registrationSubmit'
   /self-service/login/api:
     $ref: 'specs/authentication.yaml#/loginApiInit'
+  /self-service/login/browser:
+    $ref: 'specs/authentication.yaml#/loginBrowserInit'
   /self-service/login:
     $ref: 'specs/authentication.yaml#/loginSubmit'
+  /self-service/logout/api:
+    $ref: 'specs/authentication.yaml#/logoutApi'
+  /self-service/logout/browser:
+    $ref: 'specs/authentication.yaml#/logoutInitBrowser'
   /self-service/logout:
-    $ref: 'specs/authentication.yaml#/logout'
+    $ref: 'specs/authentication.yaml#/logoutBrowser'
   /user:
     $ref: 'specs/userService.yaml#/userEndpoints'
-  /user/settings:
-    $ref: 'specs/userService.yaml#/userSettingsEndpoint'
-  /users/admin:
+  /admin/user:
     $ref: 'specs/userService.yaml#/adminEndpoints'
   /diary:
     $ref: 'specs/moodDiary.yaml#/endpoints'
-  /safetyNet:
-    $ref: 'specs/motivator.yaml#/safetyNetEndpoints'
+  /diary/{id}:
+    $ref: 'specs/moodDiary.yaml#/singleEndpoints'
   /motivator:
     $ref: 'specs/motivator.yaml#/motivatorEndpoints'
-  /motivator/result/{motivatorId}:
+  /motivator/{motivatorId}/result:
     $ref: 'specs/motivator.yaml#/motivatorResultEndpoints'
-  /notification:
-    $ref: 'specs/notifications.yaml#/usersNotificationsEndpoint'
+  /safetyNet:
+    $ref: 'specs/motivator.yaml#/safetyNetEndpoints'
+  /safetyNet/{safetyNetItemId}:
+    $ref: 'specs/motivator.yaml#/safetyNetItemEndpoints'
+  # /notification:
+  #   $ref: 'specs/notifications.yaml#/usersNotificationsEndpoint'
   /tilt:
     $ref: 'specs/tilt.yaml#/endpoints'
   /wiki:
-    $ref: 'specs/wiki.yaml#/getAll'
-  /wiki/{wikiEntryId}:
+    $ref: 'specs/wiki.yaml#/getMany'
+  /wiki/{articleId}:
     $ref: 'specs/wiki.yaml#/getOne'
-  /wiki/admin:
-    $ref: 'specs/wiki.yaml#/adminCreate'
-  /wiki/{wikiEntryId}/admin:
-    $ref: 'specs/wiki.yaml#/adminDelete'
+  /admin/wiki:
+    $ref: 'specs/wiki.yaml#/createEntry'
+  /admin/wiki/{articleId}:
+    $ref: 'specs/wiki.yaml#/deleteSingleEntry'
 components:
   securitySchemes:
     jwt:
       $ref: 'specs/authorization.yaml#/securitySchemes/JWTAuth'
-  schemas:
-    timestamp:
-      title: timestamp
-      type: object
-      properties:
-        timestamp:
-          type: string
-          format: date-time
+  schemas: {}
   headers: {}
   responses: {}
-  parameters:
-    motivatorId:
-      name: motivatorId
-      in: path
-      required: true
-      schema:
-        type: integer
+  parameters: {}
   requestBodies: {}
 tags:
   - name: user-service
-  - name: notification-service
+    description: Service for storing user data and settings
   - name: mood-diary-service
+    description: Fetch and stores mood diary data
   - name: motivator-service
+    description: Motivator exercises and safetynet
   - name: wiki-service
-  - name: administration-service
+    description: Static wiki articles
   - name: tilt-service
+    description: Tilt provides transparency information on data processing using the TILT format
   - name: authentication
     description: 'The authentication API is based on the ORY Kratos HTTP API, but with some additional tweaks. See [Kratos Docs](https://www.ory.sh/docs/kratos/reference/api) and [Mindtastic Docs](github.com/mindtastic/bouncer/wiki) for more information.'
 servers:

@@ -1,20 +1,339 @@
-safetyNet:
+MotivatorId:
+  type: integer
+  example: 5
+
+MotivatorList:
+  title: Motivator List
+  type: array
+  items:
+    $ref: '#/Motivator'
+
+Motivator:
+  allOf:
+    - $ref: '#/MotivatorModel'
+    - title: Motivator
+      properties:
+        content:
+          type: array
+          items: 
+            $ref: '#/MotivatorContent'
+        inputs:
+          type: array
+          items:
+            $ref: '#/MotivatorInput'
+
+MotivatorModel:
+  type: object
+  properties:
+    id:
+      $ref: '#/MotivatorId'
+    name:
+      type: string
+      minLength: 1
+      maxLength: 255
+      example: Mindfulness motivator
+    headline:
+      type: string
+      minLength: 1
+      maxLength: 255
+      example: Calm your Headspace with Ease 
+    description:
+      type: string
+      example: |-
+        Long read. Nobodys got time for that nowadays.
+    created_at:
+      type: string
+      format: date-time
+    modified_at:
+      type: string
+      format: date-time
+    
+MotivatorContent:
+  oneOf:
+    - $ref: '#/imageContent'
+    - $ref: '#/textContent'
+    - $ref: '#/pageBreakContent'
+    - $ref: '#/videoContent'
+    - $ref: '#/inputContent'
+  discriminator:
+    propertyName: type
+    mapping:
+      text: '#/textContent'
+      image: '#/imageContent'
+      video: '#/videoContent'
+      input: '#/inputContent'
+      pagebreak: '#/pageBreakContent'      
+
+MotivatorInput:
+  type: object
+  properties:
+    id:
+      type: integer
+      example: 5
+    fields:
+      type: object
+      additionalProperties:
+        $ref: '#/MotivatorInputElement'
+      example:
+        text-question:
+          inputType: text
+          label: |-
+            What's the elephant in the room?
+        range-rating:
+          inputType: range
+          label: |-
+            On a scale from 1-10. How important is privacy engineering to you?
+          options:
+            minValue: 1
+            maxValue: 10
+
+MotivatorInputElement:
+  oneOf:
+    - $ref: '#/MotivatorTextInputElement'
+    - $ref: '#/MotivatorSliderInputElement'
+  discriminator:
+    propertyName: inputType
+    mapping:
+      text: '#/MotivatorTextInputElement'
+      range: '#/MotivatorSliderInputElement'
+
+MotivatorTextInputElement:
+  type: object
+  properties:
+    inputType:
+      type: string
+    label:
+      type: string
+      description: |-
+        A string the input field shall be captioned with.
+    maxLength:
+      type: integer
+      description: |- 
+        Optional value for the maximum allowed length for the text input
+  required:
+    - inputType
+    - label
+  example:
+    inputType: text
+    label: |- 
+      What's the elephant in the room?
+  description: |-
+    A free text input.
+
+    Tells the frontend to display an free text input field (like `<input type="text">` in HTML).
+
+MotivatorSliderInputElement:
+  type: object
+  properties:
+    inputType:
+      type: string
+    label:
+      type: string
+      description: |-
+        A string the range input shall be captioned with
+    options:
+      type: object
+      properties:
+        minValue:
+          type: integer
+          default: 0
+        maxValue:
+          type: integer
+          default: 100
+        stepSize: 
+          type: integer
+          default: 1
+      description: |- 
+        An object that configures the range input
+  required:
+    - inputType
+    - label
+    - range
+  example:
+    inputType: range
+    label: On a scale from 1-10. How important is privacy engineering to you?
+    options:
+      minValue: 1
+      maxValue: 10
+
+textContent:
+  type: object
+  properties:
+    type:
+      type: string
+    text: 
+      type: string
+      description: |-
+        The text that should be presented to the motivator user in markdown format.
+  required:
+    - type
+    - text
+  example:
+    type: text
+    text: |-
+      # Drill Sergeant
+
+      Most definitly a *Starkmacher*.
+
+MotivatorResultCreatedResponse:
+  allOf:
+    - properties:
+        resultId:
+          type: integer
+      required:
+        - resultId
+      example:
+        resultId: 2531
+    - $ref: '#/MotivatorStatus'
+
+MotivatorResult:
+  type: object
+  properties:
+    timestamp:
+      type: string
+      format: date-time
+    values:
+      type: object
+      additionalProperties:
+        $ref: '#/MotivatorResultEntry'
+    feedback:
+      $ref: '#/MotivatorFeedback'
+  required:
+    - timestamp
+    - values
+  example:
+    timestamp: '2022-07-02T20:43:28+0000'
+    values:
+      5:
+        entries:
+          text-question:
+            value: Cage the Elephant
+          range-rating:
+            value: 9
+    feedback:
+      rating: positive
+
+MotivatorResultEntry:
+  type: object
+  properties:
+    entries:
+      type: object
+      additionalProperties:
+        type: object
+        properties:
+          value: 
+            anyOf:
+              - type: string
+              - type: number
+              - type: integer
+              - type: boolean
+              - type: array
+              - type: object
+            description: |-
+              The actual value of the input to store. The data format depends on the input.
+        required:
+          - value
+
+MotivatorStatus:
+  type: object
+  properties:
+    status:
+      type: string
+      enum:
+        - success
+        - postponed
+        - failed
+  required:
+    - status
+  example:
+    status: success   
+
+
+MotivatorFeedback:
+  type: object
+  properties:
+    rating:
+      type: string
+      enum:
+        - positive
+        - neutral
+        - negative
+  required:
+    - rating
+
+imageContent:
+  type: object
+  properties:
+    type:
+      type: string
+    url:
+      type: string
+      format: uri
+  required:
+    - type
+    - url
+  example:
+    type: image
+    url: https://http.cat/420
+
+videoContent:
+  type: object
+  properties:
+    type:
+      type: string
+    url:
+      type: string
+      format: uri
+  required:
+    - type
+    - url
+  example:
+    type: video
+    url: https://rroll.to/riSv29
+
+inputContent:
+  type: object
+  properties:
+    type:
+      type: string
+    inputId:
+      type: integer
+  required:
+    - type
+    - inputId
+  example:
+    type: input
+    inputId: 5
+
+pageBreakContent:
+  type: object
+  properties:
+    type:
+      type: string
+  required:
+    - type
+  example:
+    type: pagebreak
+
+SafetyNet:
   title: SafetyNet Object
   type: array
   items:
-    $ref: '#/safetyNetItem'
+    $ref: '#/SafetyNetItem'
 
-safetyNetItem:
-  description: ''
+SafetyNetItem:
+  allOf:
+    - properties:
+        id:
+          type: integer
+      required:
+        - id
+      example:
+        id: 2
+    - $ref: '#/SafetyNetItemContent'
+      
+SafetyNetItemContent:
   type: object
-  x-examples:
-    example-1:
-      name: Theo
-      type: pet
-      strategies:
-        - cuddle
-        - play
-        - go for a walk
   properties:
     name:
       type: string
@@ -33,22 +352,31 @@ safetyNetItem:
       description: 'Which kind of item is this (i.a., influences symbol in UI)?'
     strategies:
       type: array
-      description: How can this item help the user to feel better?
+      description: How can this item help the user to feel better? An array of strings describing the strategies.
       items:
         type: string
     feedback:
       type: array
       items:
-        $ref: '#/safetyNetItemFeedback'
+        $ref: '#/SafetyNetItemFeedback'
   required:
     - name
     - type
     - strategies
-
-safetyNetItemFeedback:
-  description: ''
+  example:
+    name: Theo
+    type: pets
+    strategies:
+      - cuddle
+      - play
+      - go for a walk
+    feedback:
+      itHelped: false
+      comment: |-
+        Not helpful at all! Theo ate my homework. Now I'm going to get a bad grade in Latin in 6th grade. The beginning of the end. I won't be able to get a good degree, I won't be able to write a master's thesis at ISE, and I'll have take a terrible job after school. Me becoming a beauty influencer is all Theos fault.
+      timestamp: '2021-03-03T03:03:03.3Z'
+SafetyNetItemFeedback:
   type: object
-  x-examples: {}
   title: safetyNetItemFeedback
   properties:
     itHelped:
@@ -59,56 +387,14 @@ safetyNetItemFeedback:
       type: string
       format: date-time
 
-motivator:
-  title: motivator
-  type: object
-  properties:
-    id:
-      type: string
-    type:
-      type: string
-      enum:
-        - situationControl
-        - relaxation
-    headline:
-      type: string
-    description:
-      type: string
-    textContents:
-      type: array
-      items:
-        type: string
-    mediaContents:
-      type: array
-      items:
-        type: object
-        properties:
-          format:
-            type: string
-            enum:
-              - document
-              - image
-              - audio
-              - video
-          url:
-            type: string
-            format: uri
-    userInputForm:
-      type: string
-      description: >-
-        May describe a form for input by the user (format to be defined, e.g.,
-        JSON Schema).
 
-motivatorResult:
-  title: motivatorResult
+MotivatorValidationError:
   type: object
-  properties:
-    motivatorId:
+  properties: 
+    error:
       type: string
-    timestamp:
-      type: string
-      format: date-time
-    results:
-      type: array
-      items:
-        type: string
+  required:
+    - error
+  example:
+    error: |- 
+      Expected value type integer on input type range [inputId: 5, fieldRef: range-rating].

@@ -1,17 +1,71 @@
-getAll:
+getMany:
   get:
-    summary: Get all available wiki entries
+    summary: Fetch wiki entries
+    operationId: wiki:list
+    description: |-
+      This endpoint returns a list of multiple wiki entries. 
+
+      You can use the `query` parameter to perform a fulltext search on `title` and `content`.
+
+      By default max. 20 WikiEntrys will be in the response. To fetch more, it's recommended to perform multiple queries (API Pagination). Use the `limit` and `offset` parameters.
+    parameters:
+      - name: query
+        in: query
+        required: false
+        schema:
+          title: Fulltext Search Query
+          type: string
+      - name: limit
+        in: query
+        description: |-
+          The maximum number of articles the response will include (Use together with `offset` for api pagination).
+        required: false
+        schema:
+          title: Article Limit
+          type: integer
+          minimum: 1
+          default: 20
+      - name: offset
+        in: query
+        description: |-
+          The number of articles that will we skipped in response (Use together wuth `limit` for api pagination).
+        required: false
+        schema:
+          title: Article Offset
+          type: integer
+          minimum: 0
+          default: 0
+      - name: with_content
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+        description: |-
+          If the with content attribute is not `true`, the response will not return the content of wiki articles, but only the title and metadata attributes.
+
+          *Note*:
+          This behaviour is not implemented yet, but It will be later. This endpoint can be used to download an index of all articles, without having to download the article content. The metadata might also contain a `preview` field with the first few character of each article in a later persion of the spec. 
+
+          As adding the parameter later would be a breaking spec, always send the with_content parameter if you actually want to fetch article contents.
     responses:
       "200":
-        description: OK
+        description: Success
         content:
           application/json:
             schema:
-                $ref: '../schemas/wiki.yaml#/entryList'
+              oneOf:
+                - $ref: '../schemas/wiki.yaml#/ListOfWikiEntries'
+                - $ref: '../schemas/wiki.yaml#/ListOfWikiEntryHeaders'
+      "422":
+        description: Invalid request parameters we're provided
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/wiki.yaml#/ValidationError'
       "500":
         description: Internal Server Error
-    operationId: get-wiki
-    x-accepts: application/json
+    x-contentType: application/json
     tags:
       - wiki-service
 ### TPL RENDER {{ template "servers.tpl" "wiki" }}
@@ -29,15 +83,21 @@ getAll:
 getOne:
   get:
     summary: Fetch single wiki entry
+    operationId: wiki:get
+    description: |-
+      This article can be used to fetch a single wiki entry.
+
+      It is not implemented yet and therefore marked as deprecated
+    deprecated: true
     parameters:
-      - $ref: '../schemas/wiki.yaml#/entryId'
+      - $ref: '../schemas/wiki.yaml#/articleId'
     responses:
       "200":
         description: OK
         content:
           application/json:
             schema:
-              $ref: '../schemas/wiki.yaml#/entry'
+              $ref: '../schemas/wiki.yaml#/WikiEntry'
       "404":
         description: Not found
       "500":
@@ -57,39 +117,42 @@ getOne:
             default: live
 ### END RENDER {{ template "servers.tpl" "wiki" }}
 
-adminCreate: 
+createEntry: 
   post:
+    operationId: wiki:create-entry
     summary: Add new wiki entries
     description: Add wiki entries
     requestBody:
       content:
         application/json:
           schema:
-            $ref: '../schemas/wiki.yaml#/entryList'
+            $ref: '../schemas/wiki.yaml#/CreateEntryBody'
+      required: true
     responses:
       "201":
-        description: Created
+        description: Wiki Article created. It returns the newly inserted WikiEntry with timestamps and id.
         content:
           application/json:
             schema:
-              $ref: '../schemas/wiki.yaml#/insertionResponse'
-      "400":
-        description: Bad Request
+              $ref: '../schemas/wiki.yaml#/WikiEntry'
       "401":
         description: Unauthorized
-      "500":
-        description: Internal server error
+      "422":
+        description: Invalid request body
         content:
           application/json:
             schema:
-              $ref: '../schemas/wiki.yaml#/genericError'
-    operationId: post-wiki
+              $ref: '../schemas/wiki.yaml#/ValidationError'
+      "500":
+        description: Internal Server Error
     x-tira: false
     x-accepts: application/json
     x-contentType: application/json
     tags:
       - wiki-service
       - admin
+    security:
+      - jwt: []
 ### TPL RENDER {{ template "servers.tpl" "wiki" }}
     servers:
       - url: 'https://wiki.api.{environment}.mindtastic.lol'
@@ -102,26 +165,30 @@ adminCreate:
             default: live
 ### END RENDER {{ template "servers.tpl" "wiki" }}
 
-adminDelete:
+deleteSingleEntry:
   delete:
     summary: Delete wiki entry by id.
-    operationId: delete-wiki
+    operationId: wiki:delete-entry
     parameters:
-      - $ref: '../schemas/wiki.yaml#/entryId'
+      - $ref: '../schemas/wiki.yaml#/articleId'
     responses:
-      "200":
-        description: OK
+      "204":
+        description: Deletion successfull.
       "401":
-        description: unauthorized
-      "500":
-        description: Internal server error
+        description: Unauthorized
+      "422":
+        description: Invalid wikiEntryId provided
         content:
           application/json:
             schema:
-              $ref: '../schemas/wiki.yaml#/genericError'
+              $ref: '../schemas/wiki.yaml#/ValidationError'
+      "500":
+        description: Internal server error
     tags:
       - wiki-service
       - admin
+    security:
+      - jwt: []
 ### TPL RENDER {{ template "servers.tpl" "wiki" }}
     servers:
       - url: 'https://wiki.api.{environment}.mindtastic.lol'

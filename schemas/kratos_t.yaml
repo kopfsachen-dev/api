@@ -98,6 +98,95 @@ selfServiceRegistrationFlow:
     - ui
   type: object
 
+apiRegistrationFlow:
+  anyOf:
+    - $ref: '#/apiRegistraionFlowExample'
+    - $ref: '#/selfServiceRegistrationFlow'
+
+apiRegistraionFlowExample:
+  example:
+    id: 9d7646c2-52b4-4c1f-a9b0-ec7b9e328cd6
+    type: api
+    expires_at: 2022-07-01T08:05:46.233962679Z
+    issued_at: 2022-07-01T07:50:46.233962679Z
+    request_url: http://auth.api.live.mindtastic.lol/self-service/registration/api
+    ui:
+      action: https://auth.api.live.mindtastic.lol/self-service/registration?flow=9d7646c2-52b4-4c1f-a9b0-ec7b9e328cd6
+      method: POST
+      messages: []
+      nodes: [ "..." ]
+
+apiLoginFlow:
+  anyOf:
+    - $ref: '#/apiLoginFlowExample'
+    - $ref: '#/selfServiceLoginFlow'
+
+apiLoginFlowExample:
+  example:
+    anyOf:
+      - request_url: http://auth.api.dev.mindtastic.lol/self-service/login/api
+        ui:
+          action: https://auth.api.dev.mindtastic.lol/self-service/login?flow=dae01032-cdd6-4381-82f5-1f7f4d2c42c6
+      - $ref: '#/apiRegistraionFlowExample'
+
+browserRegistrationFlow:
+  anyOf:
+    - $ref: '#/browserRegistrationFlowExample'
+    - $ref: '#/selfServiceRegistrationFlow'
+
+browserRegistrationFlowExample:
+  example:
+    id: 2e1a12cd-6d01-4f5a-b0db-2ea60b99d5ea
+    type: browser
+    expires_at: 2022-07-01T08:05:46.233962679Z
+    issued_at: 2022-07-01T07:50:46.233962679Z
+    request_url: http://auth.api.live.mindtastic.lol/self-service/registration/browser
+    ui:
+      action: https://auth.api.live.mindtastic.lol/self-service/registration?flow=2e1a12cd-6d01-4f5a-b0db-2ea60b99d5ea
+      method: POST
+      nodes:
+        - type: input
+          group: default
+          attributes:
+            name: csrf_token
+            type: hidden
+            value: 2JScJjx9C0OLCB9O3GSVDHCBGHbXdNZ9B59StFXBlSRKt0hnb3bp
+            required: true
+            disable: false
+            node_type: input
+          messages: []
+          meta: {}
+        - "..."
+
+browserLoginFlow:
+  anyOf:
+    - $ref: '#/browserLoginFlowExample'
+    - $ref: '#/selfServiceLoginFlow'
+
+browserLoginFlowExample:
+  example:
+    id: bedd058f-61bb-44de-a6b3-10fccccfd8f8
+    type: browser
+    expires_at: 2022-07-01T09:47:19.498757726Z
+    issued_at: 022-07-01T09:32:19.498757726Z
+    request_url: http://auth.api.live.mindtastic.lol/self-service/login/browser
+    ui:
+      action: https://auth.api.live.mindtastic.lol/self-service/login?flow=bedd058f-61bb-44de-a6b3-10fccccfd8f8
+      method: POST
+      nodes:
+        - type: input
+          group: default
+          attributes:
+            name: csrf_token
+            type: hidden
+            value: 2JScJjx9C0OLCB9O3GSVDHCBGHbXdNZ9B59StFXBlSRKt0hnb3bp
+            required: true
+            disable: false
+            node_type: input
+          messages: []
+          meta: {}
+        - "..."
+
 selfServiceLoginFlow:
   description: >-
     This object represents a login flow. A login flow is initiated at the
@@ -162,15 +251,9 @@ selfServiceLoginFlow:
     active:
       $ref: '#/identityCredentialsType'
     created_at:
-      description: CreatedAt is a helper struct field for gobuffalo.pop.
       format: date-time
       type: string
     expires_at:
-      description: >-
-        ExpiresAt is the time (UTC) when the flow expires. If the user still
-        wishes to log in,
-
-        a new flow has to be initiated.
       format: date-time
       type: string
     id:
@@ -715,3 +798,169 @@ selfServiceBrowserLocationChangeRequiredError:
   title: Is sent when a flow requires a browser to change its location.
   type: object
 
+submitSelfServiceLogoutFlowWithoutBrowserBody:
+  description: nolint:deadcode,unused
+  properties:
+    session_token:
+      description: |-
+        The Session Token
+        Invalidate this session token.
+      type: string
+  required:
+    - session_token
+  type: object
+  example:
+    session_token: 25a9898c-216c-4d41-96ab-6fe07c0bf1fc
+
+identity:
+  title: Identity
+  description: An identity object
+  type: object
+  properties:
+    id:
+      $ref: '#/UUID'
+    schema_id:
+      description: SchemaID is the ID of the JSON Schema to be used for validating
+        the identity's traits.
+      type: string
+    schema_url:
+      description: |-
+        SchemaURL is the URL of the endpoint where the identity's traits schema can be fetched from.
+        format: url
+      type: string
+    state:
+      $ref: '#/identityState'
+    state_changed_at:
+      format: date-time
+      title: NullTime implements sql.NullTime functionality.
+      type: string
+    traits:
+      description: |-
+        Traits represent an identity's traits. We store the account key here, which is the single credential for the Kopfsachen API.
+    created_at:
+      format: date-time
+      type: string
+    updated_at:
+      format: date-time
+      type: string
+  required:
+    - id
+    - schema_id
+    - schema_url
+    - traits
+  example:
+    id: d653ee8a-b542-4c50-a570-42414dafd076
+    schema_id: user
+    schema_url: https://auth.api.live.mindtastic.lol/schemas/dXNlcg
+    state: active
+    state_changed_at: |-
+      2022-07-01T07:48:20.909705863Z
+    traits:
+      accountKey: 48275d7f-e317-23d9-60d8-0ea0f6995058
+    created_at: |- 
+      2022-07-01T07:48:20.912202Z
+    updated:at: |- 
+      2022-07-01T07:48:20.912202Z
+
+identityState:
+  description: The state can either be `active` or `inactive`.
+  enum:
+    - active
+    - inactive
+  title: An Identity's State
+  type: string
+
+session:
+  title: Bouncer Session
+  description: A session object
+  type: object
+  properties:
+    id: 
+      $ref: '#/UUID'
+    active:
+      description: Active state. If false the session is no longer active.
+      type: boolean
+    expires_at:
+        description: |-
+          The Session Expiry
+          When this session expires at.
+        format: date-time
+        type: string
+    authenticated_at:
+      description: |-
+        The Session Authentication Timestamp
+        When this session was authenticated at. If multi-factor authentication was used this
+        is the time when the last factor was authenticated (e.g. the TOTP code challenge was completed).
+      format: date-time
+      type: string
+    authenticator_assurance_level:
+      description: internal value
+      enum:
+        - aal0
+        - aal1
+        - aal2
+        - aal3
+      type: string
+    authentication_methods:
+      description: internal value.
+      type: object
+    issued_at:
+      description: |-
+        The Session Issuance Timestamp
+        When this session was issued at. Usually equal or close to `authenticated_at`.
+      format: date-time
+      type: string
+    identity:
+      $ref: '#/identity'
+  required:
+    - id
+    - identity
+  example:
+    id: 4fb42e7e-b3f1-44f7-b583-0485cda03c92
+    active: true
+    expires_at: |- 
+      2022-07-02T07:48:20.921174998Z
+    authenticated_at: |- 
+      2022-07-01T07:48:20.922137995Z
+    authenticator_assurance_level: aal1
+    authentication_methods: 
+      - method: password
+        aal: aal1
+        completed_at: |- 
+          2022-07-01T07:48:20.921344603Z
+    issued_at: |- 
+      2022-07-01T07:48:20.921174998Z
+    identity:
+      $ref: '#/identity/example'
+
+browserLogoutUrl:
+  title: Bouncer logout URL
+  type: object
+  properties:
+    logout_token:
+      description: LogoutToken can be used to perform logout using AJAX.
+      type: string
+    logout_url:
+      description: |-
+        LogoutURL can be opened in a browser to sign the user out.
+        format: uri
+      type: string
+  required:
+    - logout_token
+    - logout_url
+  example:
+    logout_url: ttps://auth.api.live.mindtastic.lol/self-service/logout?token=iYjs7NWRsQ5AwFETpMqNMrgu82iI8EAX
+    logout_token: iYjs7NWRsQ5AwFETpMqNMrgu82iI8EAX
+
+browserFlowSubmitBody:
+  description: |-
+    Providing `csrf_token` is only required for browser flows. For API flows, request body can left empty.
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          csrf_token:
+            type: string
+        example:
+          csrf_token: th93GNHtVYbGg+/l9VUzuljNDlpWWEY7R5or26pwVytdLHpyxD86+ncnUnhaYzJyMU6F1L8d9x1+9PDVgH7B/w==

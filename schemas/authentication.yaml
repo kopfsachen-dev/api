@@ -1,13 +1,9 @@
 session:
-  title: Kratos API Session
+  title: Bouncer API Session
   type: object
   properties:
-    session_token:
-      type: string
     session:
-      type: object
-  example:
-    session_token: 2wBPKcSG0KxSxDBrgJA8ackTwBIea9y5
+      $ref: './kratos_t.yaml#/session'
 
 flow:
   name: flow
@@ -18,4 +14,35 @@ flow:
     type: string
   description: The Login flow ID as an URL Query parameters
 
-    
+browserFlowSubmitBody:
+  description: |-
+    You have to specify a `password` in the request body in order to login. This is just an restriction from the underlying technologies the authentication service is build on. The account_key is the only credential. Provide `md5(account_key)` as value for the password property.
+
+    Providing `csrf_token` is only required for browser flows. For API flows, request body can left empty.
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          identifier:
+            type: string
+            format: uuid
+          method:
+            type: string
+            enum:
+              - password
+          password:
+            type: string
+          csrf_token:
+            type: string
+            minLength: 36
+            maxLength: 36
+        required:
+          - identifier
+          - method
+          - password
+        example:
+          identifier: 34541a31-4648-3a37-16ab-cf948b5ab91e
+          method: password
+          password: ad6ca394f5af8ae9bc42e1898b7cc767
+          csrf_token: NQqU8EgQ7B9Tgq10Ir1xoTlXPSvsvNro0P3a6Tthv8ediy9FlRhSdwnTOBf9Mysk+Dc1wIR8pwF/6oBNrasCXg==

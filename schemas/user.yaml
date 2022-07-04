@@ -1,65 +1,85 @@
-user:
-  description: A user object
+RoleEnum:
+  title: RoleEnum
+  enum:
+    - admin
+    - user
+  type: string
+  description: An enumeration of roles.
+
+UserDataResponse:
+  title: User Data Response
   type: object
-  x-examples:
-    example-1:
-      user_id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-      username: maja
-      role: user
-    example-2:
-      user_id: 123e4567-e89b-12d3-a456-426655440000
-      username: string
-      role: admin
-  x-tira: true
   properties:
-    user_id:
-      type: string
-      format: uuid
-      minLength: 36
-      maxLength: 36
     username:
+      title: Username
       type: string
-      minLength: 2
-      maxLength: 25
     role:
+      "$ref": "#/RoleEnum"
+    email:
+      title: EMail Adress of user
       type: string
-      minLength: 1
-      description: Refers to privileges.
-      enum:
-        - admin
-        - user
-    required:
-      - user_id
+    settings:
+      $ref: '#/UserSettingsModel'
+  example:
+    username: maja
+    role: user
+    email: maja@example.com
+    settings:
+      language: de
 
-user-with-id:
-  title: user-with-id
-  allOf:
-    - type: object
-      properties:
-        id:
-          type: number
-    - $ref: '#/user'
-  x-examples:
-    example-1:
-      user_id: 705e4dcb-3ecd-24f3-3a35-3e926e4bded5
-      username: string
-      role: admin
-
-settings:
-  type: array
-  items:
-    $ref: '#/setting'
-
-setting:
-  title: setting
+UserSettingsModel:
+  title: User Settings
   type: object
   properties:
-    lang:
+    language:
+      title: Users preferred language
       type: string
-      default: de
       enum:
         - de
         - en
-      minLength: 2
-      maxLength: 2
-  description: Key-value pairs of settings in the app.
+  description: Stores the users settings
+  example:
+    language: de
+
+UpdateUserModel:
+  title: UpdateUserModel
+  type: object
+  properties:
+    username:
+      title: Username
+      type: string
+    role:
+      "$ref": "#/RoleEnum"
+    email:
+      type: string
+    settings:
+      $ref: '#/UserSettingsModel'
+  example:
+    email: maja.new@example.com
+    settings:
+      lang: de
+
+ValidationError:
+  title: ValidationError
+  required:
+  - loc
+  - msg
+  - type
+  type: object
+  properties:
+    loc:
+      title: Location
+      type: array
+      items:
+        type: string
+    msg:
+      title: Message
+      type: string
+    type:
+      title: Error Type
+      type: string
+  example:
+    loc:
+      - body
+    msg: field required
+    type: value_error.missing

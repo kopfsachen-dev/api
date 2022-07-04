@@ -1,19 +1,72 @@
-mood:
-  title: Mood Object
+moodData:
   type: object
+  title: Mood Data Object
   properties:
-    type:
+    mood_day:
+      oneOf: 
+        - type: string
+          format: date
+        - type: string
+          format: date-time
+    mood_type:
       type: string
       enum:
         - positive
         - negative
         - neutral
-    description:
+    mood_descr:
       type: string
-    timestamp:
-      type: string
-      format: date-time
+  required:
+    - mood_day
+    - mood_type
   example:
-    type: postive
-    description: Today I worked 14h straight for the project. Doing fantastic is literally inevitable
-    timestamp: 2022-06-25T20:03:07+00:00
+    mood_day: '2022-07-24'
+    mood_type: negative
+    mood_descr: |-
+      So called semester break. Lol.
+
+mood:
+  title: Mood Object
+  type: object
+  allOf:
+    - $ref: '#/moodIdObj'
+    - $ref: '#/moodData'
+
+moodId:
+  type: integer
+  nullable: false
+
+moodIdObj:
+  type: object
+  properties:
+    id:
+      $ref: '#/moodId'
+  required:
+    - id
+  example:
+    id: 2143
+
+moodIdParameter:
+  name: id
+  in: path
+  schema:
+    $ref: '#/moodId'
+  required: true
+  description: ID of the mood diary entry the user wants to perform a request on
+  example: 2143
+
+moodList:
+  title: Mood List Entries
+  type: array
+  items:
+    $ref: '#/mood'
+  
+ValidationError:
+  type: object
+  properties:
+    error: 
+      type: string
+  required:
+    - error
+  example:
+    error: mood_day must be a valid ISO 8601 or RFC 2822 timestamp
