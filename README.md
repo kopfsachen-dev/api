@@ -18,10 +18,14 @@ See it [here](https://kopfsachen-dev.github.io/api/) in action.
 ## Try out with mock server
 ```bash
 # Install prism mock server
-npm install -g @stoplight/prism-cli
+npm install @stoplight/prism-cli -g
+npm install speccy -g
+
+# Merge into a single file
+speccy resolve openapi.yaml -o complete.yaml
 
 # Start prism mock server
-prism mock -d openapi.yaml
+prism mock -d complete.yaml
 
 # Test mock server with basic request
 curl -X GET http://127.0.0.1:4010/user
