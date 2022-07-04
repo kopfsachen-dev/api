@@ -25,7 +25,7 @@ Motivator:
 MotivatorModel:
   type: object
   properties:
-    allOf:
+    id:
       $ref: '#/MotivatorId'
     name:
       type: string
