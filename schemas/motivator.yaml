@@ -209,7 +209,7 @@ MotivatorResult:
           text-question:
             value: Cage the Elephant
           range-rating:
-            value: 9
+            value: '9'
     feedback:
       rating: positive
 
@@ -221,17 +221,11 @@ MotivatorResultEntry:
       additionalProperties:
         type: object
         properties:
-          value: 
-            anyOf:
-              - type: string
-              - type: number
-              - type: integer
-              - type: boolean
-              - type: array
-                items: {}
-              - type: object
+          value:
+            title: jsonValueString
+            type: string
             description: |-
-              The actual value of the input to store. The data format depends on the input.
+              The actual value of the input to store. It MUST BE a valid json string.
         required:
           - value
 
