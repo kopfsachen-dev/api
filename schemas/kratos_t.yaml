@@ -53,6 +53,7 @@ apiRegistrationFlow:
 baseFlowExample:
   example:
     id: 7fc68104-1e4d-4eba-bd57-7ee84431c134
+    type: 'Error in Spec: Abstract base type used'
     expires_at: '2022-07-01T08:05:46.233962679Z'
     issued_at: '2022-07-01T07:50:46.233962679Z'
     request_url: 'Error in Spec: Abstract base type used'
@@ -156,33 +157,21 @@ browserRegistrationFlow:
     - $ref: '#/selfServiceRegistrationFlow'
 
 browserLoginFlow:
-  anyOf:
+  allOf:
     - $ref: '#/browserLoginFlowExample'
     - $ref: '#/selfServiceLoginFlow'
 
 browserLoginFlowExample:
-  example:
-    id: bedd058f-61bb-44de-a6b3-10fccccfd8f8
-    type: browser
-    expires_at: 2022-07-01T09:47:19.498757726Z
-    issued_at: 022-07-01T09:32:19.498757726Z
-    request_url: http://auth.api.live.mindtastic.lol/self-service/login/browser
-    ui:
-      action: https://auth.api.live.mindtastic.lol/self-service/login?flow=bedd058f-61bb-44de-a6b3-10fccccfd8f8
-      method: POST
-      nodes:
-        - type: input
-          group: default
-          attributes:
-            name: csrf_token
-            type: hidden
-            value: 2JScJjx9C0OLCB9O3GSVDHCBGHbXdNZ9B59StFXBlSRKt0hnb3bp
-            required: true
-            disable: false
-            node_type: input
-          messages: []
-          meta: {}
-        - "..."
+  allOf:
+    - $ref: '#/browserBaseFlowExample'
+    - example:
+        request_url: http://auth.api.live.mindtastic.lol/self-service/login/browser
+        ui:
+          action: https://auth.api.live.mindtastic.lol/self-service/login?flow=bedd058f-61bb-44de-a6b3-10fccccfd8f8
+          nodes:
+            - allOf:
+              - $ref: '#/flowExampleCSRFNode'
+            - "..."
 
 selfServiceLoginFlow:
   description: >-
