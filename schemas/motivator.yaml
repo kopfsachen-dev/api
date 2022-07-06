@@ -228,6 +228,7 @@ MotivatorResultEntry:
               - type: integer
               - type: boolean
               - type: array
+                items: {}
               - type: object
             description: |-
               The actual value of the input to store. The data format depends on the input.
