@@ -129,34 +129,31 @@ flowExampleAccountKeyNode:
   messages: []
   meta: {}
 
-browserRegistrationFlow:
-  anyOf:
-    - $ref: '#/browserRegistrationFlowExample'
-    - $ref: '#/selfServiceRegistrationFlow'
+browserBaseFlowExample:
+  allOf:
+    - $ref: '#/baseFlowExample'
+    - example:
+        id: 2e1a12cd-6d01-4f5a-b0db-2ea60b99d5ea
+        type: browser
 
 browserRegistrationFlowExample:
-  example:
-    id: 2e1a12cd-6d01-4f5a-b0db-2ea60b99d5ea
-    type: browser
-    expires_at: 2022-07-01T08:05:46.233962679Z
-    issued_at: 2022-07-01T07:50:46.233962679Z
-    request_url: http://auth.api.live.mindtastic.lol/self-service/registration/browser
-    ui:
-      action: https://auth.api.live.mindtastic.lol/self-service/registration?flow=2e1a12cd-6d01-4f5a-b0db-2ea60b99d5ea
-      method: POST
-      nodes:
-        - type: input
-          group: default
-          attributes:
-            name: csrf_token
-            type: hidden
-            value: 2JScJjx9C0OLCB9O3GSVDHCBGHbXdNZ9B59StFXBlSRKt0hnb3bp
-            required: true
-            disable: false
-            node_type: input
-          messages: []
-          meta: {}
-        - "..."
+  allOf:
+    - $ref: '#/browserBaseFlowExample'  
+    - example:
+        request_url: http://auth.api.live.mindtastic.lol/self-service/registration/browser
+        ui:
+          action: https://auth.api.live.mindtastic.lol/self-service/registration?flow=2e1a12cd-6d01-4f5a-b0db-2ea60b99d5ea
+          nodes:
+            - allOf:
+              - $ref: '#/flowExampleCSRFNode'
+            - allOf:
+              - $ref: '#/flowExampleAccountKeyNode'
+            - "..."
+
+browserRegistrationFlow:
+  allOf:
+    - $ref: '#/browserRegistrationFlowExample'
+    - $ref: '#/selfServiceRegistrationFlow'
 
 browserLoginFlow:
   anyOf:

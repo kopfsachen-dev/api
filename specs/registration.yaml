@@ -83,7 +83,7 @@ registrationInitBrowser:
         content:
           application/json:
             schema:
-              $ref: '../schemas/kratos_t.yaml#/browserLoginFlow'
+              $ref: '../schemas/kratos_t.yaml#/browserRegistrationFlow'
       '303':
         description: Redirect to `urls.default_redirect_url` as a valid user session already exists for the HTTP cookie.
       '500':
