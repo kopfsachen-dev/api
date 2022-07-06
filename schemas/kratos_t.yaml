@@ -50,10 +50,9 @@ apiRegistrationFlow:
     - $ref: '#/apiRegistraionFlowExample'
     - $ref: '#/selfServiceRegistrationFlow'
 
-apiBaseFlowExample:
+baseFlowExample:
   example:
-    id: 9d7646c2-52b4-4c1f-a9b0-ec7b9e328cd6
-    type: api
+    id: 7fc68104-1e4d-4eba-bd57-7ee84431c134
     expires_at: '2022-07-01T08:05:46.233962679Z'
     issued_at: '2022-07-01T07:50:46.233962679Z'
     request_url: 'Error in Spec: Abstract base type used'
@@ -63,6 +62,13 @@ apiBaseFlowExample:
       messages: []
     created_at: '2022-06-30T07:50:46.233962679Z'
     updated_at: '2022-06-30T07:50:46.233962679Z'
+
+apiBaseFlowExample:
+  allOf:
+    - $ref: '#/baseFlowExample'
+    - example:
+        id: 9d7646c2-52b4-4c1f-a9b0-ec7b9e328cd6
+        type: api
 
 apiRegistraionFlowExample:
   allOf:
