@@ -3,59 +3,6 @@ UUID:
   type: string
 
 selfServiceRegistrationFlow:
-  example:
-    expires_at: 2000-01-23T04:56:07.000Z
-    ui:
-      nodes:
-        - meta:
-            label:
-              context: '{}'
-              id: 0
-              text: text
-              type: type
-          messages:
-            - context: '{}'
-              id: 0
-              text: text
-              type: type
-            - context: '{}'
-              id: 0
-              text: text
-              type: type
-          type: text
-          group: default
-        - meta:
-            label:
-              context: '{}'
-              id: 0
-              text: text
-              type: type
-          messages:
-            - context: '{}'
-              id: 0
-              text: text
-              type: type
-            - context: '{}'
-              id: 0
-              text: text
-              type: type
-          type: text
-          group: default
-      method: method
-      action: action
-      messages:
-        - context: '{}'
-          id: 0
-          text: text
-          type: type
-        - context: '{}'
-          id: 0
-          text: text
-          type: type
-    return_to: return_to
-    type: type
-    issued_at: 2000-01-23T04:56:07.000Z
-    request_url: request_url
   properties:
     active:
       $ref: '#/identityCredentialsType'
@@ -99,29 +46,37 @@ selfServiceRegistrationFlow:
   type: object
 
 apiRegistrationFlow:
-  anyOf:
+  allOf:
     - $ref: '#/apiRegistraionFlowExample'
     - $ref: '#/selfServiceRegistrationFlow'
 
-apiRegistraionFlowExample:
+apiBaseFlowExample:
   example:
     id: 9d7646c2-52b4-4c1f-a9b0-ec7b9e328cd6
     type: api
     expires_at: '2022-07-01T08:05:46.233962679Z'
     issued_at: '2022-07-01T07:50:46.233962679Z'
-    request_url: http://auth.api.live.mindtastic.lol/self-service/registration/api
+    request_url: 'Error in Spec: Abstract base type used'
     ui:
-      action: https://auth.api.live.mindtastic.lol/self-service/registration?flow=9d7646c2-52b4-4c1f-a9b0-ec7b9e328cd6
+      action: 'Error in Spec: Abstract base type used'
       method: POST
       messages: []
-      nodes:
-        - allOf:
-          - $ref: '#/flowExampleCSRFNode'
-        - allOf:
-          - $ref: '#/flowExampleAccountKeyNode'
-        - '...'
     created_at: '2022-06-30T07:50:46.233962679Z'
     updated_at: '2022-06-30T07:50:46.233962679Z'
+
+apiRegistraionFlowExample:
+  allOf:
+    - $ref: '#/apiBaseFlowExample'
+    - example:
+        request_url: http://auth.api.live.mindtastic.lol/self-service/registration/api
+        ui:
+          action: https://auth.api.live.mindtastic.lol/self-service/registration?flow=9d7646c2-52b4-4c1f-a9b0-ec7b9e328cd6
+          nodes:
+            - allOf:
+              - $ref: '#/flowExampleCSRFNode'
+            - allOf:
+              - $ref: '#/flowExampleAccountKeyNode'
+            - '...'
 
 apiLoginFlow:
   allOf:
@@ -129,12 +84,19 @@ apiLoginFlow:
     - $ref: '#/selfServiceLoginFlow'
 
 apiLoginFlowExample:
+  # Take the example from /register/api and overwrite some values
   allOf:
-    - $ref: '#/apiRegistraionFlowExample'
+    - $ref: '#/apiBaseFlowExample'
     - example:
         request_url: http://auth.api.dev.mindtastic.lol/self-service/login/api
         ui:
           action: https://auth.api.dev.mindtastic.lol/self-service/login?flow=dae01032-cdd6-4381-82f5-1f7f4d2c42c6
+          nodes:
+            - allOf:
+              - $ref: '#/flowExampleCSRFNode'
+            - '...'
+        refresh: false
+        requested_aal: aal1
 
 flowExampleCSRFNode:
   type: input
@@ -248,6 +210,8 @@ selfServiceLoginFlow:
 
         to forward information contained in the URL's path or query for example.
       type: string
+    requested_aal:
+      $ref: '#/authenticatorAssuranceLevel'
     return_to:
       description: ReturnTo contains the requested return_to URL.
       type: string
@@ -773,6 +737,16 @@ selfServiceBrowserLocationChangeRequiredError:
     - message
   title: Is sent when a flow requires a browser to change its location.
   type: object
+
+authenticatorAssuranceLevel:
+  title: Authentication Assurance Level (AAL)
+  description: Internal value used by Ory Kratos. Not relevant for the Kopfsachen API
+  type: string
+  enum:
+    - aal0
+    - aal1
+    - aal2
+    - aal3
 
 submitSelfServiceLogoutFlowWithoutBrowserBody:
   description: nolint:deadcode,unused
