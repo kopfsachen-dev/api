@@ -107,27 +107,59 @@ apiRegistraionFlowExample:
   example:
     id: 9d7646c2-52b4-4c1f-a9b0-ec7b9e328cd6
     type: api
-    expires_at: 2022-07-01T08:05:46.233962679Z
-    issued_at: 2022-07-01T07:50:46.233962679Z
+    expires_at: '2022-07-01T08:05:46.233962679Z'
+    issued_at: '2022-07-01T07:50:46.233962679Z'
     request_url: http://auth.api.live.mindtastic.lol/self-service/registration/api
     ui:
       action: https://auth.api.live.mindtastic.lol/self-service/registration?flow=9d7646c2-52b4-4c1f-a9b0-ec7b9e328cd6
       method: POST
       messages: []
-      nodes: [ "..." ]
+      nodes:
+        - allOf:
+          - $ref: '#/flowExampleCSRFNode'
+        - allOf:
+          - $ref: '#/flowExampleAccountKeyNode'
+        - '...'
+    created_at: '2022-06-30T07:50:46.233962679Z'
+    updated_at: '2022-06-30T07:50:46.233962679Z'
 
 apiLoginFlow:
-  anyOf:
+  allOf:
     - $ref: '#/apiLoginFlowExample'
     - $ref: '#/selfServiceLoginFlow'
 
 apiLoginFlowExample:
-  example:
-    anyOf:
-      - request_url: http://auth.api.dev.mindtastic.lol/self-service/login/api
+  allOf:
+    - $ref: '#/apiRegistraionFlowExample'
+    - example:
+        request_url: http://auth.api.dev.mindtastic.lol/self-service/login/api
         ui:
           action: https://auth.api.dev.mindtastic.lol/self-service/login?flow=dae01032-cdd6-4381-82f5-1f7f4d2c42c6
-      - $ref: '#/apiRegistraionFlowExample'
+
+flowExampleCSRFNode:
+  type: input
+  group: default
+  attributes:
+    name: csrf_token
+    type: hidden
+    value: 2JScJjx9C0OLCB9O3GSVDHCBGHbXdNZ9B59StFXBlSRKt0hnb3bp
+    required: true
+    disabled: false
+    node_type: input
+  messages: []
+  meta: {}
+
+flowExampleAccountKeyNode:
+  type: input
+  group: password
+  attributes:
+    name: traits.accountKey
+    type: text
+    required: true
+    disabled: false
+    node_type: input
+  messages: []
+  meta: {}
 
 browserRegistrationFlow:
   anyOf:
@@ -191,62 +223,6 @@ selfServiceLoginFlow:
   description: >-
     This object represents a login flow. A login flow is initiated at the
     "Initiate Login API / Browser Flow"
-  example:
-    expires_at: 2000-01-23T04:56:07.000Z
-    ui:
-      nodes:
-        - meta:
-            label:
-              context: '{}'
-              id: 0
-              text: text
-              type: type
-          messages:
-            - context: '{}'
-              id: 0
-              text: text
-              type: type
-            - context: '{}'
-              id: 0
-              text: text
-              type: type
-          type: text
-          group: default
-        - meta:
-            label:
-              context: '{}'
-              id: 0
-              text: text
-              type: type
-          messages:
-            - context: '{}'
-              id: 0
-              text: text
-              type: type
-            - context: '{}'
-              id: 0
-              text: text
-              type: type
-          type: text
-          group: default
-      method: method
-      action: action
-      messages:
-        - context: '{}'
-          id: 0
-          text: text
-          type: type
-        - context: '{}'
-          id: 0
-          text: text
-          type: type
-    updated_at: 2000-01-23T04:56:07.000Z
-    created_at: 2000-01-23T04:56:07.000Z
-    refresh: true
-    return_to: return_to
-    type: type
-    issued_at: 2000-01-23T04:56:07.000Z
-    request_url: request_url
   properties:
     active:
       $ref: '#/identityCredentialsType'
