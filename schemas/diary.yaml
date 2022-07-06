@@ -50,7 +50,8 @@ moodIdParameter:
   name: id
   in: path
   schema:
-    $ref: '#/moodId'
+    type: integer
+    nullable: false
   required: true
   description: ID of the mood diary entry the user wants to perform a request on
   example: 2143
