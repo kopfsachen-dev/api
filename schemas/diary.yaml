@@ -3,11 +3,11 @@ moodData:
   title: Mood Data Object
   properties:
     mood_day:
-      oneOf: 
-        - type: string
-          format: date
-        - type: string
-          format: date-time
+      type: string
+      format: date-time
+      description: |- 
+        The date of the day the mood entry should created for. It expects an [`ISO 8601` / `RFC 3399` timestamp](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6).
+        Sending only the date part without any `time` component is also allowed, but not recommended, as this could change in future versions of the API.
     mood_type:
       type: string
       enum:
