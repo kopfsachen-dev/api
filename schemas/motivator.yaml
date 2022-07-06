@@ -187,12 +187,14 @@ MotivatorResultCreatedResponse:
     - $ref: '#/MotivatorStatus'
 
 MotivatorResult:
+  title: Motivator Result
   type: object
   properties:
     timestamp:
       type: string
       format: date-time
     values:
+      title: Motivator Result Items
       type: object
       additionalProperties:
         $ref: '#/MotivatorResultEntry'
@@ -214,11 +216,14 @@ MotivatorResult:
       rating: positive
 
 MotivatorResultEntry:
+  title: Motivator Result Item
   type: object
   properties:
     entries:
+      title: Motivator Result Item Input Values
       type: object
       additionalProperties:
+        title: Motivator Result Item Input Value
         type: object
         properties:
           value:
