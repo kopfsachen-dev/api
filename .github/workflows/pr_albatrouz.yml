@@ -1,0 +1,25 @@
+name: Albatrouz PR spec generation
+
+# Controls when the workflow will run
+on:
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  generate-specs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project files
+        uses: actions/checkout@v3
+
+      - name: Albatrouz Spec and TILT generation
+        uses: mindtastic/albatrouz@v0.1.0-alpha.1
+
+      - name: Upload generated specs
+        uses: actions/upload-artifact@v3
+        with:
+          name: albatrouz
+          path: albatrouz-out/**/*.yaml
