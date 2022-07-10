@@ -150,7 +150,6 @@ createEntry:
     x-contentType: application/json
     tags:
       - wiki-service
-      - admin
     security:
       - jwt: []
 ### TPL RENDER {{ template "servers.tpl" "wiki" }}
@@ -186,7 +185,6 @@ deleteSingleEntry:
         description: Internal server error
     tags:
       - wiki-service
-      - admin
     security:
       - jwt: []
 ### TPL RENDER {{ template "servers.tpl" "wiki" }}

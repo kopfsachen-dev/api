@@ -187,12 +187,14 @@ MotivatorResultCreatedResponse:
     - $ref: '#/MotivatorStatus'
 
 MotivatorResult:
+  title: Motivator Result
   type: object
   properties:
     timestamp:
       type: string
       format: date-time
     values:
+      title: Motivator Result Items
       type: object
       additionalProperties:
         $ref: '#/MotivatorResultEntry'
@@ -209,28 +211,26 @@ MotivatorResult:
           text-question:
             value: Cage the Elephant
           range-rating:
-            value: 9
+            value: '9'
     feedback:
       rating: positive
 
 MotivatorResultEntry:
+  title: Motivator Result Item
   type: object
   properties:
     entries:
+      title: Motivator Result Item Input Values
       type: object
       additionalProperties:
+        title: Motivator Result Item Input Value
         type: object
         properties:
-          value: 
-            anyOf:
-              - type: string
-              - type: number
-              - type: integer
-              - type: boolean
-              - type: array
-              - type: object
+          value:
+            title: jsonValueString
+            type: string
             description: |-
-              The actual value of the input to store. The data format depends on the input.
+              The actual value of the input to store. It MUST BE a valid json string.
         required:
           - value
 
