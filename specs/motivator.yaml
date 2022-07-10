@@ -305,7 +305,6 @@ motivatorResultEndpoints:
 moodivatorEndpoints:
   get:
     summary: Receive call from mood diary
-    operationID: motivator:moodivator:get
     responses:
       '200':
         description: OK
