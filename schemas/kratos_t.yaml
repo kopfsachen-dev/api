@@ -844,8 +844,9 @@ session:
         - aal3
       type: string
     authentication_methods:
-      description: internal value.
-      type: object
+      type: array
+      items:
+        $ref: '#/sessionAuthenticationMethod'
     issued_at:
       description: |-
         The Session Issuance Timestamp
@@ -866,14 +867,34 @@ session:
       2022-07-01T07:48:20.922137995Z
     authenticator_assurance_level: aal1
     authentication_methods: 
-      - method: password
-        aal: aal1
-        completed_at: |- 
-          2022-07-01T07:48:20.921344603Z
+      type: array
+      items:
+        - method: password
+          aal: aal1
+          completed_at: |- 
+            2022-07-01T07:48:20.921344603Z
     issued_at: |- 
       2022-07-01T07:48:20.921174998Z
     identity:
       $ref: '#/identity/example'
+
+sessionAuthenticationMethod:
+  properties:
+    aal:
+      type: string
+      description: Internal value
+    method:
+      enum:
+        - password
+      type: string
+    completed_at:
+      description: When the authentication challenge was completed.
+      format: date-time
+      type: string
+  example:
+    completed_at: 2022-06-23T04:56:07.000+00:00
+    method: password
+    aal: aal1
 
 browserLogoutUrl:
   title: Bouncer logout URL

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Kopfsachen
-  version: '1.0.1'
+  version: '1.0.2'
   description: Kopfsachen e. V. is an association for the promotion of young people's mental health. The goal is to teach the basics of mental health literacy in various educational formats.
   license:
     name: MIT license
