@@ -39,3 +39,4 @@ registration-with-flow-id-response:
         Authorization: bearer ${session-token}
         The session token is only issued for API flows, not for Browser flows!
       type: string
+      example: 0af2da11-687d-4447-a3f4-2f39d57fe83b

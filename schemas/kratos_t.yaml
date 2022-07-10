@@ -902,8 +902,9 @@ session:
         - aal3
       type: string
     authentication_methods:
-      description: internal value.
-      type: object
+      type: array
+      items:
+        $ref: '#/sessionAuthenticationMethod'
     issued_at:
       description: |-
         The Session Issuance Timestamp
