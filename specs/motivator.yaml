@@ -302,6 +302,32 @@ motivatorResultEndpoints:
           default: live
 ### END RENDER {{ template "servers.tpl" "motivator" }}
 
+moodivatorEndpoints:
+  get:
+    summary: Receive call from mood diary
+    operationID: motivator:moodivator:get
+    responses:
+      '200':
+        description: OK
+      '500':
+        description: Internal Service Error
+    tags:
+      - motivator-service
+    security:
+      - jwt: []
+    x-accepts: application/json
+### TPL RENDER {{ template "servers.tpl" "motivator" }}
+  servers:
+    - url: https://motivator.api.{environment}.mindtastic.lol
+      variables:
+        environment:
+          enum:
+            - live
+            - stage
+            - dev
+          default: live
+### END RENDER {{ template "servers.tpl" "motivator" }}
+
 #
 # /motivator/admin:
 #   parameters: []
